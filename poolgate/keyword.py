@@ -40,7 +40,8 @@ def card(p: dict, vacancy: dict | None = None) -> str:
         lines.append(f"Entfernung zum Einsatzort {vacancy['site']}: ca. {d:.0f} km Luftlinie")
     lines += [
         f"Berufserfahrung (Jahre): {ka(p['erfahrung_jahre'])}",
-        f"Zertifikate/Kenntnisse: {'k. A.' if certs is None else (', '.join(certs) or 'keine')}",
+        "Zertifikate/Kenntnisse (vollständige Liste): "
+        + ("k. A." if certs is None else (", ".join(certs) or "keine")),
         f"Führerschein: {ka(p['fuehrerschein'])}",
         f"Schichtbereitschaft: {ka(p['schicht'])}",
         f"Rufbereitschaft: {ka(p['rufbereitschaft'])}",

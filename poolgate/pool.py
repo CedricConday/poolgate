@@ -24,37 +24,47 @@ from . import geo
 
 TODAY = date(2026, 11, 15)  # the pool's "Stand"; years in the notes count from here
 
-# Canonical trade -> synonyms, old names and abbreviations that mean the same
-# qualification. Every synonym maps to exactly one trade, so the truth stays
-# recoverable from the text; ambiguous words ("Elektriker") are not used.
+# Canonical trade -> other names for the same qualification: official long
+# forms, official predecessor names (with the year they were replaced), and
+# common abbreviations of the official name. Job titles ("CNC-Fräser",
+# "Servicetechniker"), unofficial names and ambiguous words ("Elektriker",
+# "Zerspaner") are not used: they would make the truth unknowable, not the case
+# hard.
 TRADES: dict[str, tuple[str, ...]] = {
     "Elektroniker für Betriebstechnik": (
-        "Elektroniker BT", "E-Techniker Betriebstechnik", "Betriebselektroniker",
-        "Energieelektroniker Betriebstechnik", "Elektroniker FR Betriebstechnik"),
+        "Elektroniker/-in für Betriebstechnik", "Elektroniker BT",
+        "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)"),
     "Elektroniker für Automatisierungstechnik": (
-        "Automatisierungselektroniker", "Elektroniker AT", "Prozessleitelektroniker",
-        "E-Techniker Automatisierung"),
+        "Elektroniker/-in für Automatisierungstechnik", "Elektroniker AT",
+        "Prozessleitelektroniker (bis 2003)"),
     "Elektroniker für Energie- und Gebäudetechnik": (
-        "Elektroniker EGT", "Elektroinstallateur", "Elektroniker E+G", "Gebäudeelektroniker"),
+        "Elektroniker/-in Fachrichtung Energie- und Gebäudetechnik", "Elektroniker EGT",
+        "Elektroinstallateur (bis 2003)"),
     "Informationselektroniker": (
-        "Infoelektroniker", "Radio- und Fernsehtechniker",
-        "Informationselektroniker Geräte- und Systemtechnik"),
-    "Mechatroniker": ("Mechatr.", "Mechatroniker/in IHK", "Servicetechniker Mechatronik"),
+        "Informationselektroniker/-in", "Radio- und Fernsehtechniker (bis 1999)",
+        "Informationselektroniker Schwerpunkt Geräte- und Systemtechnik"),
+    "Mechatroniker": ("Mechatroniker/-in", "Mechatr.", "Mechatroniker (IHK)"),
     "Industriemechaniker": (
-        "Indu-Mech", "Industriemech.", "Betriebsschlosser", "Maschinenschlosser"),
+        "Industriemechaniker/-in", "Industriemech.", "Betriebsschlosser (bis 1987)",
+        "Maschinenschlosser (bis 1987)"),
     "Zerspanungsmechaniker": (
-        "CNC-Fräser", "Zerspaner", "Zerspanungsmech. FR Frästechnik", "CNC-Dreher/Fräser",
-        "Dreher"),
+        "Zerspanungsmechaniker/-in", "Zerspanungsmech.",
+        "Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", "Dreher (bis 1987)",
+        "Fräser (bis 1987)"),
     # Lookalikes: they read like the right trade and are not.
-    "Industrieelektriker": ("Industrieelektriker Betriebstechnik", "Elektro-Facharbeiter (2 J.)"),
-    "Maschinen- und Anlagenführer": ("CNC-Maschinenbediener", "MAF", "Anlagenführer"),
-    "Kfz-Mechatroniker": ("KFZ-Mechaniker", "Kfz-Mech.", "Kfz-Mechatroniker PKW"),
+    "Industrieelektriker": ("Industrieelektriker/-in",
+                            "Industrieelektriker Fachrichtung Betriebstechnik"),
+    "Maschinen- und Anlagenführer": ("Maschinen- und Anlagenführer/-in", "MAF"),
+    "Kfz-Mechatroniker": ("Kraftfahrzeugmechatroniker", "Kfz-Mechaniker (bis 2003)"),
     # Background trades.
-    "Konstruktionsmechaniker": ("Metallbauer Konstruktionstechnik", "Konstruktionsmech."),
-    "Fachkraft für Lagerlogistik": ("Fachlagerist", "Lagerlogistiker"),
-    "Anlagenmechaniker SHK": ("Heizungsbauer", "Anlagenmech. SHK", "Gas-Wasser-Installateur"),
-    "Werkzeugmechaniker": ("Werkzeugmacher", "Formenbauer"),
-    "Verfahrensmechaniker Kunststoff": ("Kunststoff-Verfahrensmechaniker", "Einrichter Spritzguss"),
+    "Konstruktionsmechaniker": ("Konstruktionsmechaniker/-in", "Konstruktionsmech."),
+    "Fachkraft für Lagerlogistik": ("Fachkraft Lagerlogistik",
+                                    "Fachkraft für Lagerwirtschaft (bis 2004)"),
+    "Anlagenmechaniker SHK": ("Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik",
+                              "Gas- und Wasserinstallateur (bis 2003)"),
+    "Werkzeugmechaniker": ("Werkzeugmechaniker/-in", "Werkzeugmacher (bis 1987)"),
+    "Verfahrensmechaniker Kunststoff": (
+        "Verfahrensmechaniker für Kunststoff- und Kautschuktechnik",),
 }
 
 # Certificates and skills, with the ways notes and CVs spell them.
@@ -516,6 +526,7 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
 
     drafts: list[tuple[Facts, Presentation, str | None]] = []
     for v in vacancies:
+        n_buried = 0
         for case, count in PLANT_FITS.items():
             for _ in range(count):
                 f = fitting_facts(v, fact_rng)
@@ -524,7 +535,10 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
                 elif case == "synonym":
                     pr = presentation(f, pres_rng, "synonym")
                 else:
-                    must = pres_rng.choice([m for m in v.musts() if m != "entfernung"])
+                    # Cycle through the must-haves, so every buried type occurs.
+                    buried = [m for m in v.musts() if m != "entfernung"]
+                    must = buried[n_buried % len(buried)]
+                    n_buried += 1
                     title = pres_rng.choice(("canonical", "synonym"))
                     if must == "beruf":
                         title = "none"

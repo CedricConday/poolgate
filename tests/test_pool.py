@@ -104,4 +104,30 @@ def test_name_swap_changes_only_the_name(pool):
 def test_feminine_forms():
     assert feminine("Elektroniker für Betriebstechnik") == "Elektronikerin für Betriebstechnik"
     assert feminine("CNC-Fräser") == "CNC-Fräserin"
-    assert feminine("Mechatroniker/in IHK") == "Mechatroniker/in IHK"
+    assert feminine("Mechatroniker/-in") == "Mechatroniker/-in"
+
+
+def test_every_buried_type_occurs_for_every_vacancy(pool):
+    from poolgate.pool import case_type
+
+    for v in VACANCIES:
+        cases = {case_type(v, p) for p in pool.profiles if is_fit(v, p.facts)}
+        for m in v.musts():
+            if m != "entfernung":
+                assert f"buried:{m}" in cases, (v.key, m)
+
+
+def test_no_job_titles_among_the_synonyms():
+    from poolgate.pool import TRADES
+
+    banned = ("CNC-Fräser", "Servicetechniker", "Zerspaner", "Gebäudeelektroniker",
+              "Betriebselektroniker", "E-Techniker", "FR Betriebstechnik", "Infoelektroniker")
+    for names in TRADES.values():
+        for n in names:
+            assert not any(n == b or n.startswith(b) for b in banned), n
+
+
+def test_certificate_lists_in_notes_are_declared_complete(pool):
+    for p in pool.profiles:
+        if "certs" in p.pres.hidden and p.facts.certs:
+            assert "keine" in p.notes.lower(), p.id

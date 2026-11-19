@@ -21,7 +21,7 @@ _HEADS = ("niker", "chaniker", "techniker", "fräser", "zerspaner", "elektriker"
 
 def feminine(term: str) -> str:
     """Elektroniker für X -> Elektronikerin für X; first matching head noun only."""
-    pat = r"\b([\wÄÖÜäöüß-]*(?:" + "|".join(_HEADS) + r"))\b(?!/in|in)"
+    pat = r"\b([\wÄÖÜäöüß-]*(?:" + "|".join(_HEADS) + r"))\b(?!/-?in|in)"
     return re.sub(pat, r"\1in", term, count=1, flags=re.IGNORECASE)
 
 
@@ -29,10 +29,10 @@ def _date(d) -> str:
     return d.strftime("%d.%m.%y")
 
 
-FIRMS = ("Fa. Hagedorn Kunststofftechnik", "einem Automobilzulieferer", "Fa. Tegeler Antriebe",
-         "einem Möbelhersteller", "einem Landmaschinenhersteller", "Fa. Wöstmann GmbH",
-         "einer Molkerei", "einem Verpackungshersteller", "Fa. Strothmann & Söhne",
-         "einem Sondermaschinenbauer", "einem Elektro-Handwerksbetrieb", "Fa. Niermann Metall",
+FIRMS = ("einem Kunststoffverarbeiter", "einem Automobilzulieferer", "einem Antriebshersteller",
+         "einem Möbelhersteller", "einem Landmaschinenhersteller", "einem Metallbaubetrieb",
+         "einer Molkerei", "einem Verpackungshersteller", "einem Familienbetrieb im Maschinenbau",
+         "einem Sondermaschinenbauer", "einem Elektro-Handwerksbetrieb", "einer Gießerei",
          "einem Zeitarbeitsunternehmen", "einer Großbäckerei", "einem Haustechnik-Betrieb")
 
 FILLER = (
@@ -90,11 +90,12 @@ def _certs(f: Facts, rng: random.Random, explicit_none: bool) -> str:
         return rng.choice(("keine Zusatzqualifikationen", "Zusatzquali: keine",
                            "keine Lehrgänge/Scheine")) if explicit_none else ""
     shown = [_cert(c, rng) for c in sorted(f.certs)]
+    # The list is declared complete, so a certificate not named is absent, not unknown.
     return rng.choice((
-        "Zusatzqualis: " + ", ".join(shown),
-        "kann " + " und ".join(shown),
-        "Lehrgänge: " + ", ".join(shown),
-        "Kenntnisse " + " / ".join(shown) + " vorhanden",
+        "Zusatzqualis: " + ", ".join(shown) + ", sonst keine",
+        "kann " + " und ".join(shown) + " (sonst keine Scheine/Lehrgänge)",
+        "Lehrgänge: " + ", ".join(shown) + " - weitere keine",
+        "Kenntnisse " + " / ".join(shown) + " vorhanden, darüber hinaus keine Zusatzqualis",
     ))
 
 
