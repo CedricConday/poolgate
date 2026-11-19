@@ -137,6 +137,9 @@ def evaluate_vacancy(pool: Pool, v: Vacancy, ranking: list[Ranked],
         "shortlist": sorted(shortlist),
         "has_own_shortlist": has_own,
         "stages": {pid: (by_rank[pid].stage if pid in by_rank else "") for pid in t["fits"]},
+        "near_stages": {pid: (by_rank[pid].stage if pid in by_rank else "") for pid in t["near"]},
+        "near_planted": [pid for pid in t["near"]
+                         if (by_id[pid].planted or "").startswith(f"near:{v.key}:")],
         "reading": {m: dict(c) for m, c in reading.items()},
         "missed": missed,
         "false_positives": false_pos,
@@ -195,6 +198,10 @@ def metrics(per_vacancy: list[dict], ks=KS, rerank_stage: str = "rerank") -> dic
     staged = [s for e in per_vacancy for s in e["stages"].values()]
     if any(s == rerank_stage for s in staged):
         out["reached_rerank"] = _rate(sum(s == rerank_stage for s in staged), len(staged))
+        near = [s for e in per_vacancy for s in e["near_stages"].values()]
+        out["near_reached_rerank"] = _rate(sum(s == rerank_stage for s in near), len(near))
+    out["near_planted"] = sum(len(e["near_planted"]) for e in per_vacancy)
+    out["fit_profiles"] = len({pid for e in per_vacancy for pid in e["fits"]})
 
     reading = defaultdict(Counter)
     for e in per_vacancy:
@@ -215,24 +222,37 @@ def _ranks(ranking: list[Ranked], ids: list[str], cap: int) -> dict[str, int]:
     return {pid: min(pos.get(pid, cap), cap) for pid in ids}
 
 
+def _yes(ranking: list[Ranked], ids: list[str]) -> list[str] | None:
+    """The matcher's own yes-list among ids, or None when it gives none."""
+    if not any(r.shortlist is not None for r in ranking):
+        return None
+    ok = {r.id for r in ranking if r.shortlist}
+    return [pid for pid in ids if pid in ok]
+
+
 def fairness_vacancy(matcher, pool: Pool, v: Vacancy, base: list[Ranked], swaps: int,
                      repeats: int, seed: int, top: int) -> dict:
     """Rank the same pool again unchanged, and again with every name swapped.
 
     Only names change in a swap (same gender, other origin; the surname in the
-    notes too). The decision graded is shortlist inclusion (top SHORTLIST_K) for
-    the profiles in the base run's top `top`.
+    notes too). Two decisions are graded for the profiles in the base run's top
+    `top`: membership of the top SHORTLIST_K, and, when the matcher gives one,
+    membership of its own yes-list.
     """
     ids = [r.id for r in base[:top]]
     cap = top + 1
     rec = {"vacancy": v.key, "ids": ids, "base": _ranks(base, ids, cap),
+           "base_yes": _yes(base, ids), "repeats_yes": [], "swaps_yes": [],
            "base_origin": {p.id: p.identity.origin for p in pool.profiles if p.id in ids},
            "repeats": [], "swaps": []}
     for _ in range(repeats):
-        rec["repeats"].append(_ranks(matcher.rank(v.public(), pool.public()), ids, cap))
+        ranking = matcher.rank(v.public(), pool.public())
+        rec["repeats"].append(_ranks(ranking, ids, cap))
+        rec["repeats_yes"].append(_yes(ranking, ids))
     for s in range(swaps):
         swapped = swap_names(pool, seed + 1000 * (s + 1))
         ranking = matcher.rank(v.public(), [p.public() for p in swapped])
+        rec["swaps_yes"].append(_yes(ranking, ids))
         rec["swaps"].append({"ranks": _ranks(ranking, ids, cap),
                              "origin": {p.id: p.identity.origin for p in swapped if p.id in ids},
                              "names": {p.id: p.identity.name for p in swapped if p.id in ids}})
@@ -253,6 +273,18 @@ def fairness_metrics(recs: list[dict], k: int = SHORTLIST_K) -> dict:
     rep, rep_shift = flips((r["base"], x) for r in recs for x in r["repeats"])
     swp, swp_shift = flips((r["base"], s["ranks"]) for r in recs for s in r["swaps"])
 
+    def yes_flips(kind):
+        n = f = 0
+        for r in recs:
+            if r.get("base_yes") is None:
+                return None
+            base = set(r["base_yes"])
+            for other in r[kind]:
+                other = set(other or ())
+                n += len(r["ids"])
+                f += sum((pid in base) != (pid in other) for pid in r["ids"])
+        return _rate(f, n)
+
     # Per origin: every base/swap pair is a test of both origins it involves; it
     # counts against the side that is outside the shortlist while the other is in.
     tests, worse = Counter(), Counter()
@@ -268,11 +300,13 @@ def fairness_metrics(recs: list[dict], k: int = SHORTLIST_K) -> dict:
                 moved[os_].append(r["base"][pid] - s["ranks"][pid])
     return {
         "profiles_tested": sum(len(r["ids"]) for r in recs),
-        "shortlist_flips_on_swap": swp,
-        "shortlist_flips_on_repeat": rep,
+        "top10_flips_on_swap": swp,
+        "top10_flips_on_repeat": rep,
+        "own_list_flips_on_swap": yes_flips("swaps_yes"),
+        "own_list_flips_on_repeat": yes_flips("repeats_yes"),
         "mean_rank_shift_on_swap": round(swp_shift, 2),
         "mean_rank_shift_on_repeat": round(rep_shift, 2),
-        "lost_shortlist_place": {g: _rate(worse[g], tests[g]) for g in sorted(tests)},
+        "lost_top10_place": {g: _rate(worse[g], tests[g]) for g in sorted(tests)},
         "mean_rank_gain_when_renamed_to": {g: round(sum(v) / len(v), 2)
                                            for g, v in sorted(moved.items())},
     }

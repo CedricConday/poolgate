@@ -70,6 +70,9 @@ def render(result: dict, config: dict) -> str:
         out.append(_row("True fits that reached the model",
                         [pct(m.get("reached_rerank")) if "reached_rerank" in m else "–"
                          for m in ms]))
+        out.append(_row("Near-misses that reached the model",
+                        [pct(m.get("near_reached_rerank")) if "near_reached_rerank" in m
+                         else "–" for m in ms]))
 
     out += ["", "## Which fits are found", "",
             "Recall@20 and shortlist recall by how the fit is presented.", "",
@@ -91,7 +94,10 @@ def render(result: dict, config: dict) -> str:
 
     out += ["", "## Near-misses let in", "",
             ("Profiles that fail exactly one must-have and look right otherwise, by the "
-            "must-have they fail: share that reached the top 10."), "",
+            "must-have they fail: share that reached the top 10. "
+            f"{ms[0].get('near_planted', 0)} of {sum(s['near'] for s in pool.values())} "
+            "were planted as look-alikes; the rest are background profiles that happen to "
+            "fail exactly one must-have."), "",
             "| Fails | " + " | ".join(f"`{n}`" for n in names) + " |",
             "|---|" + "---|" * len(names)]
     musts = sorted({k for m in ms for k in m.get("near_miss_by_must", {})},
@@ -145,21 +151,26 @@ def render(result: dict, config: dict) -> str:
                 ("The pool is ranked again unchanged (repeat) and with every name swapped to "
                  "another origin, same gender, the surname in the notes included (swap). "
                  "Graded: the base run's top 50 per vacancy, and whether each stays in or out "
-                 "of the top 10. A swap flip rate above the repeat rate points at the name."), "",
-                "| Matcher | Flips on swap | Flips on repeat | Mean rank shift swap / repeat |",
-                "|---|---|---|---|"]
+                 "of the top 10 and, where the matcher gives one, of its own yes-list. A swap "
+                 "flip rate above the repeat rate points at the name. Matchers that never read "
+                 "the name (bm25, keyword, field-filter) are at 0 by construction."), "",
+                ("| Matcher | Top-10 flips on swap | on repeat | Own-list flips on swap | "
+                 "on repeat | Mean rank shift swap / repeat |"),
+                "|---|---|---|---|---|---|"]
         for name, f in fair:
-            out.append(f"| `{name}` | {pct(f['shortlist_flips_on_swap'])} | "
-                       f"{pct(f['shortlist_flips_on_repeat'])} | "
+            own_s, own_r = f.get("own_list_flips_on_swap"), f.get("own_list_flips_on_repeat")
+            out.append(f"| `{name}` | {pct(f['top10_flips_on_swap'])} | "
+                       f"{pct(f['top10_flips_on_repeat'])} | "
+                       f"{pct(own_s) if own_s else '–'} | {pct(own_r) if own_r else '–'} | "
                        f"{f['mean_rank_shift_on_swap']} / {f['mean_rank_shift_on_repeat']} |")
-        origins = sorted({g for _, f in fair for g in f["lost_shortlist_place"]})
-        out += ["", ("Lost a shortlist place, by origin: every base/swap pair tests both "
+        origins = sorted({g for _, f in fair for g in f["lost_top10_place"]})
+        out += ["", ("Lost a top-10 place, by origin: every base/swap pair tests both "
                      "origins involved and counts against the side left out while the other "
                      "got in. Without a name effect every origin sits near the repeat rate."), "",
                 "| Origin | " + " | ".join(f"`{n}`" for n, _ in fair) + " |",
                 "|---|" + "---|" * len(fair)]
         for g in origins:
-            out.append(_row(g, [pct(f["lost_shortlist_place"].get(g)) for _, f in fair]))
+            out.append(_row(g, [pct(f["lost_top10_place"].get(g)) for _, f in fair]))
 
     if result.get("usage"):
         u = result["usage"]
@@ -176,9 +187,11 @@ def render(result: dict, config: dict) -> str:
          "the trade shown by its official name or an old name, synonym or abbreviation. The "
          "true fits of each vacancy follow from its must-have rules applied to the hidden facts. "
          "Planted per vacancy: 4 plain, 4 synonym and 4 buried fits, and 2 near-misses per "
-         "must-have; background profiles that would fit are redrawn. Fits planted for one "
-         "vacancy can fit another and are counted there too. No real candidate data is "
-         "involved."),
+         "must-have; background profiles that would fit are redrawn. A profile planted for "
+         "one vacancy (as fit or near-miss) can be a true fit for another and is counted "
+         "there too. Certificate lists are complete: a certificate not named is absent. "
+         "Distances are computed and shown to the model, so its Entfernung judgements are "
+         "not a reading test. No real candidate data is involved."),
         "",
     ]
     return "\n".join(out)

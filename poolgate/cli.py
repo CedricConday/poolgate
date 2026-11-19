@@ -136,21 +136,21 @@ def cmd_proof(args) -> int:
         r = run_matcher(m, pool, seed=args.seed)
         runs.append(r)
         mm, f = r["metrics"], r["fairness"]
-        lost = {g: x for g, x in f["lost_shortlist_place"].items() if x["k"]}
+        lost = {g: x for g, x in f["lost_top10_place"].items() if x["k"]}
         rows.append(
             f"| {label} | {pct(mm['recall@20'], False)} | "
             f"{pct(mm['by_case']['synonym']['in_shortlist'], False)} | "
             f"{pct(mm['by_case']['buried']['in_shortlist'], False)} | "
             f"{pct(mm['near_miss@10'], False)} | "
-            f"{pct(f['shortlist_flips_on_swap'], False)} | "
-            f"{pct(f['shortlist_flips_on_repeat'], False)} | "
+            f"{pct(f['top10_flips_on_swap'], False)} | "
+            f"{pct(f['top10_flips_on_repeat'], False)} | "
             + (", ".join(f"{g} {x['k']}/{x['n']}" for g, x in lost.items()) or "nobody")
             + " |")
     table = "\n".join([
         f"Offline stand-in, pool of {args.n}, seed {args.seed}. One fault at a time.",
         "",
         ("| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | "
-        "Near-misses in top 10 | Flips on swap | Flips on repeat | Lost a shortlist place |"),
+        "Near-misses in top 10 | Top-10 flips on swap | on repeat | Lost a top-10 place |"),
         "|---|---|---|---|---|---|---|---|",
         *rows, ""])
     (out / "report.md").write_text("# poolgate offline proof\n\n" + table)

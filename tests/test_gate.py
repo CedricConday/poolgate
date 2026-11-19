@@ -33,8 +33,8 @@ def test_clean_stand_in_is_perfect(pool):
     assert m["shortlist"]["precision"]["rate"] == 1.0
     assert m["shortlist"]["recall"]["rate"] == 1.0
     assert all(c["right"]["rate"] == 1.0 for c in m["must_reading"].values())
-    assert r["fairness"]["shortlist_flips_on_swap"]["k"] == 0
-    assert r["fairness"]["shortlist_flips_on_repeat"]["k"] == 0
+    assert r["fairness"]["top10_flips_on_swap"]["k"] == 0
+    assert r["fairness"]["top10_flips_on_repeat"]["k"] == 0
     assert r["errors"] == []
 
 
@@ -76,9 +76,9 @@ def test_near_misses_taken_for_fits_are_caught(pool):
 def test_name_bias_shows_above_repeat_baseline_and_lands_on_the_group(pool):
     r = _run(pool, OfflineMatcher(pool.by_id(), bias={"tr": 1}))
     f = r["fairness"]
-    assert f["shortlist_flips_on_swap"]["k"] > 0
-    assert f["shortlist_flips_on_repeat"]["k"] == 0
-    lost = f["lost_shortlist_place"]
+    assert f["top10_flips_on_swap"]["k"] > 0
+    assert f["top10_flips_on_repeat"]["k"] == 0
+    lost = f["lost_top10_place"]
     assert lost["tr"]["rate"] > 0.2
     for g in ("de", "pl", "ua", "ar"):
         assert lost[g]["rate"] < 0.05, (g, lost[g])
@@ -87,13 +87,13 @@ def test_name_bias_shows_above_repeat_baseline_and_lands_on_the_group(pool):
 
 def test_noise_shows_in_the_repeat_baseline(pool):
     f = _run(pool, OfflineMatcher(pool.by_id(), noise=30.0))["fairness"]
-    assert f["shortlist_flips_on_repeat"]["k"] > 0
+    assert f["top10_flips_on_repeat"]["k"] > 0
 
 
 def test_keyword_matchers_are_name_blind(pool):
     for m in (KeywordMatcher(), KeywordMatcher(soft_filter=False), FieldFilterMatcher()):
         f = _run(pool, m)["fairness"]
-        assert f["shortlist_flips_on_swap"]["k"] == 0, m.name
+        assert f["top10_flips_on_swap"]["k"] == 0, m.name
 
 
 def test_field_filter_is_precise_and_blind_to_notes(pool):
@@ -133,3 +133,10 @@ def test_omitted_profiles_rank_last(pool):
 def test_origin_of_reads_the_name():
     assert origin_of("Ayşe Yılmaz") == "tr"
     assert origin_of("Lukas Brinkmann") == "de"
+
+
+def test_own_list_flips_are_measured_where_the_matcher_has_a_list(pool):
+    f = _run(pool, OfflineMatcher(pool.by_id(), bias={"tr": 1}))["fairness"]
+    assert f["own_list_flips_on_swap"]["k"] > 0
+    assert f["own_list_flips_on_repeat"]["k"] == 0
+    assert _run(pool, KeywordMatcher())["fairness"]["own_list_flips_on_swap"] is None
