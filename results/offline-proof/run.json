@@ -12,16 +12,16 @@
    "synonym": 5,
    "buried": 4,
    "fit_ids": {
-    "p0047": "buried:zertifikate",
+    "p0047": "buried:erfahrung",
     "p0084": "buried:beruf",
     "p0097": "plain",
     "p0131": "plain",
     "p0182": "synonym",
     "p0241": "synonym",
-    "p0282": "buried:erfahrung",
+    "p0282": "buried:zertifikate",
     "p0302": "plain",
     "p0307": "synonym",
-    "p0331": "buried:zertifikate",
+    "p0331": "buried:schicht",
     "p0332": "synonym",
     "p0355": "plain",
     "p0370": "synonym",
@@ -70,11 +70,11 @@
    "fit_ids": {
     "p0018": "plain",
     "p0030": "synonym",
-    "p0035": "buried:beruf",
-    "p0061": "buried:beruf",
-    "p0076": "buried:erfahrung",
+    "p0035": "buried:erfahrung",
+    "p0061": "buried:schicht",
+    "p0076": "buried:zertifikate",
     "p0142": "plain",
-    "p0151": "buried:zertifikate",
+    "p0151": "buried:beruf",
     "p0244": "synonym",
     "p0285": "synonym",
     "p0287": "synonym",
@@ -130,14 +130,14 @@
     "p0045": "plain",
     "p0051": "plain",
     "p0080": "synonym",
-    "p0100": "buried:beruf",
-    "p0104": "buried:beruf",
+    "p0100": "buried:rufbereitschaft",
+    "p0104": "buried:erfahrung",
     "p0131": "plain",
     "p0155": "buried:fuehrerschein",
     "p0237": "plain",
     "p0307": "synonym",
     "p0352": "plain",
-    "p0353": "buried:fuehrerschein",
+    "p0353": "buried:beruf",
     "p0370": "synonym"
    },
    "near_ids": {
@@ -399,62 +399,120 @@
      "buried:beruf": {
       "recall@10": {
        "k": 3,
-       "n": 5,
-       "rate": 0.6,
+       "n": 3,
+       "rate": 1.0,
        "ci95": [
-        0.23071993220883708,
-        0.8823817688407467
+        0.43849391955098227,
+        1.0
        ]
       },
       "recall@20": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:erfahrung": {
       "recall@10": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
+       "k": 2,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.0,
-        0.6576280471103807
+        0.2076549551264879,
+        0.9385096847238394
        ]
       },
       "recall@20": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:fuehrerschein": {
+      "recall@10": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:schicht": {
       "recall@10": {
        "k": 1,
        "n": 2,
@@ -485,29 +543,29 @@
      },
      "buried:zertifikate": {
       "recall@10": {
-       "k": 3,
-       "n": 3,
-       "rate": 1.0,
+       "k": 0,
+       "n": 2,
+       "rate": 0.0,
        "ci95": [
-        0.43849391955098227,
-        1.0
+        0.0,
+        0.6576280471103807
        ]
       },
       "recall@20": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       }
@@ -781,6 +839,8 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
@@ -877,7 +937,7 @@
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 0,
      "n": 300,
      "rate": 0.0,
@@ -886,7 +946,25 @@
       0.012643429997735661
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
+     "k": 0,
+     "n": 150,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.02497113914571871
+     ]
+    },
+    "own_list_flips_on_swap": {
+     "k": 0,
+     "n": 300,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.012643429997735661
+     ]
+    },
+    "own_list_flips_on_repeat": {
      "k": 0,
      "n": 150,
      "rate": 0.0,
@@ -897,7 +975,7 @@
     },
     "mean_rank_shift_on_swap": 0.0,
     "mean_rank_shift_on_repeat": 0.0,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 0,
       "n": 80,
@@ -956,16 +1034,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -1084,6 +1162,51 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -1131,11 +1254,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -1255,6 +1378,54 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -1305,14 +1476,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -1522,6 +1693,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -1672,6 +1935,74 @@
       "p0189": 49,
       "p0165": 50
      },
+     "base_yes": [
+      "p0370",
+      "p0241",
+      "p0331",
+      "p0355",
+      "p0097",
+      "p0131",
+      "p0374",
+      "p0084",
+      "p0307",
+      "p0047",
+      "p0182",
+      "p0332",
+      "p0282",
+      "p0302"
+     ],
+     "repeats_yes": [
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0282",
+       "p0302"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0282",
+       "p0302"
+      ],
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0282",
+       "p0302"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0023": "de",
@@ -2203,6 +2534,66 @@
       "p0289": 49,
       "p0006": 50
      },
+     "base_yes": [
+      "p0285",
+      "p0351",
+      "p0390",
+      "p0151",
+      "p0030",
+      "p0035",
+      "p0018",
+      "p0142",
+      "p0244",
+      "p0287",
+      "p0076",
+      "p0061"
+     ],
+     "repeats_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076",
+       "p0061"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076",
+       "p0061"
+      ],
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076",
+       "p0061"
+      ]
+     ],
      "base_origin": {
       "p0006": "de",
       "p0012": "tr",
@@ -2734,6 +3125,74 @@
       "p0400": 49,
       "p0088": 50
      },
+     "base_yes": [
+      "p0051",
+      "p0307",
+      "p0034",
+      "p0352",
+      "p0045",
+      "p0237",
+      "p0080",
+      "p0370",
+      "p0100",
+      "p0353",
+      "p0012",
+      "p0155",
+      "p0104",
+      "p0131"
+     ],
+     "repeats_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ],
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
      "base_origin": {
       "p0009": "de",
       "p0012": "tr",
@@ -5865,70 +6324,128 @@
     "by_case_detail": {
      "buried:beruf": {
       "recall@10": {
-       "k": 4,
-       "n": 5,
-       "rate": 0.8,
+       "k": 3,
+       "n": 3,
+       "rate": 1.0,
        "ci95": [
-        0.3755282641185388,
-        0.9637768390302125
+        0.43849391955098227,
+        1.0
        ]
       },
       "recall@20": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:erfahrung": {
       "recall@10": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       },
       "recall@20": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:fuehrerschein": {
       "recall@10": {
-       "k": 2,
-       "n": 2,
+       "k": 1,
+       "n": 1,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.20654329147389294,
         1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:schicht": {
+      "recall@10": {
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
+       "ci95": [
+        0.09452865480086614,
+        0.9054713451991339
        ]
       },
       "recall@20": {
@@ -5952,29 +6469,29 @@
      },
      "buried:zertifikate": {
       "recall@10": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       },
       "recall@20": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       }
@@ -6248,6 +6765,8 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
@@ -6344,7 +6863,7 @@
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 0,
      "n": 300,
      "rate": 0.0,
@@ -6353,7 +6872,25 @@
       0.012643429997735661
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
+     "k": 0,
+     "n": 150,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.02497113914571871
+     ]
+    },
+    "own_list_flips_on_swap": {
+     "k": 0,
+     "n": 300,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.012643429997735661
+     ]
+    },
+    "own_list_flips_on_repeat": {
      "k": 0,
      "n": 150,
      "rate": 0.0,
@@ -6364,7 +6901,7 @@
     },
     "mean_rank_shift_on_swap": 0.0,
     "mean_rank_shift_on_repeat": 0.0,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 0,
       "n": 81,
@@ -6423,16 +6960,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -6547,6 +7084,51 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 396,
@@ -6571,7 +7153,7 @@
        "id": "p0370",
        "rank": 12,
        "case": "synonym",
-       "title": "Servicetechniker Mechatronik",
+       "title": "Mechatr.",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -6583,7 +7165,7 @@
        "id": "p0241",
        "rank": 15,
        "case": "synonym",
-       "title": "Elektroniker BT",
+       "title": "Elektroniker/-in für Betriebstechnik",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -6595,7 +7177,7 @@
        "id": "p0182",
        "rank": 43,
        "case": "synonym",
-       "title": "Automatisierungselektroniker",
+       "title": "Elektroniker/-in für Automatisierungstechnik",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -6607,7 +7189,7 @@
        "id": "p0332",
        "rank": 56,
        "case": "synonym",
-       "title": "Elektroniker FR Betriebstechnik",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -6644,11 +7226,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -6767,6 +7349,54 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
        "right": 399,
@@ -6791,7 +7421,7 @@
        "id": "p0287",
        "rank": 51,
        "case": "synonym",
-       "title": "Betriebsschlosser",
+       "title": "Industriemechaniker/-in",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -6831,14 +7461,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -7045,6 +7675,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 397,
@@ -7069,7 +7791,7 @@
        "id": "p0034",
        "rank": 54,
        "case": "synonym",
-       "title": "Betriebselektroniker",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7081,7 +7803,7 @@
        "id": "p0080",
        "rank": 115,
        "case": "synonym",
-       "title": "Servicetechniker Mechatronik",
+       "title": "Mechatroniker/-in",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7093,7 +7815,7 @@
        "id": "p0370",
        "rank": 117,
        "case": "synonym",
-       "title": "Servicetechniker Mechatronik",
+       "title": "Mechatr.",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7233,6 +7955,58 @@
       "p0165": 49,
       "p0099": 50
      },
+     "base_yes": [
+      "p0331",
+      "p0355",
+      "p0097",
+      "p0131",
+      "p0374",
+      "p0084",
+      "p0307",
+      "p0047",
+      "p0282",
+      "p0302"
+     ],
+     "repeats_yes": [
+      [
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0282",
+       "p0302"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0282",
+       "p0302"
+      ],
+      [
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0047",
+       "p0282",
+       "p0302"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0023": "de",
@@ -7764,6 +8538,62 @@
       "p0006": 49,
       "p0003": 50
      },
+     "base_yes": [
+      "p0285",
+      "p0351",
+      "p0390",
+      "p0151",
+      "p0030",
+      "p0035",
+      "p0018",
+      "p0142",
+      "p0244",
+      "p0076",
+      "p0061"
+     ],
+     "repeats_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0076",
+       "p0061"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0076",
+       "p0061"
+      ],
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0076",
+       "p0061"
+      ]
+     ],
      "base_origin": {
       "p0003": "ua",
       "p0006": "de",
@@ -8295,6 +9125,62 @@
       "p0247": 49,
       "p0175": 50
      },
+     "base_yes": [
+      "p0051",
+      "p0307",
+      "p0352",
+      "p0045",
+      "p0237",
+      "p0100",
+      "p0353",
+      "p0012",
+      "p0155",
+      "p0104",
+      "p0131"
+     ],
+     "repeats_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ],
+      [
+       "p0051",
+       "p0307",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0100",
+       "p0353",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
      "base_origin": {
       "p0009": "de",
       "p0012": "tr",
@@ -11427,62 +12313,120 @@
      "buried:beruf": {
       "recall@10": {
        "k": 1,
-       "n": 5,
-       "rate": 0.2,
+       "n": 3,
+       "rate": 0.3333333333333333,
        "ci95": [
-        0.03622316096978745,
-        0.6244717358814613
+        0.0614903152761605,
+        0.7923450448735121
        ]
       },
       "recall@20": {
-       "k": 2,
-       "n": 5,
-       "rate": 0.4,
+       "k": 1,
+       "n": 3,
+       "rate": 0.3333333333333333,
        "ci95": [
-        0.1176182311592533,
-        0.769280067791163
+        0.0614903152761605,
+        0.7923450448735121
        ]
       },
       "in_shortlist": {
-       "k": 2,
-       "n": 5,
-       "rate": 0.4,
+       "k": 1,
+       "n": 3,
+       "rate": 0.3333333333333333,
        "ci95": [
-        0.1176182311592533,
-        0.769280067791163
+        0.0614903152761605,
+        0.7923450448735121
        ]
       }
      },
      "buried:erfahrung": {
       "recall@10": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
+       "k": 2,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.0,
-        0.6576280471103807
+        0.2076549551264879,
+        0.9385096847238394
        ]
       },
       "recall@20": {
-       "k": 1,
-       "n": 2,
-       "rate": 0.5,
+       "k": 3,
+       "n": 3,
+       "rate": 1.0,
        "ci95": [
-        0.09452865480086614,
-        0.9054713451991339
+        0.43849391955098227,
+        1.0
        ]
       },
       "in_shortlist": {
-       "k": 1,
-       "n": 2,
-       "rate": 0.5,
+       "k": 3,
+       "n": 3,
+       "rate": 1.0,
        "ci95": [
-        0.09452865480086614,
-        0.9054713451991339
+        0.43849391955098227,
+        1.0
        ]
       }
      },
      "buried:fuehrerschein": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "recall@20": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "in_shortlist": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      }
+     },
+     "buried:schicht": {
       "recall@10": {
        "k": 1,
        "n": 2,
@@ -11513,30 +12457,30 @@
      },
      "buried:zertifikate": {
       "recall@10": {
-       "k": 3,
-       "n": 3,
-       "rate": 1.0,
+       "k": 0,
+       "n": 2,
+       "rate": 0.0,
        "ci95": [
-        0.43849391955098227,
-        1.0
+        0.0,
+        0.6576280471103807
        ]
       },
       "recall@20": {
-       "k": 3,
-       "n": 3,
-       "rate": 1.0,
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
        "ci95": [
-        0.43849391955098227,
-        1.0
+        0.09452865480086614,
+        0.9054713451991339
        ]
       },
       "in_shortlist": {
-       "k": 3,
-       "n": 3,
-       "rate": 1.0,
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
        "ci95": [
-        0.43849391955098227,
-        1.0
+        0.09452865480086614,
+        0.9054713451991339
        ]
       }
      },
@@ -11809,57 +12753,59 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
-       "k": 1197,
+       "k": 1198,
        "n": 1200,
-       "rate": 0.9975,
+       "rate": 0.9983333333333333,
        "ci95": [
-        0.9926754045895774,
-        0.9991494334954332
+        0.9939433558165282,
+        0.999542830405978
        ]
       },
-      "wrong": 3,
+      "wrong": 2,
       "unklar": 0
      },
      "erfahrung": {
       "right": {
-       "k": 1199,
+       "k": 1200,
        "n": 1200,
-       "rate": 0.9991666666666666,
-       "ci95": [
-        0.9952946495204195,
-        0.9998528848395826
-       ]
-      },
-      "wrong": 1,
-      "unklar": 0
-     },
-     "zertifikate": {
-      "right": {
-       "k": 800,
-       "n": 800,
        "rate": 1.0,
        "ci95": [
-        0.9952209490028883,
-        1.0
+        0.9968088824974979,
+        0.9999999999999998
        ]
       },
       "wrong": 0,
       "unklar": 0
      },
-     "fuehrerschein": {
+     "zertifikate": {
       "right": {
-       "k": 399,
-       "n": 400,
-       "rate": 0.9975,
+       "k": 799,
+       "n": 800,
+       "rate": 0.99875,
        "ci95": [
-        0.9859763590327523,
-        0.9995585635705656
+        0.9929535807359597,
+        0.9997793158944215
        ]
       },
       "wrong": 1,
+      "unklar": 0
+     },
+     "fuehrerschein": {
+      "right": {
+       "k": 400,
+       "n": 400,
+       "rate": 1.0,
+       "ci95": [
+        0.9904873594003194,
+        1.0
+       ]
+      },
+      "wrong": 0,
       "unklar": 0
      },
      "entfernung": {
@@ -11877,35 +12823,35 @@
      },
      "schicht": {
       "right": {
-       "k": 800,
+       "k": 799,
        "n": 800,
-       "rate": 1.0,
+       "rate": 0.99875,
        "ci95": [
-        0.9952209490028883,
-        1.0
+        0.9929535807359597,
+        0.9997793158944215
        ]
       },
-      "wrong": 0,
+      "wrong": 1,
       "unklar": 0
      },
      "rufbereitschaft": {
       "right": {
-       "k": 400,
+       "k": 399,
        "n": 400,
-       "rate": 1.0,
+       "rate": 0.9975,
        "ci95": [
-        0.9904873594003194,
-        1.0
+        0.9859763590327523,
+        0.9995585635705656
        ]
       },
-      "wrong": 0,
+      "wrong": 1,
       "unklar": 0
      }
     }
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 0,
      "n": 300,
      "rate": 0.0,
@@ -11914,7 +12860,25 @@
       0.012643429997735661
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
+     "k": 0,
+     "n": 150,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.02497113914571871
+     ]
+    },
+    "own_list_flips_on_swap": {
+     "k": 0,
+     "n": 300,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.012643429997735661
+     ]
+    },
+    "own_list_flips_on_repeat": {
      "k": 0,
      "n": 150,
      "rate": 0.0,
@@ -11925,7 +12889,7 @@
     },
     "mean_rank_shift_on_swap": 0.0,
     "mean_rank_shift_on_repeat": 0.0,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 0,
       "n": 80,
@@ -11984,16 +12948,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -12110,17 +13074,62 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 399,
        "wrong": 1
       },
       "erfahrung": {
-       "right": 399,
-       "wrong": 1
+       "right": 400
       },
       "zertifikate": {
-       "right": 400
+       "right": 399,
+       "wrong": 1
       },
       "entfernung": {
        "right": 400
@@ -12146,12 +13155,12 @@
        "vacancy": "eb-paderborn",
        "id": "p0282",
        "rank": 59,
-       "case": "buried:erfahrung",
-       "title": "E-Techniker Betriebstechnik",
+       "case": "buried:zertifikate",
+       "title": "Elektroniker/-in für Betriebstechnik",
        "stage": "offline",
-       "matcher_note": "nicht erfüllt: erfahrung",
+       "matcher_note": "nicht erfüllt: zertifikate",
        "misread": [
-        "erfahrung"
+        "zertifikate"
        ]
       }
      ],
@@ -12184,11 +13193,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -12307,10 +13316,57 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
-       "right": 399,
-       "wrong": 1
+       "right": 400
       },
       "erfahrung": {
        "right": 400
@@ -12322,7 +13378,8 @@
        "right": 400
       },
       "schicht": {
-       "right": 400
+       "right": 399,
+       "wrong": 1
       }
      },
      "missed": [
@@ -12330,12 +13387,12 @@
        "vacancy": "cnc-guetersloh",
        "id": "p0061",
        "rank": 58,
-       "case": "buried:beruf",
-       "title": "k. A.",
+       "case": "buried:schicht",
+       "title": "Zerspanungsmechaniker",
        "stage": "offline",
-       "matcher_note": "nicht erfüllt: beruf",
+       "matcher_note": "nicht erfüllt: schicht",
        "misread": [
-        "beruf"
+        "schicht"
        ]
       }
      ],
@@ -12371,14 +13428,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -12586,6 +13643,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 399,
@@ -12595,14 +13744,14 @@
        "right": 400
       },
       "fuehrerschein": {
-       "right": 399,
-       "wrong": 1
+       "right": 400
       },
       "entfernung": {
        "right": 400
       },
       "rufbereitschaft": {
-       "right": 400
+       "right": 399,
+       "wrong": 1
       }
      },
      "missed": [
@@ -12610,24 +13759,24 @@
        "vacancy": "service-bielefeld",
        "id": "p0100",
        "rank": 133,
-       "case": "buried:beruf",
-       "title": "k. A.",
+       "case": "buried:rufbereitschaft",
+       "title": "Elektroniker EGT",
        "stage": "offline",
-       "matcher_note": "nicht erfüllt: beruf",
+       "matcher_note": "nicht erfüllt: rufbereitschaft",
        "misread": [
-        "beruf"
+        "rufbereitschaft"
        ]
       },
       {
        "vacancy": "service-bielefeld",
        "id": "p0353",
        "rank": 136,
-       "case": "buried:fuehrerschein",
-       "title": "Informationselektroniker Geräte- und Systemtechnik",
+       "case": "buried:beruf",
+       "title": "k. A.",
        "stage": "offline",
-       "matcher_note": "nicht erfüllt: fuehrerschein",
+       "matcher_note": "nicht erfüllt: beruf",
        "misread": [
-        "fuehrerschein"
+        "beruf"
        ]
       }
      ],
@@ -12763,6 +13912,66 @@
       "p0165": 49,
       "p0099": 50
      },
+     "base_yes": [
+      "p0370",
+      "p0241",
+      "p0331",
+      "p0355",
+      "p0097",
+      "p0131",
+      "p0374",
+      "p0307",
+      "p0047",
+      "p0182",
+      "p0332",
+      "p0302"
+     ],
+     "repeats_yes": [
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0302"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0302"
+      ],
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0131",
+       "p0374",
+       "p0307",
+       "p0047",
+       "p0182",
+       "p0332",
+       "p0302"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0023": "de",
@@ -13294,6 +14503,62 @@
       "p0006": 49,
       "p0003": 50
      },
+     "base_yes": [
+      "p0285",
+      "p0351",
+      "p0390",
+      "p0151",
+      "p0030",
+      "p0035",
+      "p0018",
+      "p0142",
+      "p0244",
+      "p0287",
+      "p0076"
+     ],
+     "repeats_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076"
+      ],
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0142",
+       "p0244",
+       "p0287",
+       "p0076"
+      ]
+     ],
      "base_origin": {
       "p0003": "ua",
       "p0006": "de",
@@ -13825,6 +15090,66 @@
       "p0252": 49,
       "p0247": 50
      },
+     "base_yes": [
+      "p0051",
+      "p0307",
+      "p0034",
+      "p0352",
+      "p0045",
+      "p0237",
+      "p0080",
+      "p0370",
+      "p0012",
+      "p0155",
+      "p0104",
+      "p0131"
+     ],
+     "repeats_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ],
+      [
+       "p0051",
+       "p0307",
+       "p0034",
+       "p0352",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0012",
+       "p0155",
+       "p0104",
+       "p0131"
+      ]
+     ],
      "base_origin": {
       "p0009": "de",
       "p0012": "tr",
@@ -15070,11 +16395,11 @@
       "score": 32.171,
       "shortlist": false,
       "stage": "offline",
-      "note": "nicht erfüllt: erfahrung",
+      "note": "nicht erfüllt: zertifikate",
       "musts": {
        "beruf": "erfüllt",
-       "erfahrung": "nicht erfüllt",
-       "zertifikate": "erfüllt",
+       "erfahrung": "erfüllt",
+       "zertifikate": "nicht erfüllt",
        "entfernung": "erfüllt",
        "schicht": "erfüllt"
       }
@@ -15898,13 +17223,13 @@
       "score": 32.582,
       "shortlist": false,
       "stage": "offline",
-      "note": "nicht erfüllt: beruf",
+      "note": "nicht erfüllt: schicht",
       "musts": {
-       "beruf": "nicht erfüllt",
+       "beruf": "erfüllt",
        "erfahrung": "erfüllt",
        "zertifikate": "erfüllt",
        "entfernung": "erfüllt",
-       "schicht": "erfüllt"
+       "schicht": "nicht erfüllt"
       }
      },
      {
@@ -16957,98 +18282,11 @@
      "buried:beruf": {
       "recall@10": {
        "k": 0,
-       "n": 5,
-       "rate": 0.0,
-       "ci95": [
-        0.0,
-        0.43449149475208104
-       ]
-      },
-      "recall@20": {
-       "k": 2,
-       "n": 5,
-       "rate": 0.4,
-       "ci95": [
-        0.1176182311592533,
-        0.769280067791163
-       ]
-      },
-      "in_shortlist": {
-       "k": 5,
-       "n": 5,
-       "rate": 1.0,
-       "ci95": [
-        0.5655085052479191,
-        1.0
-       ]
-      }
-     },
-     "buried:erfahrung": {
-      "recall@10": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
-       "ci95": [
-        0.0,
-        0.6576280471103807
-       ]
-      },
-      "recall@20": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
-       "ci95": [
-        0.0,
-        0.6576280471103807
-       ]
-      },
-      "in_shortlist": {
-       "k": 2,
-       "n": 2,
-       "rate": 1.0,
-       "ci95": [
-        0.34237195288961925,
-        1.0
-       ]
-      }
-     },
-     "buried:fuehrerschein": {
-      "recall@10": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
-       "ci95": [
-        0.0,
-        0.6576280471103807
-       ]
-      },
-      "recall@20": {
-       "k": 0,
-       "n": 2,
-       "rate": 0.0,
-       "ci95": [
-        0.0,
-        0.6576280471103807
-       ]
-      },
-      "in_shortlist": {
-       "k": 2,
-       "n": 2,
-       "rate": 1.0,
-       "ci95": [
-        0.34237195288961925,
-        1.0
-       ]
-      }
-     },
-     "buried:zertifikate": {
-      "recall@10": {
-       "k": 1,
        "n": 3,
-       "rate": 0.3333333333333333,
+       "rate": 0.0,
        "ci95": [
-        0.0614903152761605,
-        0.7923450448735121
+        0.0,
+        0.5615060804490177
        ]
       },
       "recall@20": {
@@ -17066,6 +18304,151 @@
        "rate": 1.0,
        "ci95": [
         0.43849391955098227,
+        1.0
+       ]
+      }
+     },
+     "buried:erfahrung": {
+      "recall@10": {
+       "k": 0,
+       "n": 3,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.5615060804490177
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 3,
+       "rate": 0.3333333333333333,
+       "ci95": [
+        0.0614903152761605,
+        0.7923450448735121
+       ]
+      },
+      "in_shortlist": {
+       "k": 3,
+       "n": 3,
+       "rate": 1.0,
+       "ci95": [
+        0.43849391955098227,
+        1.0
+       ]
+      }
+     },
+     "buried:fuehrerschein": {
+      "recall@10": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "recall@20": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "recall@20": {
+       "k": 0,
+       "n": 1,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.7934567085261071
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:schicht": {
+      "recall@10": {
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
+       "ci95": [
+        0.09452865480086614,
+        0.9054713451991339
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
+       "ci95": [
+        0.09452865480086614,
+        0.9054713451991339
+       ]
+      },
+      "in_shortlist": {
+       "k": 2,
+       "n": 2,
+       "rate": 1.0,
+       "ci95": [
+        0.34237195288961925,
+        1.0
+       ]
+      }
+     },
+     "buried:zertifikate": {
+      "recall@10": {
+       "k": 0,
+       "n": 2,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.6576280471103807
+       ]
+      },
+      "recall@20": {
+       "k": 0,
+       "n": 2,
+       "rate": 0.0,
+       "ci95": [
+        0.0,
+        0.6576280471103807
+       ]
+      },
+      "in_shortlist": {
+       "k": 2,
+       "n": 2,
+       "rate": 1.0,
+       "ci95": [
+        0.34237195288961925,
         1.0
        ]
       }
@@ -17339,6 +18722,8 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
@@ -17435,7 +18820,7 @@
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 0,
      "n": 300,
      "rate": 0.0,
@@ -17444,7 +18829,25 @@
       0.012643429997735661
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
+     "k": 0,
+     "n": 150,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.02497113914571871
+     ]
+    },
+    "own_list_flips_on_swap": {
+     "k": 0,
+     "n": 300,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.012643429997735661
+     ]
+    },
+    "own_list_flips_on_repeat": {
      "k": 0,
      "n": 150,
      "rate": 0.0,
@@ -17455,7 +18858,7 @@
     },
     "mean_rank_shift_on_swap": 0.0,
     "mean_rank_shift_on_repeat": 0.0,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 0,
       "n": 80,
@@ -17514,16 +18917,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -17658,6 +19061,51 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 399,
@@ -17919,11 +19367,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -18060,6 +19508,54 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
        "right": 399,
@@ -18337,14 +19833,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -18594,6 +20090,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 397,
@@ -19270,6 +20858,138 @@
       "p0393": 49,
       "p0189": 50
      },
+     "base_yes": [
+      "p0045",
+      "p0370",
+      "p0241",
+      "p0400",
+      "p0316",
+      "p0331",
+      "p0355",
+      "p0038",
+      "p0097",
+      "p0098",
+      "p0346",
+      "p0243",
+      "p0163",
+      "p0328",
+      "p0131",
+      "p0374",
+      "p0084",
+      "p0125",
+      "p0307",
+      "p0352",
+      "p0075",
+      "p0203",
+      "p0268",
+      "p0047",
+      "p0182",
+      "p0299",
+      "p0332",
+      "p0282",
+      "p0012",
+      "p0302"
+     ],
+     "repeats_yes": [
+      [
+       "p0045",
+       "p0370",
+       "p0241",
+       "p0400",
+       "p0316",
+       "p0331",
+       "p0355",
+       "p0038",
+       "p0097",
+       "p0098",
+       "p0346",
+       "p0243",
+       "p0163",
+       "p0328",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0125",
+       "p0307",
+       "p0352",
+       "p0075",
+       "p0203",
+       "p0268",
+       "p0047",
+       "p0182",
+       "p0299",
+       "p0332",
+       "p0282",
+       "p0012",
+       "p0302"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0045",
+       "p0370",
+       "p0241",
+       "p0400",
+       "p0316",
+       "p0331",
+       "p0355",
+       "p0038",
+       "p0097",
+       "p0098",
+       "p0346",
+       "p0243",
+       "p0163",
+       "p0328",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0125",
+       "p0307",
+       "p0352",
+       "p0075",
+       "p0203",
+       "p0268",
+       "p0047",
+       "p0182",
+       "p0299",
+       "p0332",
+       "p0282",
+       "p0012",
+       "p0302"
+      ],
+      [
+       "p0045",
+       "p0370",
+       "p0241",
+       "p0400",
+       "p0316",
+       "p0331",
+       "p0355",
+       "p0038",
+       "p0097",
+       "p0098",
+       "p0346",
+       "p0243",
+       "p0163",
+       "p0328",
+       "p0131",
+       "p0374",
+       "p0084",
+       "p0125",
+       "p0307",
+       "p0352",
+       "p0075",
+       "p0203",
+       "p0268",
+       "p0047",
+       "p0182",
+       "p0299",
+       "p0332",
+       "p0282",
+       "p0012",
+       "p0302"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0012": "tr",
@@ -19801,6 +21521,134 @@
       "p0252": 49,
       "p0289": 50
      },
+     "base_yes": [
+      "p0361",
+      "p0336",
+      "p0359",
+      "p0105",
+      "p0025",
+      "p0303",
+      "p0329",
+      "p0306",
+      "p0213",
+      "p0285",
+      "p0351",
+      "p0390",
+      "p0151",
+      "p0164",
+      "p0030",
+      "p0276",
+      "p0140",
+      "p0103",
+      "p0220",
+      "p0035",
+      "p0018",
+      "p0211",
+      "p0142",
+      "p0031",
+      "p0244",
+      "p0287",
+      "p0240",
+      "p0076",
+      "p0061"
+     ],
+     "repeats_yes": [
+      [
+       "p0361",
+       "p0336",
+       "p0359",
+       "p0105",
+       "p0025",
+       "p0303",
+       "p0329",
+       "p0306",
+       "p0213",
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0164",
+       "p0030",
+       "p0276",
+       "p0140",
+       "p0103",
+       "p0220",
+       "p0035",
+       "p0018",
+       "p0211",
+       "p0142",
+       "p0031",
+       "p0244",
+       "p0287",
+       "p0240",
+       "p0076",
+       "p0061"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0361",
+       "p0336",
+       "p0359",
+       "p0105",
+       "p0025",
+       "p0303",
+       "p0329",
+       "p0306",
+       "p0213",
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0164",
+       "p0030",
+       "p0276",
+       "p0140",
+       "p0103",
+       "p0220",
+       "p0035",
+       "p0018",
+       "p0211",
+       "p0142",
+       "p0031",
+       "p0244",
+       "p0287",
+       "p0240",
+       "p0076",
+       "p0061"
+      ],
+      [
+       "p0361",
+       "p0336",
+       "p0359",
+       "p0105",
+       "p0025",
+       "p0303",
+       "p0329",
+       "p0306",
+       "p0213",
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0151",
+       "p0164",
+       "p0030",
+       "p0276",
+       "p0140",
+       "p0103",
+       "p0220",
+       "p0035",
+       "p0018",
+       "p0211",
+       "p0142",
+       "p0031",
+       "p0244",
+       "p0287",
+       "p0240",
+       "p0076",
+       "p0061"
+      ]
+     ],
      "base_origin": {
       "p0012": "tr",
       "p0018": "ua",
@@ -20332,6 +22180,218 @@
       "p0181": 49,
       "p0104": 50
      },
+     "base_yes": [
+      "p0341",
+      "p0382",
+      "p0051",
+      "p0177",
+      "p0264",
+      "p0337",
+      "p0377",
+      "p0307",
+      "p0223",
+      "p0383",
+      "p0187",
+      "p0400",
+      "p0088",
+      "p0252",
+      "p0034",
+      "p0002",
+      "p0352",
+      "p0171",
+      "p0232",
+      "p0019",
+      "p0038",
+      "p0136",
+      "p0098",
+      "p0332",
+      "p0045",
+      "p0026",
+      "p0248",
+      "p0237",
+      "p0087",
+      "p0125",
+      "p0282",
+      "p0132",
+      "p0135",
+      "p0215",
+      "p0089",
+      "p0335",
+      "p0080",
+      "p0370",
+      "p0350",
+      "p0049",
+      "p0069",
+      "p0100",
+      "p0353",
+      "p0317",
+      "p0012",
+      "p0189",
+      "p0139",
+      "p0155",
+      "p0181",
+      "p0104"
+     ],
+     "repeats_yes": [
+      [
+       "p0341",
+       "p0382",
+       "p0051",
+       "p0177",
+       "p0264",
+       "p0337",
+       "p0377",
+       "p0307",
+       "p0223",
+       "p0383",
+       "p0187",
+       "p0400",
+       "p0088",
+       "p0252",
+       "p0034",
+       "p0002",
+       "p0352",
+       "p0171",
+       "p0232",
+       "p0019",
+       "p0038",
+       "p0136",
+       "p0098",
+       "p0332",
+       "p0045",
+       "p0026",
+       "p0248",
+       "p0237",
+       "p0087",
+       "p0125",
+       "p0282",
+       "p0132",
+       "p0135",
+       "p0215",
+       "p0089",
+       "p0335",
+       "p0080",
+       "p0370",
+       "p0350",
+       "p0049",
+       "p0069",
+       "p0100",
+       "p0353",
+       "p0317",
+       "p0012",
+       "p0189",
+       "p0139",
+       "p0155",
+       "p0181",
+       "p0104"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0341",
+       "p0382",
+       "p0051",
+       "p0177",
+       "p0264",
+       "p0337",
+       "p0377",
+       "p0307",
+       "p0223",
+       "p0383",
+       "p0187",
+       "p0400",
+       "p0088",
+       "p0252",
+       "p0034",
+       "p0002",
+       "p0352",
+       "p0171",
+       "p0232",
+       "p0019",
+       "p0038",
+       "p0136",
+       "p0098",
+       "p0332",
+       "p0045",
+       "p0026",
+       "p0248",
+       "p0237",
+       "p0087",
+       "p0125",
+       "p0282",
+       "p0132",
+       "p0135",
+       "p0215",
+       "p0089",
+       "p0335",
+       "p0080",
+       "p0370",
+       "p0350",
+       "p0049",
+       "p0069",
+       "p0100",
+       "p0353",
+       "p0317",
+       "p0012",
+       "p0189",
+       "p0139",
+       "p0155",
+       "p0181",
+       "p0104"
+      ],
+      [
+       "p0341",
+       "p0382",
+       "p0051",
+       "p0177",
+       "p0264",
+       "p0337",
+       "p0377",
+       "p0307",
+       "p0223",
+       "p0383",
+       "p0187",
+       "p0400",
+       "p0088",
+       "p0252",
+       "p0034",
+       "p0002",
+       "p0352",
+       "p0171",
+       "p0232",
+       "p0019",
+       "p0038",
+       "p0136",
+       "p0098",
+       "p0332",
+       "p0045",
+       "p0026",
+       "p0248",
+       "p0237",
+       "p0087",
+       "p0125",
+       "p0282",
+       "p0132",
+       "p0135",
+       "p0215",
+       "p0089",
+       "p0335",
+       "p0080",
+       "p0370",
+       "p0350",
+       "p0049",
+       "p0069",
+       "p0100",
+       "p0353",
+       "p0317",
+       "p0012",
+       "p0189",
+       "p0139",
+       "p0155",
+       "p0181",
+       "p0104"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0012": "tr",
@@ -23463,63 +25523,121 @@
     "by_case_detail": {
      "buried:beruf": {
       "recall@10": {
-       "k": 5,
-       "n": 5,
-       "rate": 1.0,
+       "k": 2,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.5655085052479191,
-        1.0
+        0.2076549551264879,
+        0.9385096847238394
        ]
       },
       "recall@20": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 5,
-       "n": 5,
-       "rate": 1.0,
+       "k": 2,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.5655085052479191,
-        1.0
+        0.2076549551264879,
+        0.9385096847238394
        ]
       }
      },
      "buried:erfahrung": {
       "recall@10": {
        "k": 2,
-       "n": 2,
-       "rate": 1.0,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.34237195288961925,
-        1.0
+        0.2076549551264879,
+        0.9385096847238394
        ]
       },
       "recall@20": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
        "k": 2,
-       "n": 2,
-       "rate": 1.0,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.34237195288961925,
-        1.0
+        0.2076549551264879,
+        0.9385096847238394
        ]
       }
      },
      "buried:fuehrerschein": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:schicht": {
       "recall@10": {
        "k": 2,
        "n": 2,
@@ -23550,30 +25668,30 @@
      },
      "buried:zertifikate": {
       "recall@10": {
-       "k": 1,
-       "n": 3,
-       "rate": 0.3333333333333333,
+       "k": 2,
+       "n": 2,
+       "rate": 1.0,
        "ci95": [
-        0.0614903152761605,
-        0.7923450448735121
+        0.34237195288961925,
+        1.0
        ]
       },
       "recall@20": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 1,
-       "n": 3,
-       "rate": 0.3333333333333333,
+       "k": 2,
+       "n": 2,
+       "rate": 1.0,
        "ci95": [
-        0.0614903152761605,
-        0.7923450448735121
+        0.34237195288961925,
+        1.0
        ]
       }
      },
@@ -23846,6 +25964,8 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
@@ -23942,7 +26062,7 @@
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 38,
      "n": 300,
      "rate": 0.12666666666666668,
@@ -23951,7 +26071,25 @@
       0.16908203594800147
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
+     "k": 0,
+     "n": 150,
+     "rate": 0.0,
+     "ci95": [
+      0.0,
+      0.02497113914571871
+     ]
+    },
+    "own_list_flips_on_swap": {
+     "k": 48,
+     "n": 300,
+     "rate": 0.16,
+     "ci95": [
+      0.12285294152977377,
+      0.20574459086868646
+     ]
+    },
+    "own_list_flips_on_repeat": {
      "k": 0,
      "n": 150,
      "rate": 0.0,
@@ -23962,7 +26100,7 @@
     },
     "mean_rank_shift_on_swap": 10.6,
     "mean_rank_shift_on_repeat": 0.0,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 10,
       "n": 63,
@@ -24021,16 +26159,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -24145,6 +26283,51 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -24177,7 +26360,7 @@
        "vacancy": "eb-paderborn",
        "id": "p0047",
        "rank": 12,
-       "case": "buried:zertifikate",
+       "case": "buried:erfahrung",
        "title": "Elektroniker für Betriebstechnik",
        "stage": "offline",
        "matcher_note": "",
@@ -24188,7 +26371,7 @@
        "id": "p0332",
        "rank": 14,
        "case": "synonym",
-       "title": "Elektroniker FR Betriebstechnik",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -24233,11 +26416,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -24355,6 +26538,54 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -24377,8 +26608,8 @@
        "vacancy": "cnc-guetersloh",
        "id": "p0151",
        "rank": 11,
-       "case": "buried:zertifikate",
-       "title": "Industriemechaniker",
+       "case": "buried:beruf",
+       "title": "k. A.",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -24426,14 +26657,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -24639,6 +26870,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -24662,7 +26985,7 @@
        "id": "p0034",
        "rank": 11,
        "case": "synonym",
-       "title": "Betriebselektroniker",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -24682,7 +27005,7 @@
        "id": "p0012",
        "rank": 22,
        "case": "synonym",
-       "title": "Mechatroniker/in IHK",
+       "title": "Mechatr.",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -24830,6 +27153,56 @@
       "p0191": 49,
       "p0200": 50
      },
+     "base_yes": [
+      "p0370",
+      "p0241",
+      "p0331",
+      "p0355",
+      "p0097",
+      "p0374",
+      "p0084",
+      "p0307",
+      "p0182",
+      "p0282"
+     ],
+     "repeats_yes": [
+      [
+       "p0370",
+       "p0241",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0374",
+       "p0084",
+       "p0307",
+       "p0182",
+       "p0282"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0097",
+       "p0374",
+       "p0084",
+       "p0182",
+       "p0282",
+       "p0131",
+       "p0047",
+       "p0332",
+       "p0302"
+      ],
+      [
+       "p0370",
+       "p0331",
+       "p0355",
+       "p0097",
+       "p0374",
+       "p0307",
+       "p0131",
+       "p0047",
+       "p0332"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0023": "de",
@@ -25361,6 +27734,50 @@
       "p0165": 49,
       "p0204": 50
      },
+     "base_yes": [
+      "p0285",
+      "p0351",
+      "p0390",
+      "p0030",
+      "p0035",
+      "p0018",
+      "p0244",
+      "p0287",
+      "p0076",
+      "p0061"
+     ],
+     "repeats_yes": [
+      [
+       "p0285",
+       "p0351",
+       "p0390",
+       "p0030",
+       "p0035",
+       "p0018",
+       "p0244",
+       "p0287",
+       "p0076",
+       "p0061"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0351",
+       "p0390",
+       "p0030",
+       "p0287",
+       "p0076",
+       "p0151",
+       "p0142"
+      ],
+      [
+       "p0035",
+       "p0018",
+       "p0076",
+       "p0151",
+       "p0142"
+      ]
+     ],
      "base_origin": {
       "p0001": "de",
       "p0003": "ua",
@@ -25892,6 +28309,50 @@
       "p0082": 49,
       "p0171": 50
      },
+     "base_yes": [
+      "p0051",
+      "p0307",
+      "p0045",
+      "p0237",
+      "p0080",
+      "p0370",
+      "p0100",
+      "p0353",
+      "p0155",
+      "p0104"
+     ],
+     "repeats_yes": [
+      [
+       "p0051",
+       "p0307",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0100",
+       "p0353",
+       "p0155",
+       "p0104"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0080",
+       "p0100",
+       "p0131"
+      ],
+      [
+       "p0051",
+       "p0307",
+       "p0045",
+       "p0237",
+       "p0080",
+       "p0370",
+       "p0034",
+       "p0012",
+       "p0131"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0009": "de",
@@ -29023,63 +31484,121 @@
     "by_case_detail": {
      "buried:beruf": {
       "recall@10": {
-       "k": 4,
-       "n": 5,
-       "rate": 0.8,
+       "k": 3,
+       "n": 3,
+       "rate": 1.0,
        "ci95": [
-        0.3755282641185388,
-        0.9637768390302125
+        0.43849391955098227,
+        1.0
        ]
       },
       "recall@20": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 5,
-       "n": 5,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.5655085052479191,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:erfahrung": {
       "recall@10": {
-       "k": 1,
-       "n": 2,
-       "rate": 0.5,
+       "k": 2,
+       "n": 3,
+       "rate": 0.6666666666666666,
        "ci95": [
-        0.09452865480086614,
-        0.9054713451991339
+        0.2076549551264879,
+        0.9385096847238394
        ]
       },
       "recall@20": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 2,
-       "n": 2,
+       "k": 3,
+       "n": 3,
        "rate": 1.0,
        "ci95": [
-        0.34237195288961925,
+        0.43849391955098227,
         1.0
        ]
       }
      },
      "buried:fuehrerschein": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:rufbereitschaft": {
+      "recall@10": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "recall@20": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      },
+      "in_shortlist": {
+       "k": 1,
+       "n": 1,
+       "rate": 1.0,
+       "ci95": [
+        0.20654329147389294,
+        1.0
+       ]
+      }
+     },
+     "buried:schicht": {
       "recall@10": {
        "k": 2,
        "n": 2,
@@ -29110,29 +31629,29 @@
      },
      "buried:zertifikate": {
       "recall@10": {
-       "k": 3,
-       "n": 3,
-       "rate": 1.0,
+       "k": 1,
+       "n": 2,
+       "rate": 0.5,
        "ci95": [
-        0.43849391955098227,
-        1.0
+        0.09452865480086614,
+        0.9054713451991339
        ]
       },
       "recall@20": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       },
       "in_shortlist": {
-       "k": 3,
-       "n": 3,
+       "k": 2,
+       "n": 2,
        "rate": 1.0,
        "ci95": [
-        0.43849391955098227,
+        0.34237195288961925,
         1.0
        ]
       }
@@ -29406,6 +31925,8 @@
       }
      }
     },
+    "near_planted": 30,
+    "fit_profiles": 37,
     "must_reading": {
      "beruf": {
       "right": {
@@ -29502,7 +32023,7 @@
    },
    "fairness": {
     "profiles_tested": 150,
-    "shortlist_flips_on_swap": {
+    "top10_flips_on_swap": {
      "k": 36,
      "n": 300,
      "rate": 0.12,
@@ -29511,7 +32032,7 @@
       0.16165866816614016
      ]
     },
-    "shortlist_flips_on_repeat": {
+    "top10_flips_on_repeat": {
      "k": 18,
      "n": 150,
      "rate": 0.12,
@@ -29520,9 +32041,27 @@
       0.18170966135395242
      ]
     },
+    "own_list_flips_on_swap": {
+     "k": 24,
+     "n": 300,
+     "rate": 0.08,
+     "ci95": [
+      0.05434646978454494,
+      0.11627401141355304
+     ]
+    },
+    "own_list_flips_on_repeat": {
+     "k": 10,
+     "n": 150,
+     "rate": 0.06666666666666667,
+     "ci95": [
+      0.03661146073480972,
+      0.11836352652481316
+     ]
+    },
     "mean_rank_shift_on_swap": 14.03,
     "mean_rank_shift_on_repeat": 14.17,
-    "lost_shortlist_place": {
+    "lost_top10_place": {
      "ar": {
       "k": 3,
       "n": 83,
@@ -29581,16 +32120,16 @@
     {
      "vacancy": "eb-paderborn",
      "fits": {
-      "p0047": "buried:zertifikate",
+      "p0047": "buried:erfahrung",
       "p0084": "buried:beruf",
       "p0097": "plain",
       "p0131": "plain",
       "p0182": "synonym",
       "p0241": "synonym",
-      "p0282": "buried:erfahrung",
+      "p0282": "buried:zertifikate",
       "p0302": "plain",
       "p0307": "synonym",
-      "p0331": "buried:zertifikate",
+      "p0331": "buried:schicht",
       "p0332": "synonym",
       "p0355": "plain",
       "p0370": "synonym",
@@ -29709,6 +32248,51 @@
       "p0370": "offline",
       "p0374": "offline"
      },
+     "near_stages": {
+      "p0012": "offline",
+      "p0034": "offline",
+      "p0038": "offline",
+      "p0045": "offline",
+      "p0075": "offline",
+      "p0080": "offline",
+      "p0090": "offline",
+      "p0092": "offline",
+      "p0098": "offline",
+      "p0125": "offline",
+      "p0141": "offline",
+      "p0147": "offline",
+      "p0163": "offline",
+      "p0203": "offline",
+      "p0215": "offline",
+      "p0232": "offline",
+      "p0243": "offline",
+      "p0248": "offline",
+      "p0268": "offline",
+      "p0283": "offline",
+      "p0298": "offline",
+      "p0299": "offline",
+      "p0316": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0345": "offline",
+      "p0346": "offline",
+      "p0352": "offline",
+      "p0363": "offline",
+      "p0395": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0045",
+      "p0090",
+      "p0092",
+      "p0098",
+      "p0125",
+      "p0268",
+      "p0283",
+      "p0325",
+      "p0345",
+      "p0395"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -29756,11 +32340,11 @@
      "fits": {
       "p0018": "plain",
       "p0030": "synonym",
-      "p0035": "buried:beruf",
-      "p0061": "buried:beruf",
-      "p0076": "buried:erfahrung",
+      "p0035": "buried:erfahrung",
+      "p0061": "buried:schicht",
+      "p0076": "buried:zertifikate",
       "p0142": "plain",
-      "p0151": "buried:zertifikate",
+      "p0151": "buried:beruf",
       "p0244": "synonym",
       "p0285": "synonym",
       "p0287": "synonym",
@@ -29881,6 +32465,54 @@
       "p0351": "offline",
       "p0390": "offline"
      },
+     "near_stages": {
+      "p0003": "offline",
+      "p0025": "offline",
+      "p0031": "offline",
+      "p0056": "offline",
+      "p0103": "offline",
+      "p0105": "offline",
+      "p0115": "offline",
+      "p0118": "offline",
+      "p0140": "offline",
+      "p0152": "offline",
+      "p0164": "offline",
+      "p0167": "offline",
+      "p0204": "offline",
+      "p0210": "offline",
+      "p0211": "offline",
+      "p0213": "offline",
+      "p0220": "offline",
+      "p0231": "offline",
+      "p0236": "offline",
+      "p0240": "offline",
+      "p0275": "offline",
+      "p0276": "offline",
+      "p0280": "offline",
+      "p0295": "offline",
+      "p0303": "offline",
+      "p0305": "offline",
+      "p0306": "offline",
+      "p0312": "offline",
+      "p0329": "offline",
+      "p0336": "offline",
+      "p0358": "offline",
+      "p0359": "offline",
+      "p0361": "offline",
+      "p0381": "offline"
+     },
+     "near_planted": [
+      "p0056",
+      "p0105",
+      "p0118",
+      "p0140",
+      "p0152",
+      "p0204",
+      "p0210",
+      "p0211",
+      "p0276",
+      "p0361"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -29943,14 +32575,14 @@
       "p0045": "plain",
       "p0051": "plain",
       "p0080": "synonym",
-      "p0100": "buried:beruf",
-      "p0104": "buried:beruf",
+      "p0100": "buried:rufbereitschaft",
+      "p0104": "buried:erfahrung",
       "p0131": "plain",
       "p0155": "buried:fuehrerschein",
       "p0237": "plain",
       "p0307": "synonym",
       "p0352": "plain",
-      "p0353": "buried:fuehrerschein",
+      "p0353": "buried:beruf",
       "p0370": "synonym"
      },
      "near": {
@@ -30166,6 +32798,98 @@
       "p0353": "offline",
       "p0370": "offline"
      },
+     "near_stages": {
+      "p0002": "offline",
+      "p0014": "offline",
+      "p0019": "offline",
+      "p0022": "offline",
+      "p0023": "offline",
+      "p0026": "offline",
+      "p0036": "offline",
+      "p0038": "offline",
+      "p0043": "offline",
+      "p0044": "offline",
+      "p0047": "offline",
+      "p0049": "offline",
+      "p0054": "offline",
+      "p0069": "offline",
+      "p0078": "offline",
+      "p0084": "offline",
+      "p0085": "offline",
+      "p0087": "offline",
+      "p0088": "offline",
+      "p0089": "offline",
+      "p0095": "offline",
+      "p0097": "offline",
+      "p0098": "offline",
+      "p0114": "offline",
+      "p0120": "offline",
+      "p0125": "offline",
+      "p0126": "offline",
+      "p0128": "offline",
+      "p0132": "offline",
+      "p0135": "offline",
+      "p0136": "offline",
+      "p0139": "offline",
+      "p0141": "offline",
+      "p0150": "offline",
+      "p0161": "offline",
+      "p0163": "offline",
+      "p0165": "offline",
+      "p0171": "offline",
+      "p0175": "offline",
+      "p0177": "offline",
+      "p0181": "offline",
+      "p0187": "offline",
+      "p0189": "offline",
+      "p0203": "offline",
+      "p0212": "offline",
+      "p0215": "offline",
+      "p0223": "offline",
+      "p0229": "offline",
+      "p0230": "offline",
+      "p0232": "offline",
+      "p0241": "offline",
+      "p0243": "offline",
+      "p0247": "offline",
+      "p0248": "offline",
+      "p0251": "offline",
+      "p0252": "offline",
+      "p0264": "offline",
+      "p0269": "offline",
+      "p0270": "offline",
+      "p0282": "offline",
+      "p0290": "offline",
+      "p0294": "offline",
+      "p0298": "offline",
+      "p0316": "offline",
+      "p0317": "offline",
+      "p0325": "offline",
+      "p0328": "offline",
+      "p0332": "offline",
+      "p0335": "offline",
+      "p0337": "offline",
+      "p0341": "offline",
+      "p0350": "offline",
+      "p0377": "offline",
+      "p0382": "offline",
+      "p0383": "offline",
+      "p0395": "offline",
+      "p0399": "offline",
+      "p0400": "offline"
+     },
+     "near_planted": [
+      "p0026",
+      "p0044",
+      "p0087",
+      "p0181",
+      "p0187",
+      "p0232",
+      "p0248",
+      "p0264",
+      "p0298",
+      "p0341"
+     ],
      "reading": {
       "beruf": {
        "right": 400
@@ -30189,7 +32913,7 @@
        "id": "p0080",
        "rank": 21,
        "case": "synonym",
-       "title": "Servicetechniker Mechatronik",
+       "title": "Mechatroniker/-in",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -30405,6 +33129,72 @@
       "p0231": 49,
       "p0039": 50
      },
+     "base_yes": [
+      "p0374",
+      "p0307",
+      "p0302",
+      "p0084",
+      "p0331",
+      "p0047",
+      "p0332",
+      "p0097",
+      "p0131",
+      "p0182",
+      "p0355",
+      "p0241",
+      "p0282",
+      "p0370"
+     ],
+     "repeats_yes": [
+      [
+       "p0374",
+       "p0307",
+       "p0302",
+       "p0084",
+       "p0331",
+       "p0047",
+       "p0332",
+       "p0097",
+       "p0131",
+       "p0182",
+       "p0355",
+       "p0241",
+       "p0282",
+       "p0370"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0302",
+       "p0084",
+       "p0331",
+       "p0047",
+       "p0332",
+       "p0097",
+       "p0131",
+       "p0182",
+       "p0355",
+       "p0241",
+       "p0282",
+       "p0370",
+       "p0038"
+      ],
+      [
+       "p0374",
+       "p0307",
+       "p0302",
+       "p0084",
+       "p0331",
+       "p0047",
+       "p0332",
+       "p0097",
+       "p0131",
+       "p0355",
+       "p0241",
+       "p0282",
+       "p0370"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0031": "ar",
@@ -30936,6 +33726,67 @@
       "p0336": 49,
       "p0023": 50
      },
+     "base_yes": [
+      "p0285",
+      "p0390",
+      "p0061",
+      "p0287",
+      "p0018",
+      "p0351",
+      "p0244",
+      "p0076",
+      "p0151",
+      "p0142",
+      "p0035",
+      "p0030",
+      "p0306"
+     ],
+     "repeats_yes": [
+      [
+       "p0285",
+       "p0390",
+       "p0061",
+       "p0287",
+       "p0018",
+       "p0351",
+       "p0244",
+       "p0076",
+       "p0151",
+       "p0142",
+       "p0035",
+       "p0030"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0285",
+       "p0390",
+       "p0061",
+       "p0287",
+       "p0018",
+       "p0351",
+       "p0244",
+       "p0076",
+       "p0151",
+       "p0142",
+       "p0035",
+       "p0030"
+      ],
+      [
+       "p0285",
+       "p0390",
+       "p0061",
+       "p0287",
+       "p0018",
+       "p0351",
+       "p0244",
+       "p0076",
+       "p0151",
+       "p0142",
+       "p0035",
+       "p0030"
+      ]
+     ],
      "base_origin": {
       "p0001": "de",
       "p0003": "ua",
@@ -31467,6 +34318,83 @@
       "p0113": 49,
       "p0002": 50
      },
+     "base_yes": [
+      "p0352",
+      "p0100",
+      "p0051",
+      "p0353",
+      "p0045",
+      "p0131",
+      "p0104",
+      "p0155",
+      "p0307",
+      "p0370",
+      "p0012",
+      "p0034",
+      "p0237",
+      "p0377",
+      "p0036",
+      "p0392",
+      "p0023",
+      "p0230",
+      "p0079",
+      "p0283"
+     ],
+     "repeats_yes": [
+      [
+       "p0352",
+       "p0100",
+       "p0051",
+       "p0353",
+       "p0045",
+       "p0131",
+       "p0104",
+       "p0155",
+       "p0307",
+       "p0370",
+       "p0034",
+       "p0237",
+       "p0392",
+       "p0080",
+       "p0171"
+      ]
+     ],
+     "swaps_yes": [
+      [
+       "p0352",
+       "p0100",
+       "p0051",
+       "p0353",
+       "p0045",
+       "p0131",
+       "p0104",
+       "p0155",
+       "p0307",
+       "p0370",
+       "p0012",
+       "p0034",
+       "p0237",
+       "p0036",
+       "p0080",
+       "p0203",
+       "p0113"
+      ],
+      [
+       "p0352",
+       "p0100",
+       "p0051",
+       "p0353",
+       "p0045",
+       "p0131",
+       "p0155",
+       "p0307",
+       "p0370",
+       "p0012",
+       "p0034",
+       "p0237",
+       "p0080"
+      ]
+     ],
      "base_origin": {
       "p0002": "de",
       "p0006": "de",

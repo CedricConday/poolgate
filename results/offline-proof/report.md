@@ -2,7 +2,7 @@
 
 Offline stand-in, pool of 400, seed 7. One fault at a time.
 
-| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | Near-misses in top 10 | Flips on swap | Flips on repeat | Lost a shortlist place |
+| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | Near-misses in top 10 | Top-10 flips on swap | on repeat | Lost a top-10 place |
 |---|---|---|---|---|---|---|---|
 | none | 100% [91–100] | 100% [78–100] | 100% [76–100] | 0% [0–3] | 0% [0–1] | 0% [0–2] | nobody |
 | misses synonym fits (p=0.5) | 85% [71–93] | 43% [21–67] | 100% [76–100] | 0% [0–3] | 0% [0–1] | 0% [0–2] | nobody |
