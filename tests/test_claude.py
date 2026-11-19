@@ -146,7 +146,7 @@ def test_http_matcher_round_trip(pool):
     seen = {}
 
     class Handler(BaseHTTPRequestHandler):
-        def do_POST(self):  # noqa: N802
+        def do_POST(self):
             body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
             seen["n"] = len(body["profiles"])
             seen["vacancy"] = body["vacancy"]["key"]

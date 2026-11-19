@@ -83,7 +83,7 @@ def _matchers(args, pool, log):
 
 
 def cmd_run(args) -> int:
-    log = lambda msg: print(f"[poolgate] {msg}", file=sys.stderr, flush=True)  # noqa: E731
+    log = lambda msg: print(f"[poolgate] {msg}", file=sys.stderr, flush=True)
     pool = make_pool(args.n, args.seed)
     matchers, usage = _matchers(args, pool, log)
     out = args.out or Path("results") / f"run-{time.strftime('%Y%m%d-%H%M%S')}"
@@ -149,8 +149,8 @@ def cmd_proof(args) -> int:
     table = "\n".join([
         f"Offline stand-in, pool of {args.n}, seed {args.seed}. One fault at a time.",
         "",
-        "| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | "
-        "Near-misses in top 10 | Flips on swap | Flips on repeat | Lost a shortlist place |",
+        ("| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | "
+        "Near-misses in top 10 | Flips on swap | Flips on repeat | Lost a shortlist place |"),
         "|---|---|---|---|---|---|---|---|",
         *rows, ""])
     (out / "report.md").write_text("# poolgate offline proof\n\n" + table)

@@ -46,11 +46,11 @@ def render(result: dict, config: dict) -> str:
                    f"{s['plain']} / {s['synonym']} / {s['buried']} | {s['near']} |")
     errs = [(r["matcher"], e) for r in runs for e in r["errors"]]
     if errs:
-        out += ["", f"**{len(errs)} error(s); affected candidates are ranked after the scored "
-                "ones and the run is otherwise complete. See `errors` in `run.json`.**"]
+        out += ["", (f"**{len(errs)} error(s); affected candidates are ranked after the scored "
+                "ones and the run is otherwise complete. See `errors` in `run.json`.**")]
     out += ["", "## Headline", "",
-            "Brackets are 95% Wilson intervals. The shortlist is the matcher's own yes-list "
-            "where it gives one, else its top 10.", "",
+            ("Brackets are 95% Wilson intervals. The shortlist is the matcher's own yes-list "
+            "where it gives one, else its top 10."), "",
             "| Measure | " + " | ".join(f"`{n}`" for n in names) + " |",
             "|---|" + "---|" * len(names)]
     ceil = ms[0]["recall@10"]["ceiling"] if ms and ms[0] else 0
@@ -90,8 +90,8 @@ def render(result: dict, config: dict) -> str:
             if c in m.get("by_case_detail", {}) else "–" for m in ms]))
 
     out += ["", "## Near-misses let in", "",
-            "Profiles that fail exactly one must-have and look right otherwise, by the "
-            "must-have they fail: share that reached the top 10.", "",
+            ("Profiles that fail exactly one must-have and look right otherwise, by the "
+            "must-have they fail: share that reached the top 10."), "",
             "| Fails | " + " | ".join(f"`{n}`" for n in names) + " |",
             "|---|" + "---|" * len(names)]
     musts = sorted({k for m in ms for k in m.get("near_miss_by_must", {})},
@@ -106,8 +106,8 @@ def render(result: dict, config: dict) -> str:
         if not mr:
             continue
         out += ["", f"## How `{r['matcher']}` read the must-haves", "",
-                "Every judgement the matcher returned, against the rule applied to the hidden "
-                "facts. \"unklar\" counts as not right.", "",
+                ("Every judgement the matcher returned, against the rule applied to the hidden "
+                "facts. \"unklar\" counts as not right."), "",
                 "| Must-have | right | wrong | unklar |", "|---|---|---|---|"]
         for k, c in mr.items():
             out.append(f"| {MUST_LABEL[k]} | {pct(c['right'])} | {c['wrong']} | {c['unklar']} |")
@@ -117,8 +117,8 @@ def render(result: dict, config: dict) -> str:
         if not missed:
             continue
         out += ["", f"## Fits `{r['matcher']}` left off the shortlist ({len(missed)})", "",
-                "| Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; "
-                "misread must-haves) |", "|---|---|---|---|---|---|"]
+                ("| Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; "
+                "misread must-haves) |"), "|---|---|---|---|---|---|"]
         for x in missed[:20]:
             mis = ", ".join(MUST_LABEL[m] for m in x["misread"])
             why = (x["matcher_note"] or "–").replace("|", "/")

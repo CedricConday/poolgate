@@ -308,7 +308,7 @@ def run_matcher(matcher, pool: Pool, ks=KS, fairness: bool = True, swaps: int = 
         per_v.append(evaluate_vacancy(pool, v, ranking, ks))
         progress(f"{matcher.name} {v.key}: ranked {len(ranking)}")
         if fairness:
-            rec, err = _guarded(lambda v=v: fairness_vacancy(matcher, pool, v, ranking, swaps,
+            rec, err = _guarded(lambda v=v, ranking=ranking: fairness_vacancy(matcher, pool, v, ranking, swaps,
                                                              repeats, seed, fair_top),
                                 f"{matcher.name}/{v.key}/fairness")
             if err:
