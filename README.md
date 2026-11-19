@@ -6,9 +6,9 @@ how many of the true fits reach the shortlist, which near-misses get in, who is
 missed and why, and whether the ranking moves when only the names change.
 
 Talent-pool products sell a large maintained pool plus an AI preselection that
-turns a vacancy into an interview-ready shortlist; ScaleUnit's Hire, for
-example, advertises "Über 40.000 aktiv gepflegte Profile" and "KI-gestützte
-Vorauswahl" for gewerblich-technische roles in the Mittelstand. The pool is
+turns a vacancy into an interview-ready shortlist, often for
+gewerblich-technische roles in the Mittelstand, with pools in the tens of
+thousands of profiles. The pool is
 only worth its size if matching finds the people in it. The candidates that
 are hard to find are the ones that cost a hire: a fit whose CV says
 "Energieelektroniker Betriebstechnik" instead of "Elektroniker für
