@@ -170,7 +170,9 @@ class Vacancy:
             "site_plz": geo.plz(self.site), "radius_km": self.radius_km,
             "trades": list(self.trades), "min_years": self.min_years,
             "certs_any": list(self.certs_any), "licence": self.licence, "shift": self.shift,
-            "on_call": self.on_call, "musts": list(self.musts()), "posting": self.posting(),
+            "on_call": self.on_call, "musts": list(self.musts()),
+            "must_text": dict(zip(self.musts(), self.must_text())), "nice": list(self.nice),
+            "posting": self.posting(),
         }
 
 
@@ -568,6 +570,8 @@ def swap_names(pool: Pool, seed: int) -> list[Profile]:
     for p in pool.profiles:
         others = [o for o in ORIGINS if o != p.identity.origin]
         new = random_identity(rng, rng.choice(others), p.identity.gender)
-        notes = re.sub(rf"\b{re.escape(p.identity.last)}\b", new.last, p.notes)
+        notes = re.sub(rf"\b{re.escape(p.identity.last)}\b",
+                       lambda m, n=new.last: n.lower() if m.group(0).islower() else n,
+                       p.notes, flags=re.IGNORECASE)
         out.append(replace(p, identity=new, notes=notes))
     return out

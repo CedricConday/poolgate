@@ -119,8 +119,9 @@ def evaluate_vacancy(pool: Pool, v: Vacancy, ranking: list[Ranked],
                        "stage": r.stage if r else "",
                        "matcher_note": r.note if r else "nicht zurückgegeben",
                        "misread": _wrong_musts(r, check(v, by_id[pid].facts))})
-    for r in ranking[:shortlist_k]:
-        if r.id in t["fits"]:
+    # The shortlist's wrong entries: the matcher's own yes-list, or its top k.
+    for r in ranking:
+        if r.id not in shortlist or r.id in t["fits"]:
             continue
         checks = check(v, by_id[r.id].facts)
         false_pos.append({"vacancy": v.key, "id": r.id, "rank": pos[r.id],

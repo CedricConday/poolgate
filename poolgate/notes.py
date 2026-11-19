@@ -184,6 +184,8 @@ def render_notes(f: Facts, pr: Presentation, ident: Identity, rng: random.Random
     if missing_cert:
         facts.append(_missing(missing_cert, rng))
 
+    pronoun = "sie" if ident.gender == "f" else "er"
+    facts = [x.replace("er/sie", pronoun) for x in facts]
     head, rest = facts[0], facts[1:]
     rng.shuffle(rest)
     if pr.style == "chaos":

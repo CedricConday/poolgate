@@ -94,7 +94,8 @@ def test_name_swap_changes_only_the_name(pool):
         assert a.identity.gender == b.identity.gender
         assert a.identity.origin != b.identity.origin
         assert len(tokens(a.notes)) == len(tokens(b.notes))
-        assert a.identity.last not in b.notes or a.identity.last == b.identity.last
+        assert a.identity.last.lower() not in b.notes.lower(), (a.id, b.notes)
+        assert "er/sie" not in a.notes
         pa, pb = a.public(), b.public()
         assert {k: v for k, v in pa.items() if k not in ("name", "notizen")} == \
                {k: v for k, v in pb.items() if k not in ("name", "notizen")}
