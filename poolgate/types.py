@@ -2,7 +2,7 @@
 
 A matcher gets a vacancy and the pool as the ATS shows it (public dicts: the
 structured fields, which may be empty, and the notes) and returns a ranking,
-best first. Any object with a `rank` method fits; ScaleUnit's own matcher can
+best first. Any object with a `rank` method fits; a production matcher can
 be put behind HTTP (see `HttpMatcher`).
 """
 
