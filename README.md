@@ -11,8 +11,8 @@ gewerblich-technische roles in the Mittelstand, with pools in the tens of
 thousands of profiles. The pool is
 only worth its size if matching finds the people in it. The candidates that
 are hard to find are the ones that cost a hire: a fit whose CV says
-"Energieelektroniker Betriebstechnik" instead of "Elektroniker für
-Betriebstechnik", a fit whose shift willingness is in a phone note and not in
+"Energieelektroniker Fachrichtung Betriebstechnik" instead of
+"Elektroniker für Betriebstechnik", a fit whose shift willingness is in a phone note and not in
 the field, and the candidate who looks right but has no licence or lives 80 km
 away. None of this shows in a demo search. It shows in rates, over a pool whose
 true fits are known in advance. poolgate does not test any vendor's product; it
@@ -26,15 +26,21 @@ is the harness one would use to.
    licence, town, shift and on-call willingness, salary, availability, last
    contact. Per vacancy, 12 true fits are planted:
    - 4 **plain**: official trade name in the Beruf field, every fact in its field;
-   - 4 **synonym**: the Beruf field shows an old name, abbreviation or synonym
-     ("Energieelektroniker Betriebstechnik", "Zerspaner", "Betriebsschlosser");
-   - 4 **buried**: one must-have fact (trade, years, certificate, licence, shift
-     or on-call) is "k. A." in its field and stated only in the notes;
+   - 4 **synonym**: the Beruf field shows another name for the same
+     qualification: an official predecessor name with its year ("Betriebsschlosser
+     (bis 1987)", "Elektroinstallateur (bis 2003)"), the official long form, or a
+     common abbreviation of the official name ("Elektroniker BT"). Job titles
+     and unofficial names are not used;
+   - 4 **buried**: one must-have fact is "k. A." in its field and stated only in
+     the notes, one fit for each must-have other than distance (trade, years,
+     and per vacancy certificate, shift, licence or on-call);
 
    and 2 **near-misses** per must-have: profiles that meet every must-have but
    one (no licence, 80 km away, a Kfz-Mechatroniker for a Mechatroniker job,
    S7 never used, nights refused), with the failing fact usually in the notes.
    Background profiles that would fit are redrawn, so every true fit is known.
+   Certificate lists, in the field and in the notes, are declared complete: a
+   certificate not named is absent, not unknown.
 2. **Present.** Each profile is rendered as an ATS record: structured fields,
    some empty, and free-text notes in the way recruiters write them (call
    shorthand, CV snippets, abbreviations, typos in filler words).
@@ -48,15 +54,20 @@ is the harness one would use to.
    must-have, every missed fit is listed with the must-have it misread.
 5. **Swap.** The pool is ranked again unchanged (the chance baseline) and twice
    with every name swapped to another origin, same gender, the surname in the
-   notes included. Names are one token each, so the text keeps its length. A
-   shortlist flip rate above the repeat rate points at the name; per origin, the
-   gate counts who lost a shortlist place.
+   notes included. Names are one token each, so the text keeps its token count.
+   For the base run's top 50, the gate counts how often top-10 membership flips,
+   and, where the matcher gives one, membership of its own yes-list. A flip rate
+   above the repeat rate points at the name; per origin, the gate counts who lost
+   a top-10 place. Matchers that never read the name (`bm25`, `keyword`,
+   `field-filter`) score 0 here by construction.
 
 The three vacancies: Elektroniker für Betriebstechnik in Paderborn (3-Schicht,
 S7/TIA, 35 km), CNC-Fräser in Gütersloh (2-Schicht, Heidenhain, 30 km),
 Servicetechniker Sicherheitstechnik in Bielefeld (licence, on-call, 50 km).
-Fits planted for one vacancy sometimes fit another and count there too: 14, 12
-and 14 true fits. With more fits than places, recall@10 cannot exceed 75%.
+A profile planted for one vacancy, as a fit or as a near-miss, sometimes fits
+another and counts there too: 14, 12 and 14 true fits, 40 in all, on 37
+distinct profiles, so the fits are not fully independent. With more fits than
+places, recall@10 cannot exceed 75%.
 
 ## Matchers
 
@@ -78,7 +89,7 @@ An offline stand-in reads the hidden facts and has one knob per failure, so the
 gate can be shown to catch each one before it is pointed at a real matcher.
 Same pool, seed 7 ([report](results/offline-proof/report.md)):
 
-| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | Near-misses in top 10 | Flips on swap | Flips on repeat | Lost a shortlist place |
+| Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | Near-misses in top 10 | Top-10 flips on swap | on repeat | Lost a top-10 place |
 |---|---|---|---|---|---|---|---|
 | none | 100% | 100% | 100% | 0% | 0% | 0% | nobody |
 | misses synonym fits (p=0.5) | 85% | 43% | 100% | 0% | 0% | 0% | nobody |
@@ -100,17 +111,20 @@ through the claude CLI; keyword top 50 per vacancy, 10 candidates per call.
 
 | Measure | `keyword` | `field-filter` | `claude` |
 |---|---|---|---|
-| Recall@10 (ceiling 75%) | 45% [31–60] | 40% [26–55] | 75% [60–86] |
-| Recall@20 | 70% [55–82] | 42% [29–58] | 95% [83–99] |
-| Precision@10 | 60% [42–75] | 53% [36–70] | 100% [89–100] |
-| Shortlist precision | 60% (18/30) | 100% (14/14) | 100% (34/34) |
-| Shortlist recall | 45% (18/40) | 35% (14/40) | 85% (34/40) [71–93] |
-| Near-misses in top 10 | 9 of 143 | 7 of 143 | 0 of 143 |
-| Shortlist recall, synonym fits | 36% (5/14) | 0% (0/14) | 71% (10/14) |
-| Shortlist recall, buried fits | 25% (3/12) | 0% (0/12) | 83% (10/12) |
-| Shortlist flips on name swap / on repeat | 0% / 0% | 0% / 0% | 1% (2/300) / 4% (6/150) |
+| Recall@10 (ceiling 75%) | 40% [26–55] | 35% [22–50] | 75% [60–86] |
+| Recall@20 | 68% [52–80] | 48% [33–63] | 95% [83–99] |
+| Precision@10 | 53% [36–70] | 47% [30–64] | 100% [89–100] |
+| Shortlist precision | 53% (16/30, top 10) | 100% (14/14) | 100% (38/38) [91–100] |
+| Shortlist recall | 40% (16/40) | 35% (14/40) | 95% (38/40) [83–99] |
+| Near-misses in top 10 | 9 of 143 | 7 of 143 | 0 of 143 (47 reached the model, all rejected) |
+| Shortlist recall, synonym fits | 29% (4/14) | 0% (0/14) | 93% (13/14) |
+| Shortlist recall, buried fits | 17% (2/12) | 0% (0/12) | 92% (11/12) |
+| Top-10 flips on name swap / on repeat | 0% / 0% (by construction) | 0% / 0% (by construction) | 3% (8/300) / 4% (6/150) |
+| Own-list flips on name swap / on repeat | – | 0% / 0% | 0% (0/300) / 0% (0/150) |
 
-Pure BM25 without the field filter: recall@20 32%, shortlist recall 22%.
+Pure BM25 without the field filter: recall@20 32%, shortlist recall 15%. Of
+the 143 near-misses, 30 were planted look-alikes; 113 are background profiles
+that happen to fail exactly one must-have.
 
 What the numbers say, within their intervals:
 
@@ -118,24 +132,31 @@ What the numbers say, within their intervals:
   fit and no synonym or buried fit. Keyword search finds some of them, but
   ranks near-misses next to fits, because "kein Führerschein" contains
   "Führerschein".
-- The Claude reranker shortlisted 34 of 40 fits and no non-fit. It let in no
-  near-miss. Of its 750 must-have judgements none was wrong; 13 were
-  "unklar" (7 on the trade, 6 on the certificate).
-- Its 6 misses: 2 never reached it (keyword rank 92 and 100 for the
-  Bielefeld vacancy, which accepts four trades, so the keyword ranking spreads
-  thin). The other 4 sit on two Beruf titles, "Servicetechniker Mechatronik"
-  and "CNC-Fräser", which the pool treats as synonyms of a trade; Claude
-  answered "unklar" because both are job titles, not trade names. That is a
-  defensible reading, and a flaw in the synonym list rather than in the
-  matcher (see Limits). With "unklar" the reranker drops the candidate; a real
-  pipeline would send such a profile to a recruiter to check.
-- No name effect is visible: the swap flip rate (1%) is below the repeat
-  rate (4%), and no origin lost more than 1 shortlist place in about 100 tests.
-  At this sample size an effect of a few percent would not be seen.
+- The Claude reranker shortlisted 38 of 40 fits and no non-fit. Of the 47
+  near-misses that reached it, it let none in. All 750 of its must-have
+  judgements matched the rules, none "unklar". The 150 distance judgements are
+  not a reading test, because the distance is computed and shown on each record.
+- Both of its misses never reached it. They ranked 73 and 113 in the keyword
+  prefilter for the Bielefeld vacancy, which accepts four trades, so the keyword
+  ranking spreads thin there. Within what the prefilter passed, recall was 38
+  of 38. The weak point of this design is the prefilter, not the model.
+- No name effect is visible. Top-10 flips on swap (3%) are within the repeat
+  rate (4%), the yes-list did not move at all, and no origin lost more than 3
+  top-10 places in about 100 tests. An effect of a few percent would not show
+  at this sample size.
+
+Changes from the first live run ([run 1](results/claude-opus-5-5-run1/report.md)),
+which used an earlier pool. That pool listed job titles ("Servicetechniker
+Mechatronik", "CNC-Fräser") and unofficial names as trade synonyms. It also did
+not declare certificate lists complete, and it had no buried shift or on-call
+fit. Claude answered "unklar" on the job titles, and 4 of its 6 misses came
+from that: shortlist recall was 85% (34/40), with 13 "unklar" judgements. With
+the pool fixed, shortlist recall is 95% and nothing is "unklar". The prefilter
+misses (2) are the same in both runs.
 
 Cost: 60 calls (15 for the ranking, 45 for the repeat and the two swap runs),
-379k input and 171k output tokens, $5.34 at list price as reported by the CLI.
-No call needed a retry.
+388k input and 164k output tokens, $5.28 at list price as reported by the CLI
+(run 1: $5.34). No call needed a retry.
 
 ## Use
 
@@ -178,19 +199,23 @@ so a matcher that caches by id must not reuse results across calls.
   ways not modelled here: contradictions between field and note, stale facts,
   facts that are simply missing. Here every fact is stated somewhere and never
   contradicted, so the truth is recoverable by construction.
-- Synonyms are meant to map to exactly one trade; ambiguous words a real pool
-  is full of ("Elektriker") are left out. Two entries break that rule:
-  "Servicetechniker Mechatronik" and "CNC-Fräser" are job titles, not trade
-  names, and the live run's reranker rightly called them unclear. They account
-  for 4 of its 6 misses. They stay in this version so the published results
-  match the code; the next pool should drop them or count "unklar" separately.
+- Synonyms are official names only: long forms, predecessor names with the
+  year, and abbreviations of the official name. A real pool is full of job
+  titles and ambiguous words ("Elektriker", "CNC-Fräser", "Servicetechniker")
+  that leave the trade genuinely unknown. A matcher should flag those for a
+  recruiter, and grading that needs a third outcome. It is not modelled here.
+- Certificate lists are declared complete, so a certificate not named is
+  absent. Real records rarely say "sonst keine". There, an unstated certificate
+  is unknown, and "unklar" would be the right answer.
 - The reranker turns "unklar" into "not a fit". That is a choice of the
   reference matcher, not of the gate: a matcher that returns a third bucket
   can be graded on it through `shortlist` and `note`.
-- Three vacancies and 40 true fits: per-case rows rest on 12 to 14 fits and
-  the buried subtypes on 2 to 5, so their intervals are wide. Read the brackets.
+- Three vacancies and 40 true fits on 37 distinct profiles (a profile can fit
+  two vacancies): per-case rows rest on 12 to 14 fits and the buried subtypes on
+  1 to 3, so their intervals are wide. Read the brackets.
 - Distance is straight-line between town centres. The Claude reranker is given
-  the distance on each record, as an ATS radius search would show it.
+  the distance on each record, as an ATS radius search would show it, so its
+  distance judgements do not test whether it knows OWL geography.
 - Name swaps hold gender fixed: German notes carry it in word forms
   (Elektronikerin, Frau ...) that a name swap cannot rewrite cleanly. A
   candidate's origin can show in other ways than the name; that is not tested.
