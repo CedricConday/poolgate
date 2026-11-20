@@ -418,7 +418,9 @@ def _towns_within(site: str, lo: float, hi: float, pool=None) -> list[str]:
 
 def random_facts(rng: random.Random, trade: str | None = None) -> Facts:
     trade = trade or rng.choices(list(_TRADE_WEIGHTS), list(_TRADE_WEIGHTS.values()))[0]
-    years = rng.choice((0, 1, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 18, 22, 27))
+    # Up to 41 years after training (ages into the early 60s), so names retired
+    # in 1987, 1999 or 2003 can legitimately appear on long careers.
+    years = rng.choice((0, 1, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 18, 22, 25, 27, 30, 34, 38, 41))
     pool = CERT_POOL.get(trade, DEFAULT_CERTS)
     certs = frozenset(rng.sample(pool, k=rng.choice((0, 1, 1, 2, 2, 3))))
     town = rng.choice(list(geo.OWL)) if rng.random() < 0.85 else rng.choice(list(geo.FAR))
@@ -470,15 +472,34 @@ def failing_facts(v: Vacancy, must: str, rng: random.Random) -> Facts:
 
 # ---------------------------------------------------------------- presentation
 
-def _synonym(trade: str, rng: random.Random) -> str:
-    return rng.choice(TRADES[trade])
+_UNTIL = re.compile(r"\(bis (\d{4})\)")
+_SPAN = re.compile(r"\((\d{4})-(\d{4})\)")
+
+
+def name_valid(name: str, training_end: int) -> bool:
+    """A dated name fits only a training that ended while the name was in use."""
+    if m := _UNTIL.search(name):
+        return training_end <= int(m.group(1))
+    if m := _SPAN.search(name):
+        return int(m.group(1)) <= training_end <= int(m.group(2))
+    return True
+
+
+def training_end(f: Facts) -> int:
+    return TODAY.year - f.years
+
+
+def _synonym(trade: str, rng: random.Random, end: int) -> str:
+    # Every trade has at least one undated synonym, so the choice is never empty.
+    return rng.choice([n for n in TRADES[trade] if name_valid(n, end)])
 
 
 def presentation(f: Facts, rng: random.Random, title: str, hidden=()) -> Presentation:
-    text = {"canonical": f.trade, "synonym": _synonym(f.trade, rng), "none": ""}[title]
+    end = training_end(f)
+    text = {"canonical": f.trade, "synonym": _synonym(f.trade, rng, end), "none": ""}[title]
     # The notes name the trade the way the title does, or by another synonym.
     term = text if text and rng.random() < 0.6 else (
-        f.trade if title == "canonical" else _synonym(f.trade, rng))
+        f.trade if title == "canonical" else _synonym(f.trade, rng, end))
     hidden = set(hidden) | ({"trade"} if title == "none" else set())
     return Presentation(title=title, title_text=text, term=term, hidden=frozenset(hidden),
                         style=rng.choice(("stichpunkte", "fliesstext", "cv", "chaos")))

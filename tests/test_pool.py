@@ -131,3 +131,23 @@ def test_certificate_lists_in_notes_are_declared_complete(pool):
     for p in pool.profiles:
         if "certs" in p.pres.hidden and p.facts.certs:
             assert "keine" in p.notes.lower(), p.id
+
+
+def test_no_profile_carries_a_name_retired_before_its_training_ended(pool):
+    from poolgate.pool import name_valid, training_end
+
+    dated = 0
+    for p in pool.profiles:
+        end = training_end(p.facts)
+        for name in (p.pres.title_text, p.pres.term):
+            assert name_valid(name, end), (p.id, name, end)
+            dated += "(bis " in name or "-19" in name or "-20" in name
+    assert dated > 0  # dated names still occur, on careers long enough for them
+
+
+def test_name_validity_rule():
+    from poolgate.pool import name_valid
+
+    assert name_valid("Dreher (bis 1987)", 1985) and not name_valid("Dreher (bis 1987)", 1999)
+    assert name_valid("Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", 1990)
+    assert not name_valid("Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", 2010)
