@@ -64,6 +64,19 @@ def test_rerank_with_a_perfect_reader_is_limited_only_by_the_prefilter(pool):
             assert x["stage"] == "prefilter" and "nicht im Vorfilter" in x["matcher_note"]
 
 
+def test_prefilter_choice_names_the_matcher_and_sets_what_reaches_the_model(pool):
+    from poolgate.keyword import KeywordMatcher
+
+    plain = ClaudeRerank(OracleClient(pool), top_n=50, batch=10, workers=2)
+    wide = ClaudeRerank(OracleClient(pool), top_n=50, batch=10, workers=2,
+                        prefilter=KeywordMatcher(synonyms=True))
+    assert plain.name == "claude-rerank (top 50)"
+    assert wide.name == "claude-rerank@keyword+syn (top 50)"
+    a = run_matcher(plain, pool, fairness=False)["metrics"]["reached_rerank"]["k"]
+    b = run_matcher(wide, pool, fairness=False)["metrics"]["reached_rerank"]["k"]
+    assert a != b  # the prefilter, not the reader, decides which fits get read
+
+
 def test_batches_are_identical_on_repeat_and_on_name_swap(pool):
     client = OracleClient(pool)
     m = ClaudeRerank(client, top_n=50, batch=10, workers=1)

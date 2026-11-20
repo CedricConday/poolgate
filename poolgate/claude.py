@@ -135,7 +135,9 @@ class ClaudeRerank:
         self.errors: list[dict] = []
         self.answers: list[dict] = []  # every raw answer, for run.json
         self._lock = threading.Lock()
-        self.name = f"claude-rerank (top {top_n})"
+        # The default prefilter keeps the original name, so earlier results read the same.
+        pre = "" if self.prefilter.name == "keyword" else f"@{self.prefilter.name}"
+        self.name = f"claude-rerank{pre} (top {top_n})"
 
     def _score(self, vacancy: dict, group: list[dict]) -> list[dict] | None:
         ids = [p["id"] for p in group]

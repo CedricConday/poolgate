@@ -74,9 +74,10 @@ def _matchers(args, pool, log):
             from .subscription import CliClient
 
             usage = usage or Usage()
+            prefilter = KeywordMatcher(synonyms=args.prefilter == "keyword+syn")
             out.append(ClaudeRerank(CliClient(log=log), model=args.model, effort=args.effort,
                                     top_n=args.top_n, batch=args.batch, workers=args.workers,
-                                    usage=usage))
+                                    prefilter=prefilter, usage=usage))
         else:
             raise SystemExit(f"unknown matcher {name!r}")
     if args.matcher_url:
@@ -104,7 +105,7 @@ def cmd_run(args) -> int:
             log(f"usage so far: {usage.as_dict()}")
     config = {"n": args.n, "seed": args.seed, "matchers": [m.name for m in matchers],
               "model": args.model if usage else None, "effort": args.effort if usage else None,
-              "top_n": args.top_n, "batch": args.batch, "swaps": args.swaps,
+              "top_n": args.top_n, "prefilter": args.prefilter, "batch": args.batch, "swaps": args.swaps,
               "repeats": args.repeats, "note": args.note, "version": __version__,
               "faults": {"miss_synonym": args.miss_synonym, "miss_buried": args.miss_buried,
                          "near_miss": args.near_miss, "bias": args.bias, "noise": args.noise}}
@@ -250,6 +251,8 @@ def main(argv=None) -> int:
     r.add_argument("--model", default="claude-opus-5-5")
     r.add_argument("--effort", default="medium")
     r.add_argument("--top-n", type=int, default=50, help="keyword prefilter depth for claude")
+    r.add_argument("--prefilter", choices=("keyword", "keyword+syn"), default="keyword",
+                   help="what narrows the pool to the top n for claude")
     r.add_argument("--batch", type=int, default=10, help="profiles per model call")
     r.add_argument("--workers", type=int, default=3, help="parallel model calls")
     r.add_argument("--swaps", type=int, default=2)
