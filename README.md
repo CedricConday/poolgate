@@ -36,7 +36,7 @@ is the harness one would use to.
      and per vacancy certificate, shift, licence or on-call);
 
    and 2 **near-misses** per must-have: profiles that meet every must-have but
-   one (no licence, 80 km away, a Kfz-Mechatroniker for a Mechatroniker job,
+   one (no licence, 80 km away, a Kfz-Mechatroniker for the Bielefeld service job,
    S7 never used, nights refused), with the failing fact usually in the notes.
    Background profiles that would fit are redrawn, so every true fit is known.
    Every trade name, in the field and in the notes, was in use when the
@@ -149,6 +149,16 @@ What the numbers say, within their intervals:
   trades, so the keyword ranking spreads thin there. Every fit the prefilter
   passed was shortlisted (38 of 38). The prefilter, not the model, is the weak
   point of this design; it kept fits from the model in three of the four runs.
+- The two baselines are deliberately literal, so read their columns as a floor,
+  not as what a tuned search would do. Keyword's shortlist is its fixed top 10
+  per vacancy, which caps it at 30 of 39 fits (77%); recall@20 (77% against
+  97%) is the fairer comparison. Neither baseline gets the synonym table the
+  generator uses, and the field filter compares trade names as exact strings.
+  Of the 13 synonym fits, 5 are spelling variants of the official name
+  ("Industriemechaniker/-in", "Mechatroniker (IHK)"), 5 are abbreviations and 3
+  are predecessor names. A filter that normalises spelling and knows the
+  predecessor names would close much of the synonym gap; that is not measured
+  here.
 - Name swap: top-10 flips on swap (3%) equal the repeat rate (3%), and the
   yes-list moved once in 300 swaps and once in 150 repeats. The losses spread
   over all five origins, at most 4 for any one. This is no evidence of a name
@@ -166,7 +176,7 @@ sampling together, not from the fixes alone.
 | [run 3](results/claude-opus-5-5-run3/report.md) | predecessor names checked, current names not: 81 profiles carry a name newer than their training | 100% (39/39) | 1 | none |
 | run 4 (this) | every shown name valid for the training-start year, reform years sourced | 97% (38/39) | 1 | 1 not past the prefilter |
 
-In run 2, 8 true fits carried a predecessor name retired before their training
+In run 2, 7 true fits carried a predecessor name retired before their training
 ended. Claude noted the contradiction on two of them but still accepted them.
 
 Cost: 60 calls (15 for the ranking, 45 for the repeat and the two swap runs),
@@ -212,8 +222,15 @@ so a matcher that caches by id must not reuse results across calls.
 
 - The pool is synthetic, and so is its messiness. Real notes are messier in
   ways not modelled here: contradictions between field and note, stale facts,
-  facts that are simply missing. Here every fact is stated somewhere and never
-  contradicted, so the truth is recoverable by construction.
+  facts that are simply missing. Here every fact is stated somewhere, so the
+  truth is recoverable by construction.
+- Note dates are drawn independently of the career, while the notes state
+  years of experience as of November 2026. Some notes therefore predate the
+  training they describe: p0090's note of 30.09.25 says "Abschluss Sommer
+  2026". Two experience near-misses (p0105, p0264)
+  would become fits for a matcher that adds the time since the note date. A
+  generator bug, not a modelling choice; run 4's grades treat the stated years
+  as current.
 - Synonyms are official names only: long forms, predecessor names (shown
   only where valid for the training years, without a date label), and
   abbreviations of the official name. A real pool is full of job
@@ -221,9 +238,10 @@ so a matcher that caches by id must not reuse results across calls.
   that leave the trade genuinely unknown. A matcher should flag those for a
   recruiter, and grading that needs a third outcome. It is not modelled here.
 - Notes say "Abschluss IHK" for every trade. For the Handwerk trades
-  (Elektroniker für Energie- und Gebäudetechnik, Anlagenmechaniker SHK) the
-  exam is the Gesellenprüfung at the Handwerkskammer. This touches five
-  background profiles and no fit; the generator does not distinguish them yet.
+  (Elektroniker für Energie- und Gebäudetechnik, Anlagenmechaniker SHK, and
+  in most cases Kfz-Mechatroniker) the exam is the Gesellenprüfung at the
+  Handwerkskammer. This touches nine background profiles and no fit; the
+  generator does not distinguish them yet.
 - Certificate lists are declared complete, so a certificate not named is
   absent. Real records rarely say "sonst keine". There, an unstated certificate
   is unknown, and "unklar" would be the right answer.
