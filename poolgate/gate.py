@@ -5,6 +5,9 @@ fit (every must-have met), how hard each fit is to see (plain, synonym,
 buried in the notes), and which profiles are near-misses (fail exactly one
 must-have while looking right). A ranking is then graded on
 
+  recall@fits    of the true fits, how many are in the top k, with k the number of
+                 true fits of the vacancy: every matcher gets a list exactly as long
+                 as the answer, so the ceiling is 100% for all (R-precision)
   recall@k       of the true fits, how many are in the top k
   precision@k    of the top k, how many are true fits
   shortlist      the matcher's own yes-list, when it has one
@@ -158,9 +161,16 @@ def metrics(per_vacancy: list[dict], ks=KS, rerank_stage: str = "rerank") -> dic
         nm = sum(1 for e in per_vacancy for pid in e["near"] if e["pos"][pid] <= k)
         out[f"near_miss@{k}"] = _rate(nm, sum(len(e["near"]) for e in per_vacancy))
 
+    hits = sum(1 for e in per_vacancy for pid in e["fits"] if e["pos"][pid] <= len(e["fits"]))
+    out["recall@fits"] = {**_rate(hits, n_fits), "ceiling": 1.0}
+
     sl_hits = sum(1 for e in per_vacancy for pid in e["shortlist"] if pid in e["fits"])
     sl_n = sum(len(e["shortlist"]) for e in per_vacancy)
-    out["shortlist"] = {"own": all(e["has_own_shortlist"] for e in per_vacancy),
+    own = all(e["has_own_shortlist"] for e in per_vacancy)
+    # A fixed top-k list cannot hold more than k fits; an own list has no cap.
+    sl_ceiling = 1.0 if own else (
+        sum(min(SHORTLIST_K, len(e["fits"])) for e in per_vacancy) / n_fits if n_fits else 0)
+    out["shortlist"] = {"own": own, "ceiling": sl_ceiling,
                         "size": sl_n, "precision": _rate(sl_hits, sl_n),
                         "recall": _rate(sl_hits, n_fits),
                         "near_misses_in": sum(1 for e in per_vacancy for pid in e["shortlist"]

@@ -45,6 +45,16 @@ def test_recall_at_10_ceiling_is_reported(pool):
     assert m["recall@10"]["ceiling"] < 1.0
 
 
+def test_recall_at_the_number_of_fits_has_no_ceiling(pool):
+    perfect = _run(pool, OfflineMatcher(pool.by_id()), fairness=False)["metrics"]
+    assert perfect["recall@fits"]["rate"] == 1.0 and perfect["recall@fits"]["ceiling"] == 1.0
+    kw = _run(pool, KeywordMatcher(), fairness=False)["metrics"]
+    # A fixed top-10 shortlist is capped, and the cap is reported with it.
+    assert kw["shortlist"]["ceiling"] == pytest.approx(kw["recall@10"]["ceiling"])
+    assert kw["shortlist"]["ceiling"] < 1.0
+    assert perfect["shortlist"]["ceiling"] == 1.0
+
+
 def test_missed_synonyms_show_in_the_synonym_row_only(pool):
     m = _run(pool, OfflineMatcher(pool.by_id(), miss_synonym=1.0), fairness=False)["metrics"]
     assert m["by_case"]["synonym"]["in_shortlist"]["rate"] == 0.0

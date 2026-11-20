@@ -51,17 +51,25 @@ def render(result: dict, config: dict) -> str:
         out += ["", (f"**{len(errs)} error(s); affected candidates are ranked after the scored "
                 "ones and the run is otherwise complete. See `errors` in `run.json`.**")]
     out += ["", "## Headline", "",
-            ("Brackets are 95% Wilson intervals. The shortlist is the matcher's own yes-list "
-            "where it gives one, else its top 10."), "",
+            ("Brackets are 95% Wilson intervals. The first row puts every matcher on equal "
+             "footing: its top k, with k the number of true fits of each vacancy, so the "
+             "ceiling is 100% for all. The shortlist is the matcher's own yes-list where it "
+             "gives one, else its fixed top 10, which cannot hold every fit."), "",
             "| Measure | " + " | ".join(f"`{n}`" for n in names) + " |",
             "|---|" + "---|" * len(names)]
     ceil = ms[0]["recall@10"]["ceiling"] if ms and ms[0] else 0
+    out.append(_row("Recall at k = true fits (ceiling 100%)",
+                    [pct(m.get("recall@fits")) for m in ms]))
+    out.append(_row(f"Recall@20 (ceiling {ms[0]['recall@20']['ceiling'] * 100:.0f}%)"
+                    if ms and ms[0] else "Recall@20", [pct(m.get("recall@20")) for m in ms]))
     out.append(_row(f"Recall@10 (ceiling {ceil * 100:.0f}%: more fits than places)",
                     [pct(m.get("recall@10")) for m in ms]))
-    out.append(_row("Recall@20", [pct(m.get("recall@20")) for m in ms]))
     out.append(_row("Precision@10", [pct(m.get("precision@10")) for m in ms]))
     out.append(_row("Shortlist precision", [pct(m["shortlist"]["precision"]) for m in ms]))
-    out.append(_row("Shortlist recall", [pct(m["shortlist"]["recall"]) for m in ms]))
+    out.append(_row("Shortlist recall", [
+        pct(m["shortlist"]["recall"]) + ("" if m["shortlist"]["own"]
+                                         else f" (ceiling {m['shortlist']['ceiling'] * 100:.0f}%)")
+        for m in ms]))
     out.append(_row("Shortlist size (all vacancies)",
                     [str(m["shortlist"]["size"]) + ("" if m["shortlist"]["own"] else " (top 10)")
                      for m in ms]))
