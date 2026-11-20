@@ -167,6 +167,66 @@ def cmd_proof(args) -> int:
     return 0
 
 
+BASELINES = "bm25,keyword,keyword+syn,field-filter-exact,field-filter,field-filter+syn"
+SEED_MEASURES = (
+    ("Recall at k = fits", lambda m: m["recall@fits"]),
+    ("Recall@20", lambda m: m["recall@20"]),
+    ("Shortlist recall", lambda m: m["shortlist"]["recall"]),
+    ("Shortlist precision", lambda m: m["shortlist"]["precision"]),
+    ("Synonym fits shortlisted", lambda m: m["by_case"]["synonym"]["in_shortlist"]),
+    ("Buried fits shortlisted", lambda m: m["by_case"]["buried"]["in_shortlist"]),
+    ("Near-misses in top 10", lambda m: m["near_miss@10"]),
+)
+
+
+def cmd_seeds(args) -> int:
+    """The offline baselines over several pool seeds: how much does one pool decide?"""
+    from .gate import _rate
+    from .report import pct
+
+    seeds = [int(x) for x in args.seeds.split(",")]
+    out = args.out or Path("results") / "offline-seeds"
+    out.mkdir(parents=True, exist_ok=True)
+    per: dict[str, dict[int, dict]] = {}
+    fits = {}
+    for seed in seeds:
+        pool = make_pool(args.n, seed)
+        fits[seed] = sum(s["fits"] for s in pool_summary(pool).values())
+        ns = argparse.Namespace(matchers=args.matchers, matcher_url=None)
+        for m in _matchers(ns, pool, None)[0]:
+            per.setdefault(m.name, {})[seed] = run_matcher(m, pool, fairness=False)["metrics"]
+    lines = [
+        "# poolgate: baselines over pool seeds", "",
+        (f"Pools of {args.n} profiles, seeds {', '.join(map(str, seeds))}; true fits per pool: "
+         + ", ".join(f"{fits[s]}" for s in seeds) + ". Each cell: the rate pooled over all "
+         "seeds with its 95% Wilson interval, then the lowest and highest single seed. "
+         "Baselines are name-blind, so no swap runs."), "",
+        "| Matcher | " + " | ".join(label for label, _ in SEED_MEASURES) + " |",
+        "|---|" + "---|" * len(SEED_MEASURES)]
+    for name, by_seed in per.items():
+        cells = []
+        for _, get in SEED_MEASURES:
+            rs = [get(by_seed[s]) for s in seeds]
+            pooled = _rate(sum(r["k"] for r in rs), sum(r["n"] for r in rs))
+            lo, hi = min(r["rate"] for r in rs), max(r["rate"] for r in rs)
+            cells.append(f"{pct(pooled, False)}; {lo * 100:.0f}–{hi * 100:.0f}%")
+        lines.append(f"| `{name}` | " + " | ".join(cells) + " |")
+    lines += ["", "Per seed, recall at k = fits:", "",
+              "| Matcher | " + " | ".join(f"seed {s}" for s in seeds) + " |",
+              "|---|" + "---|" * len(seeds)]
+    for name, by_seed in per.items():
+        lines.append(f"| `{name}` | " + " | ".join(
+            pct(by_seed[s]["recall@fits"]) for s in seeds) + " |")
+    text = "\n".join(lines) + "\n"
+    (out / "report.md").write_text(text)
+    (out / "run.json").write_text(json.dumps(
+        {"config": {"n": args.n, "seeds": seeds, "matchers": list(per), "version": __version__},
+         "fits": fits, "metrics": {k: {str(s): m for s, m in v.items()} for k, v in per.items()}},
+        ensure_ascii=False, indent=1))
+    print(text)
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="poolgate",
@@ -174,11 +234,14 @@ def main(argv=None) -> int:
                     "matcher, and score who reaches the shortlist, who is missed and why.")
     p.add_argument("--version", action="version", version=f"poolgate {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
-    for name in ("run", "proof"):
+    for name in ("run", "proof", "seeds"):
         s = sub.add_parser(name)
         s.add_argument("--n", type=int, default=400, help="profiles in the pool")
         s.add_argument("--seed", type=int, default=7)
         s.add_argument("--out", type=Path, default=None)
+    sd = sub.choices["seeds"]
+    sd.add_argument("--seeds", default="7,8,9,10,11", help="comma list of pool seeds")
+    sd.add_argument("--matchers", default=BASELINES)
     r = sub.choices["run"]
     r.add_argument("--matchers", default="keyword,field-filter",
                    help="comma list of bm25, keyword, keyword+syn, field-filter-exact, "
@@ -200,7 +263,7 @@ def main(argv=None) -> int:
     r.add_argument("--bias", default=None, help='offline only, e.g. "tr=1,ar=1"')
     r.add_argument("--noise", type=float, default=0.0)
     args = p.parse_args(argv)
-    return cmd_run(args) if args.cmd == "run" else cmd_proof(args)
+    return {"run": cmd_run, "proof": cmd_proof, "seeds": cmd_seeds}[args.cmd](args)
 
 
 if __name__ == "__main__":

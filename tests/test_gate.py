@@ -197,3 +197,16 @@ def test_own_list_flips_are_measured_where_the_matcher_has_a_list(pool):
     assert f["own_list_flips_on_swap"]["k"] > 0
     assert f["own_list_flips_on_repeat"]["k"] == 0
     assert _run(pool, KeywordMatcher())["fairness"]["own_list_flips_on_swap"] is None
+
+
+def test_seeds_command_pools_the_baselines_over_seeds(tmp_path):
+    import json
+
+    from poolgate.cli import main
+
+    assert main(["seeds", "--seeds", "7,8", "--matchers", "keyword,field-filter+syn",
+                 "--out", str(tmp_path)]) == 0
+    run = json.loads((tmp_path / "run.json").read_text())
+    assert set(run["metrics"]) == {"keyword", "field-filter+syn"}
+    assert set(run["metrics"]["keyword"]) == {"7", "8"}
+    assert "| `field-filter+syn` |" in (tmp_path / "report.md").read_text()
