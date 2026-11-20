@@ -4,6 +4,12 @@ BM25 is what a pool search box does: it ranks records by the vacancy's words.
 The field filter is what an ATS filter panel does: keep the records whose
 structured fields meet every must-have, rank those first. Neither needs a
 network or a dependency; both are baselines a model-based matcher must beat.
+
+Each comes in a literal form and a "+syn" form that gets the same synonym
+table the pool generator uses (every official, variant, abbreviated and
+predecessor name of each accepted trade): keyword search adds those names to
+its query, the field filter accepts them in the Beruf field. The literal forms
+show what that knowledge is worth.
 """
 
 from __future__ import annotations
@@ -13,6 +19,7 @@ import re
 from collections import Counter
 
 from . import geo
+from .pool import NAMES
 from .types import Ranked
 
 _TOKEN = re.compile(r"[^\W_]+", re.UNICODE)
@@ -53,7 +60,7 @@ def card(p: dict, vacancy: dict | None = None) -> str:
     return "\n".join(lines)
 
 
-def query(vacancy: dict) -> list[str]:
+def query(vacancy: dict, synonyms: bool = False) -> list[str]:
     words = [vacancy["title"], *vacancy["trades"], *vacancy["certs_any"], vacancy["site"]]
     if vacancy["licence"]:
         words.append("Führerschein")
@@ -61,7 +68,29 @@ def query(vacancy: dict) -> list[str]:
         words.append("Schicht")
     if vacancy["on_call"]:
         words.append("Rufbereitschaft")
-    return tokens(" ".join(words))
+    q = tokens(" ".join(words))
+    if synonyms:
+        # Each word of the other names once, so expansion widens the query
+        # without re-weighting the words it already has.
+        q += [t for t in dict.fromkeys(tokens(" ".join(trade_names(vacancy["trades"]))))
+              if t not in q]
+    return q
+
+
+def trade_names(trades) -> list[str]:
+    """Every name in the synonym table for the given trades."""
+    return [n for t in trades for n, *_ in NAMES.get(t, ((t,),))]
+
+
+def norm_trade(name: str) -> str:
+    """One spelling per trade name. Case, spacing, punctuation, the gender suffix
+    ("/-in"), a chamber tag ("(IHK)") and the Fachrichtung form ("Elektroniker,
+    Fachrichtung X" = "Elektroniker für X") do not change the qualification."""
+    s = name.lower()
+    s = re.sub(r"\((?:ihk|hwk)\)", " ", s)
+    s = re.sub(r"\s*(?:/-?\s*in|\(in\)|/innen)\b", "", s)
+    s = re.sub(r",?\s*\bfachrichtung\b\s*", " für ", s)
+    return re.sub(r"[\s,]+", " ", s).strip(" .")
 
 
 def bm25(q: list[str], docs: list[list[str]], k1: float = 1.2, b: float = 0.75) -> list[float]:
@@ -90,13 +119,14 @@ class KeywordMatcher:
     free-text Beruf field is left to the keywords.
     """
 
-    def __init__(self, soft_filter: bool = True):
+    def __init__(self, soft_filter: bool = True, synonyms: bool = False):
         self.soft_filter = soft_filter
-        self.name = "keyword" if soft_filter else "bm25"
+        self.synonyms = synonyms
+        self.name = ("keyword" if soft_filter else "bm25") + ("+syn" if synonyms else "")
 
     def rank(self, vacancy: dict, profiles: list[dict]) -> list[Ranked]:
         docs = [tokens(card(p)) for p in profiles]
-        scores = bm25(query(vacancy), docs)
+        scores = bm25(query(vacancy, self.synonyms), docs)
         order = sorted(range(len(profiles)), key=lambda i: (-scores[i], profiles[i]["id"]))
         out_in, out_rest = [], []
         for i in order:
@@ -119,12 +149,24 @@ def contradicted(vacancy: dict, p: dict) -> list[str]:
             if not ok and m in _FIELD and p[_FIELD[m]] is not None]
 
 
-def field_check(vacancy: dict, p: dict) -> dict[str, bool]:
+def accepted_names(vacancy: dict, mode: str = "normalised") -> set[str]:
+    """The Beruf field values a filter accepts. exact: the vacancy's trade names
+    as written; normalised: the same, spelling normalised; synonyms: every name
+    in the synonym table, normalised."""
+    if mode == "exact":
+        return set(vacancy["trades"])
+    names = trade_names(vacancy["trades"]) if mode == "synonyms" else vacancy["trades"]
+    return {norm_trade(n) for n in names}
+
+
+def field_check(vacancy: dict, p: dict, mode: str = "normalised") -> dict[str, bool]:
     """The must-haves as a filter panel sees them: structured fields only."""
     out = {}
     for m in vacancy["musts"]:
         if m == "beruf":
-            out[m] = p["beruf"] in vacancy["trades"]
+            beruf = p["beruf"]
+            out[m] = beruf is not None and (
+                (beruf if mode == "exact" else norm_trade(beruf)) in accepted_names(vacancy, mode))
         elif m == "erfahrung":
             out[m] = p["erfahrung_jahre"] is not None and p["erfahrung_jahre"] >= vacancy[
                 "min_years"]
@@ -143,16 +185,29 @@ def field_check(vacancy: dict, p: dict) -> dict[str, bool]:
 
 
 class FieldFilterMatcher:
-    """Filter on the structured fields, then BM25 within and after the filter."""
+    """Filter on the structured fields, then BM25 within and after the filter.
 
-    name = "field-filter"
+    mode: "exact" compares the Beruf field with the vacancy's trade names as
+    strings; "normalised" (the default) first normalises spelling (`norm_trade`);
+    "synonyms" also accepts every name in the synonym table.
+    """
+
+    NAMES = {"exact": "field-filter-exact", "normalised": "field-filter",
+             "synonyms": "field-filter+syn"}
+
+    def __init__(self, mode: str = "normalised"):
+        if mode not in self.NAMES:
+            raise ValueError(f"unknown mode {mode!r}")
+        self.mode = mode
+        self.name = self.NAMES[mode]
 
     def rank(self, vacancy: dict, profiles: list[dict]) -> list[Ranked]:
-        ranked = KeywordMatcher(soft_filter=False).rank(vacancy, profiles)
+        ranked = KeywordMatcher(soft_filter=False, synonyms=self.mode == "synonyms").rank(
+            vacancy, profiles)
         by_id = {p["id"]: p for p in profiles}
         out_in, out_rest = [], []
         for r in ranked:
-            checks = field_check(vacancy, by_id[r.id])
+            checks = field_check(vacancy, by_id[r.id], self.mode)
             ok = all(checks.values())
             failed = [m for m, v in checks.items() if not v]
             r = Ranked(r.id, r.score, shortlist=ok, stage="filter",

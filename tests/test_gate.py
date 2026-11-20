@@ -91,16 +91,63 @@ def test_noise_shows_in_the_repeat_baseline(pool):
 
 
 def test_keyword_matchers_are_name_blind(pool):
-    for m in (KeywordMatcher(), KeywordMatcher(soft_filter=False), FieldFilterMatcher()):
+    for m in (KeywordMatcher(), KeywordMatcher(soft_filter=False), KeywordMatcher(synonyms=True),
+              FieldFilterMatcher(), FieldFilterMatcher("synonyms")):
         f = _run(pool, m)["fairness"]
         assert f["top10_flips_on_swap"]["k"] == 0, m.name
 
 
 def test_field_filter_is_precise_and_blind_to_notes(pool):
-    m = _run(pool, FieldFilterMatcher(), fairness=False)["metrics"]
-    assert m["shortlist"]["precision"]["rate"] == 1.0
-    assert m["by_case"]["plain"]["recall@20"]["rate"] == 1.0
-    assert m["by_case"]["buried"]["recall@20"]["rate"] < 0.5
+    for mode in ("normalised", "synonyms"):
+        m = _run(pool, FieldFilterMatcher(mode), fairness=False)["metrics"]
+        assert m["shortlist"]["precision"]["rate"] == 1.0, mode
+        assert m["by_case"]["plain"]["recall@20"]["rate"] == 1.0, mode
+        assert m["by_case"]["buried"]["in_shortlist"]["k"] == 0, mode
+
+
+def test_field_filter_with_the_synonym_table_shortlists_every_synonym_fit(pool):
+    m = _run(pool, FieldFilterMatcher("synonyms"), fairness=False)["metrics"]
+    assert m["by_case"]["synonym"]["in_shortlist"]["rate"] == 1.0
+
+
+def test_each_baseline_knows_at_least_what_its_literal_form_knows(pool):
+    pairs = ((FieldFilterMatcher("exact"), FieldFilterMatcher("normalised")),
+             (FieldFilterMatcher("normalised"), FieldFilterMatcher("synonyms")))
+    for lit, more in pairs:
+        a = _run(pool, lit, fairness=False)["metrics"]["shortlist"]["recall"]["k"]
+        b = _run(pool, more, fairness=False)["metrics"]["shortlist"]["recall"]["k"]
+        assert b >= a, (lit.name, more.name)
+
+
+def test_trade_names_are_normalised_not_guessed():
+    from poolgate.keyword import norm_trade
+
+    same = {"elektroniker für betriebstechnik": ("Elektroniker/-in für Betriebstechnik",
+                                                 "ELEKTRONIKER  für Betriebstechnik",
+                                                 "Elektroniker/in für Betriebstechnik"),
+            "mechatroniker": ("Mechatroniker (IHK)", "Mechatroniker/-in", " Mechatroniker "),
+            "elektroniker für energie- und gebäudetechnik": (
+                "Elektroniker, Fachrichtung Energie- und Gebäudetechnik",
+                "Elektroniker/-in Fachrichtung Energie- und Gebäudetechnik")}
+    for want, forms in same.items():
+        for f in forms:
+            assert norm_trade(f) == want, f
+    # A predecessor, an abbreviation and a lookalike stay different qualifications.
+    assert norm_trade("Industriemechaniker Fachrichtung Betriebstechnik") != "industriemechaniker"
+    assert norm_trade("Mechatr.") != "mechatroniker"
+    assert norm_trade("Kfz-Mechatroniker") != "mechatroniker"
+
+
+def test_synonym_expansion_adds_each_word_once():
+    from poolgate.keyword import query
+    from poolgate.pool import VACANCY_BY_KEY
+
+    v = VACANCY_BY_KEY["eb-paderborn"].public()
+    plain, wide = query(v), query(v, synonyms=True)
+    assert wide[:len(plain)] == plain
+    extra = wide[len(plain):]
+    assert len(extra) == len(set(extra)) and not set(extra) & set(plain)
+    assert "energieelektroniker" in extra and "prozessleitelektroniker" in extra
 
 
 def test_soft_filter_keeps_every_fit_ahead_of_contradicted_records(pool):

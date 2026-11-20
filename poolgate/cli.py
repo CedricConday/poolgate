@@ -53,12 +53,13 @@ def _matchers(args, pool, log):
     out = []
     for name in args.matchers.split(","):
         name = name.strip()
-        if name == "keyword":
-            out.append(KeywordMatcher())
+        if name in ("keyword", "keyword+syn"):
+            out.append(KeywordMatcher(synonyms=name.endswith("+syn")))
         elif name == "bm25":
             out.append(KeywordMatcher(soft_filter=False))
-        elif name == "field-filter":
-            out.append(FieldFilterMatcher())
+        elif name in FieldFilterMatcher.NAMES.values():
+            mode = next(k for k, v in FieldFilterMatcher.NAMES.items() if v == name)
+            out.append(FieldFilterMatcher(mode))
         elif name == "offline":
             from .offline import OfflineMatcher
 
@@ -177,7 +178,8 @@ def main(argv=None) -> int:
         s.add_argument("--out", type=Path, default=None)
     r = sub.choices["run"]
     r.add_argument("--matchers", default="keyword,field-filter",
-                   help="comma list of keyword, bm25, field-filter, offline, claude")
+                   help="comma list of bm25, keyword, keyword+syn, field-filter-exact, "
+                        "field-filter, field-filter+syn, offline, claude")
     r.add_argument("--matcher-url", default=None, help="also run an HTTP matcher")
     r.add_argument("--model", default="claude-opus-5-5")
     r.add_argument("--effort", default="medium")
