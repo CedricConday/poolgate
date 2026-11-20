@@ -184,6 +184,10 @@ def field_check(vacancy: dict, p: dict, mode: str = "normalised") -> dict[str, b
     return out
 
 
+FIELD_FILTERS = {"exact": "field-filter-exact", "normalised": "field-filter",
+                 "synonyms": "field-filter+syn"}  # mode -> matcher name
+
+
 class FieldFilterMatcher:
     """Filter on the structured fields, then BM25 within and after the filter.
 
@@ -192,14 +196,11 @@ class FieldFilterMatcher:
     "synonyms" also accepts every name in the synonym table.
     """
 
-    NAMES = {"exact": "field-filter-exact", "normalised": "field-filter",
-             "synonyms": "field-filter+syn"}
-
     def __init__(self, mode: str = "normalised"):
-        if mode not in self.NAMES:
+        if mode not in FIELD_FILTERS:
             raise ValueError(f"unknown mode {mode!r}")
         self.mode = mode
-        self.name = self.NAMES[mode]
+        self.name = FIELD_FILTERS[mode]
 
     def rank(self, vacancy: dict, profiles: list[dict]) -> list[Ranked]:
         ranked = KeywordMatcher(soft_filter=False, synonyms=self.mode == "synonyms").rank(

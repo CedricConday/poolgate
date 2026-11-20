@@ -50,7 +50,7 @@ def pool_dump(pool) -> dict:
 
 
 def _matchers(args, pool, log):
-    from .keyword import FieldFilterMatcher, KeywordMatcher
+    from .keyword import FIELD_FILTERS, FieldFilterMatcher, KeywordMatcher
 
     usage = None
     out = []
@@ -60,8 +60,8 @@ def _matchers(args, pool, log):
             out.append(KeywordMatcher(synonyms=name.endswith("+syn")))
         elif name == "bm25":
             out.append(KeywordMatcher(soft_filter=False))
-        elif name in FieldFilterMatcher.NAMES.values():
-            mode = next(k for k, v in FieldFilterMatcher.NAMES.items() if v == name)
+        elif name in FIELD_FILTERS.values():
+            mode = next(k for k, v in FIELD_FILTERS.items() if v == name)
             out.append(FieldFilterMatcher(mode))
         elif name == "offline":
             from .offline import OfflineMatcher
