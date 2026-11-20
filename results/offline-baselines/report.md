@@ -14,14 +14,14 @@ Brackets are 95% Wilson intervals. The shortlist is the matcher's own yes-list w
 
 | Measure | `bm25` | `keyword` | `field-filter` |
 |---|---|---|---|
-| Recall@10 (ceiling 77%: more fits than places) | 21% (8/39) [11–36] | 38% (15/39) [25–54] | 38% (15/39) [25–54] |
-| Recall@20 | 38% (15/39) [25–54] | 74% (29/39) [59–85] | 54% (21/39) [39–68] |
-| Precision@10 | 27% (8/30) [14–44] | 50% (15/30) [33–67] | 50% (15/30) [33–67] |
-| Shortlist precision | 27% (8/30) [14–44] | 50% (15/30) [33–67] | 100% (14/14) [78–100] |
-| Shortlist recall | 21% (8/39) [11–36] | 38% (15/39) [25–54] | 36% (14/39) [23–52] |
+| Recall@10 (ceiling 77%: more fits than places) | 23% (9/39) [13–38] | 41% (16/39) [27–57] | 38% (15/39) [25–54] |
+| Recall@20 | 33% (13/39) [21–49] | 77% (30/39) [62–87] | 49% (19/39) [34–64] |
+| Precision@10 | 30% (9/30) [17–48] | 53% (16/30) [36–70] | 50% (15/30) [33–67] |
+| Shortlist precision | 30% (9/30) [17–48] | 53% (16/30) [36–70] | 100% (14/14) [78–100] |
+| Shortlist recall | 23% (9/39) [13–38] | 41% (16/39) [27–57] | 36% (14/39) [23–52] |
 | Shortlist size (all vacancies) | 30 (top 10) | 30 (top 10) | 14 |
-| Near-misses in top 10 | 11% (17/148) [7–18] | 10% (15/148) [6–16] | 8% (12/148) [5–14] |
-| Near-misses in shortlist | 17 | 15 | 0 |
+| Near-misses in top 10 | 10% (15/148) [6–16] | 8% (12/148) [5–14] | 9% (13/148) [5–14] |
+| Near-misses in shortlist | 15 | 12 | 0 |
 
 ## Which fits are found
 
@@ -29,14 +29,14 @@ Recall@20 and shortlist recall by how the fit is presented.
 
 | Case | `bm25` @20 / shortlist | `keyword` @20 / shortlist | `field-filter` @20 / shortlist |
 |---|---|---|---|
-| plain (official title, facts in fields) | 57% [33–79] / 36% (5/14) [16–61] | 71% [45–88] / 50% (7/14) [27–73] | 100% [78–100] / 100% (14/14) [78–100] |
-| synonym (title is an old name, abbreviation or synonym) | 15% [4–42] / 8% (1/13) [1–33] | 69% [42–87] / 23% (3/13) [8–50] | 15% [4–42] / 0% (0/13) [0–23] |
-| buried (a must-have fact only in the notes) | 42% [19–68] / 17% (2/12) [5–45] | 83% [55–95] / 42% (5/12) [19–68] | 42% [19–68] / 0% (0/12) [0–24] |
+| plain (official title, facts in fields) | 57% [33–79] / 43% (6/14) [21–67] | 79% [52–92] / 64% (9/14) [39–84] | 100% [78–100] / 100% (14/14) [78–100] |
+| synonym (title is an old name, abbreviation or synonym) | 8% [1–33] / 8% (1/13) [1–33] | 69% [42–87] / 15% (2/13) [4–42] | 8% [1–33] / 0% (0/13) [0–23] |
+| buried (a must-have fact only in the notes) | 33% [14–61] / 17% (2/12) [5–45] | 83% [55–95] / 42% (5/12) [19–68] | 33% [14–61] / 0% (0/12) [0–24] |
 | · buried: Beruf | 33% [6–79] / 0% (0/3) [0–56] | 67% [21–94] / 33% (1/3) [6–79] | 33% [6–79] / 0% (0/3) [0–56] |
 | · buried: Erfahrung | 0% [0–56] / 0% (0/3) [0–56] | 67% [21–94] / 0% (0/3) [0–56] | 0% [0–56] / 0% (0/3) [0–56] |
-| · buried: Führerschein | 100% [21–100] / 100% (1/1) [21–100] | 100% [21–100] / 100% (1/1) [21–100] | 100% [21–100] / 0% (0/1) [0–79] |
-| · buried: Rufbereitschaft | 0% [0–79] / 0% (0/1) [0–79] | 100% [21–100] / 0% (0/1) [0–79] | 0% [0–79] / 0% (0/1) [0–79] |
-| · buried: Schicht | 50% [9–91] / 0% (0/2) [0–66] | 100% [34–100] / 50% (1/2) [9–91] | 50% [9–91] / 0% (0/2) [0–66] |
+| · buried: Führerschein | 0% [0–79] / 0% (0/1) [0–79] | 100% [21–100] / 0% (0/1) [0–79] | 0% [0–79] / 0% (0/1) [0–79] |
+| · buried: Rufbereitschaft | 0% [0–79] / 0% (0/1) [0–79] | 100% [21–100] / 100% (1/1) [21–100] | 0% [0–79] / 0% (0/1) [0–79] |
+| · buried: Schicht | 50% [9–91] / 50% (1/2) [9–91] | 100% [34–100] / 50% (1/2) [9–91] | 50% [9–91] / 0% (0/2) [0–66] |
 | · buried: Zertifikat | 100% [34–100] / 50% (1/2) [9–91] | 100% [34–100] / 100% (2/2) [34–100] | 100% [34–100] / 0% (0/2) [0–66] |
 
 ## Near-misses let in
@@ -46,89 +46,89 @@ Profiles that fail exactly one must-have and look right otherwise, by the must-h
 | Fails | `bm25` | `keyword` | `field-filter` |
 |---|---|---|---|
 | Beruf | 0% (0/19) [0–17] | 0% (0/19) [0–17] | 0% (0/19) [0–17] |
-| Erfahrung | 14% (2/14) [4–40] | 14% (2/14) [4–40] | 7% (1/14) [1–31] |
+| Erfahrung | 21% (3/14) [8–48] | 29% (4/14) [12–55] | 14% (2/14) [4–40] |
 | Zertifikat | 18% (3/17) [6–41] | 12% (2/17) [3–34] | 18% (3/17) [6–41] |
-| Führerschein | 11% (1/9) [2–44] | 22% (2/9) [6–55] | 0% (0/9) [0–30] |
-| Entfernung | 11% (3/28) [4–27] | 0% (0/28) [0–12] | 7% (2/28) [2–23] |
-| Schicht | 29% (4/14) [12–55] | 29% (4/14) [12–55] | 21% (3/14) [8–48] |
-| Rufbereitschaft | 9% (4/47) [3–20] | 11% (5/47) [5–23] | 6% (3/47) [2–17] |
+| Führerschein | 11% (1/9) [2–44] | 22% (2/9) [6–55] | 11% (1/9) [2–44] |
+| Entfernung | 11% (3/28) [4–27] | 0% (0/28) [0–12] | 11% (3/28) [4–27] |
+| Schicht | 14% (2/14) [4–40] | 7% (1/14) [1–31] | 14% (2/14) [4–40] |
+| Rufbereitschaft | 6% (3/47) [2–17] | 6% (3/47) [2–17] | 4% (2/47) [1–14] |
 
-## Fits `bm25` left off the shortlist (31)
-
-| Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; misread must-haves) |
-|---|---|---|---|---|---|
-| eb-paderborn | p0307 | synonym | Elektroniker/-in für Betriebstechnik | 11 | – |
-| eb-paderborn | p0302 | plain | Elektroniker für Betriebstechnik | 12 | – |
-| eb-paderborn | p0374 | plain | Elektroniker für Automatisierungstechnik | 14 | – |
-| eb-paderborn | p0182 | synonym | Elektroniker/-in für Automatisierungstechnik | 21 | – |
-| eb-paderborn | p0097 | plain | Elektroniker für Betriebstechnik | 23 | – |
-| eb-paderborn | p0241 | synonym | Elektroniker/-in für Betriebstechnik | 25 | – |
-| eb-paderborn | p0084 | buried:beruf | k. A. | 26 | – |
-| eb-paderborn | p0047 | buried:erfahrung | Elektroniker für Automatisierungstechnik | 32 | – |
-| eb-paderborn | p0331 | buried:schicht | Mechatroniker | 73 | – |
-| eb-paderborn | p0051 | plain | Mechatroniker | 100 | – |
-| cnc-guetersloh | p0061 | buried:schicht | Zerspanungsmechaniker | 11 | – |
-| cnc-guetersloh | p0076 | buried:zertifikate | Zerspanungsmechaniker | 12 | – |
-| cnc-guetersloh | p0151 | buried:beruf | k. A. | 17 | – |
-| cnc-guetersloh | p0390 | plain | Zerspanungsmechaniker | 20 | – |
-| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker | 28 | – |
-| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 34 | – |
-| cnc-guetersloh | p0244 | synonym | Industriemech. | 70 | – |
-| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 85 | – |
-| cnc-guetersloh | p0030 | synonym | Industriemech. | 91 | – |
-| service-bielefeld | p0307 | synonym | Elektroniker/-in für Betriebstechnik | 36 | – |
-| … | 11 more in `run.json` | | | | |
-
-## Fits `keyword` left off the shortlist (24)
+## Fits `bm25` left off the shortlist (30)
 
 | Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; misread must-haves) |
 |---|---|---|---|---|---|
-| eb-paderborn | p0182 | synonym | Elektroniker/-in für Automatisierungstechnik | 11 | – |
-| eb-paderborn | p0097 | plain | Elektroniker für Betriebstechnik | 12 | – |
-| eb-paderborn | p0241 | synonym | Elektroniker/-in für Betriebstechnik | 13 | – |
-| eb-paderborn | p0084 | buried:beruf | k. A. | 14 | – |
-| eb-paderborn | p0047 | buried:erfahrung | Elektroniker für Automatisierungstechnik | 15 | – |
-| eb-paderborn | p0331 | buried:schicht | Mechatroniker | 20 | – |
-| eb-paderborn | p0051 | plain | Mechatroniker | 25 | – |
+| eb-paderborn | p0097 | plain | Elektroniker für Betriebstechnik | 16 | – |
+| eb-paderborn | p0084 | buried:beruf | k. A. | 19 | – |
+| eb-paderborn | p0307 | synonym | Elektroniker BT | 31 | – |
+| eb-paderborn | p0241 | synonym | Energieelektroniker Fachrichtung Betriebstechnik | 55 | – |
+| eb-paderborn | p0331 | buried:schicht | Mechatr. | 58 | – |
+| eb-paderborn | p0051 | plain | Mechatroniker | 75 | – |
+| eb-paderborn | p0047 | buried:erfahrung | Prozessleitelektroniker | 99 | – |
+| eb-paderborn | p0182 | synonym | Prozessleitelektroniker | 103 | – |
+| cnc-guetersloh | p0018 | plain | Industriemechaniker | 12 | – |
+| cnc-guetersloh | p0076 | buried:zertifikate | Zerspanungsmechaniker | 13 | – |
+| cnc-guetersloh | p0390 | plain | Zerspanungsmechaniker | 21 | – |
+| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker/-in | 28 | – |
+| cnc-guetersloh | p0244 | synonym | Industriemech. | 34 | – |
+| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 40 | – |
+| cnc-guetersloh | p0030 | synonym | Industriemechaniker/-in | 46 | – |
+| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 80 | – |
+| cnc-guetersloh | p0151 | buried:beruf | k. A. | 85 | – |
+| service-bielefeld | p0352 | plain | Informationselektroniker | 36 | – |
+| service-bielefeld | p0100 | buried:rufbereitschaft | Informationselektroniker/-in | 40 | – |
+| service-bielefeld | p0307 | synonym | Elektroniker BT | 45 | – |
+| … | 10 more in `run.json` | | | | |
+
+## Fits `keyword` left off the shortlist (23)
+
+| Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; misread must-haves) |
+|---|---|---|---|---|---|
+| eb-paderborn | p0241 | synonym | Energieelektroniker Fachrichtung Betriebstechnik | 13 | – |
+| eb-paderborn | p0331 | buried:schicht | Mechatr. | 14 | – |
+| eb-paderborn | p0051 | plain | Mechatroniker | 17 | – |
+| eb-paderborn | p0047 | buried:erfahrung | Prozessleitelektroniker | 19 | – |
+| eb-paderborn | p0182 | synonym | Prozessleitelektroniker | 21 | – |
 | cnc-guetersloh | p0390 | plain | Zerspanungsmechaniker | 11 | – |
-| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker | 13 | – |
-| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 15 | – |
-| cnc-guetersloh | p0244 | synonym | Industriemech. | 19 | – |
-| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 20 | – |
-| cnc-guetersloh | p0030 | synonym | Industriemech. | 23 | – |
-| service-bielefeld | p0352 | plain | Informationselektroniker | 15 | – |
-| service-bielefeld | p0100 | buried:rufbereitschaft | Informationselektroniker | 16 | – |
-| service-bielefeld | p0080 | synonym | Elektroniker BT | 19 | – |
-| service-bielefeld | p0034 | synonym | Informationselektroniker Schwerpunkt Geräte- und Systemtechnik | 22 | – |
-| service-bielefeld | p0353 | buried:beruf | k. A. | 30 | – |
-| service-bielefeld | p0104 | buried:erfahrung | Elektroniker EGT | 31 | – |
-| service-bielefeld | p0045 | plain | Mechatroniker | 35 | – |
-| … | 4 more in `run.json` | | | | |
+| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker/-in | 12 | – |
+| cnc-guetersloh | p0244 | synonym | Industriemech. | 14 | – |
+| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 16 | – |
+| cnc-guetersloh | p0030 | synonym | Industriemechaniker/-in | 19 | – |
+| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 23 | – |
+| cnc-guetersloh | p0151 | buried:beruf | k. A. | 25 | – |
+| service-bielefeld | p0307 | synonym | Elektroniker BT | 12 | – |
+| service-bielefeld | p0080 | synonym | Elektroniker BT | 13 | – |
+| service-bielefeld | p0155 | buried:fuehrerschein | Elektroniker EGT | 15 | – |
+| service-bielefeld | p0034 | synonym | Informationselektroniker/-in | 17 | – |
+| service-bielefeld | p0353 | buried:beruf | k. A. | 20 | – |
+| service-bielefeld | p0104 | buried:erfahrung | Elektroniker EGT | 21 | – |
+| service-bielefeld | p0045 | plain | Mechatroniker | 28 | – |
+| service-bielefeld | p0131 | plain | Mechatroniker | 39 | – |
+| … | 3 more in `run.json` | | | | |
 
 ## Fits `field-filter` left off the shortlist (25)
 
 | Vacancy | Profile | Case | Beruf field | Rank | Why (matcher's words; misread must-haves) |
 |---|---|---|---|---|---|
-| eb-paderborn | p0282 | buried:zertifikate | Elektroniker/-in für Betriebstechnik | 9 | Feld leer oder unpassend: beruf, zertifikate |
-| eb-paderborn | p0332 | synonym | Energieelektroniker Fachrichtung Betriebstechnik (bis 2003) | 11 | Feld leer oder unpassend: beruf |
-| eb-paderborn | p0307 | synonym | Elektroniker/-in für Betriebstechnik | 15 | Feld leer oder unpassend: beruf |
-| eb-paderborn | p0182 | synonym | Elektroniker/-in für Automatisierungstechnik | 23 | Feld leer oder unpassend: beruf |
-| eb-paderborn | p0241 | synonym | Elektroniker/-in für Betriebstechnik | 26 | Feld leer oder unpassend: beruf |
-| eb-paderborn | p0084 | buried:beruf | k. A. | 27 | Feld leer oder unpassend: beruf |
-| eb-paderborn | p0047 | buried:erfahrung | Elektroniker für Automatisierungstechnik | 33 | Feld leer oder unpassend: erfahrung |
-| eb-paderborn | p0331 | buried:schicht | Mechatroniker | 74 | Feld leer oder unpassend: schicht |
-| cnc-guetersloh | p0061 | buried:schicht | Zerspanungsmechaniker | 12 | Feld leer oder unpassend: schicht |
-| cnc-guetersloh | p0076 | buried:zertifikate | Zerspanungsmechaniker | 13 | Feld leer oder unpassend: zertifikate |
-| cnc-guetersloh | p0151 | buried:beruf | k. A. | 18 | Feld leer oder unpassend: beruf |
-| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker | 28 | Feld leer oder unpassend: erfahrung |
-| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 34 | Feld leer oder unpassend: beruf |
-| cnc-guetersloh | p0244 | synonym | Industriemech. | 70 | Feld leer oder unpassend: beruf |
-| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 85 | Feld leer oder unpassend: beruf |
-| cnc-guetersloh | p0030 | synonym | Industriemech. | 91 | Feld leer oder unpassend: beruf |
-| service-bielefeld | p0155 | buried:fuehrerschein | Elektroniker für Energie- und Gebäudetechnik | 13 | Feld leer oder unpassend: fuehrerschein |
-| service-bielefeld | p0307 | synonym | Elektroniker/-in für Betriebstechnik | 40 | Feld leer oder unpassend: beruf |
-| service-bielefeld | p0100 | buried:rufbereitschaft | Informationselektroniker | 70 | Feld leer oder unpassend: rufbereitschaft |
-| service-bielefeld | p0080 | synonym | Elektroniker BT | 85 | Feld leer oder unpassend: beruf |
+| eb-paderborn | p0282 | buried:zertifikate | Elektroniker für Betriebstechnik | 8 | Feld leer oder unpassend: zertifikate |
+| eb-paderborn | p0332 | synonym | Energieelektroniker Fachrichtung Betriebstechnik | 11 | Feld leer oder unpassend: beruf |
+| eb-paderborn | p0084 | buried:beruf | k. A. | 20 | Feld leer oder unpassend: beruf |
+| eb-paderborn | p0307 | synonym | Elektroniker BT | 32 | Feld leer oder unpassend: beruf |
+| eb-paderborn | p0241 | synonym | Energieelektroniker Fachrichtung Betriebstechnik | 56 | Feld leer oder unpassend: beruf |
+| eb-paderborn | p0331 | buried:schicht | Mechatr. | 59 | Feld leer oder unpassend: beruf, schicht |
+| eb-paderborn | p0047 | buried:erfahrung | Prozessleitelektroniker | 99 | Feld leer oder unpassend: beruf, erfahrung |
+| eb-paderborn | p0182 | synonym | Prozessleitelektroniker | 103 | Feld leer oder unpassend: beruf |
+| cnc-guetersloh | p0061 | buried:schicht | Zerspanungsmechaniker/-in | 12 | Feld leer oder unpassend: beruf, schicht |
+| cnc-guetersloh | p0076 | buried:zertifikate | Zerspanungsmechaniker | 14 | Feld leer oder unpassend: zertifikate |
+| cnc-guetersloh | p0035 | buried:erfahrung | Industriemechaniker/-in | 28 | Feld leer oder unpassend: beruf, erfahrung |
+| cnc-guetersloh | p0244 | synonym | Industriemech. | 34 | Feld leer oder unpassend: beruf |
+| cnc-guetersloh | p0287 | synonym | Industriemechaniker/-in | 40 | Feld leer oder unpassend: beruf |
+| cnc-guetersloh | p0030 | synonym | Industriemechaniker/-in | 46 | Feld leer oder unpassend: beruf |
+| cnc-guetersloh | p0285 | synonym | Zerspanungsmech. | 80 | Feld leer oder unpassend: beruf |
+| cnc-guetersloh | p0151 | buried:beruf | k. A. | 85 | Feld leer oder unpassend: beruf |
+| service-bielefeld | p0100 | buried:rufbereitschaft | Informationselektroniker/-in | 43 | Feld leer oder unpassend: beruf, rufbereitschaft |
+| service-bielefeld | p0307 | synonym | Elektroniker BT | 48 | Feld leer oder unpassend: beruf |
+| service-bielefeld | p0080 | synonym | Elektroniker BT | 52 | Feld leer oder unpassend: beruf |
+| service-bielefeld | p0155 | buried:fuehrerschein | Elektroniker EGT | 54 | Feld leer oder unpassend: beruf, fuehrerschein |
 | … | 5 more in `run.json` | | | | |
 
 ## Does the name move the ranking?
@@ -145,11 +145,11 @@ Lost a top-10 place, by origin: every base/swap pair tests both origins involved
 
 | Origin | `bm25` | `keyword` | `field-filter` |
 |---|---|---|---|
-| ar | 0% (0/103) [0–4] | 0% (0/88) [0–4] | 0% (0/104) [0–4] |
-| de | 0% (0/174) [0–2] | 0% (0/198) [0–2] | 0% (0/176) [0–2] |
-| pl | 0% (0/107) [0–3] | 0% (0/101) [0–4] | 0% (0/103) [0–4] |
-| tr | 0% (0/115) [0–3] | 0% (0/108) [0–3] | 0% (0/115) [0–3] |
-| ua | 0% (0/101) [0–4] | 0% (0/105) [0–4] | 0% (0/102) [0–4] |
+| ar | 0% (0/93) [0–4] | 0% (0/86) [0–4] | 0% (0/93) [0–4] |
+| de | 0% (0/192) [0–2] | 0% (0/194) [0–2] | 0% (0/190) [0–2] |
+| pl | 0% (0/102) [0–4] | 0% (0/101) [0–4] | 0% (0/103) [0–4] |
+| tr | 0% (0/110) [0–3] | 0% (0/117) [0–3] | 0% (0/114) [0–3] |
+| ua | 0% (0/103) [0–4] | 0% (0/102) [0–4] | 0% (0/100) [0–4] |
 
 ## How this was measured
 

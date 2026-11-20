@@ -7161,7 +7161,7 @@
        "id": "p0241",
        "rank": 19,
        "case": "synonym",
-       "title": "Elektroniker/-in für Betriebstechnik",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7173,7 +7173,7 @@
        "id": "p0182",
        "rank": 40,
        "case": "synonym",
-       "title": "Elektroniker/-in für Automatisierungstechnik",
+       "title": "Prozessleitelektroniker",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7185,7 +7185,7 @@
        "id": "p0332",
        "rank": 53,
        "case": "synonym",
-       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -7802,7 +7802,7 @@
        "id": "p0034",
        "rank": 57,
        "case": "synonym",
-       "title": "Informationselektroniker Schwerpunkt Geräte- und Systemtechnik",
+       "title": "Informationselektroniker/-in",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: beruf",
        "misread": [
@@ -13163,7 +13163,7 @@
        "id": "p0282",
        "rank": 57,
        "case": "buried:zertifikate",
-       "title": "Elektroniker/-in für Betriebstechnik",
+       "title": "Elektroniker für Betriebstechnik",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: zertifikate",
        "misread": [
@@ -13377,7 +13377,7 @@
        "id": "p0061",
        "rank": 57,
        "case": "buried:schicht",
-       "title": "Zerspanungsmechaniker",
+       "title": "Zerspanungsmechaniker/-in",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: schicht",
        "misread": [
@@ -13782,7 +13782,7 @@
        "id": "p0100",
        "rank": 155,
        "case": "buried:rufbereitschaft",
-       "title": "Informationselektroniker",
+       "title": "Informationselektroniker/-in",
        "stage": "offline",
        "matcher_note": "nicht erfüllt: rufbereitschaft",
        "misread": [
@@ -26415,7 +26415,7 @@
        "id": "p0047",
        "rank": 11,
        "case": "buried:erfahrung",
-       "title": "Elektroniker für Automatisierungstechnik",
+       "title": "Prozessleitelektroniker",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -26425,7 +26425,7 @@
        "id": "p0332",
        "rank": 15,
        "case": "synonym",
-       "title": "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)",
+       "title": "Energieelektroniker Fachrichtung Betriebstechnik",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -27054,7 +27054,7 @@
        "id": "p0034",
        "rank": 11,
        "case": "synonym",
-       "title": "Informationselektroniker Schwerpunkt Geräte- und Systemtechnik",
+       "title": "Informationselektroniker/-in",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
@@ -27074,7 +27074,7 @@
        "id": "p0012",
        "rank": 21,
        "case": "synonym",
-       "title": "Mechatroniker (IHK)",
+       "title": "Mechatr.",
        "stage": "offline",
        "matcher_note": "",
        "misread": []
