@@ -83,7 +83,9 @@ def _matchers(args, pool, log):
 
 
 def cmd_run(args) -> int:
-    log = lambda msg: print(f"[poolgate] {msg}", file=sys.stderr, flush=True)
+    def log(msg: str) -> None:
+        print(f"[poolgate] {msg}", file=sys.stderr, flush=True)
+
     pool = make_pool(args.n, args.seed)
     matchers, usage = _matchers(args, pool, log)
     out = args.out or Path("results") / f"run-{time.strftime('%Y%m%d-%H%M%S')}"
