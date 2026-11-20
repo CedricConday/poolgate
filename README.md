@@ -376,6 +376,18 @@ recovers: put in an answer you know, run the system, grade what comes out.
 poolgate reuses screengate's Wilson intervals, its swap-against-repeat fairness
 test and its subscription backend for Claude.
 
+## Related
+
+Three small tools on one question: does an AI step in recruiting do what it
+claims, in numbers anyone can recompute?
+
+- [screengate](https://github.com/CedricConday/screengate): what a screening
+  chatbot's summary keeps, invents, and whether its verdict moves with the name.
+- [poolgate](https://github.com/CedricConday/poolgate): who a talent-pool
+  matcher shortlists, who it misses, and why.
+- [vakanzcheck](https://github.com/CedricConday/vakanzcheck): whether a
+  vacancy's offer can fill it, on live Bundesagentur data and written-down rules.
+
 ## License
 
 MIT
