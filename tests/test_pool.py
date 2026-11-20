@@ -67,8 +67,9 @@ def test_every_hidden_fact_is_stated_in_the_notes(pool):
                 term = feminine(p.pres.term) if p.identity.gender == "f" else p.pres.term
                 assert term.lower() in notes, (p.id, term)
             elif h == "years":
-                n = years_at(f, f.last_contact)
-                assert re.search(rf"\b({n}|{training_end(f)})\b", notes), p.id
+                # The season and year the training ended, never a bare duration:
+                # an old note's duration alone cannot fix today's whole years.
+                assert f"sommer {training_end(f)}" in notes, p.id
             elif h == "licence":
                 assert "fs" in tokens(notes) or "führerschein" in notes, p.id
             elif h == "shift":
@@ -175,7 +176,7 @@ def test_name_validity_rule():
 # Every way the notes state experience as a duration, and as a year.
 _DURATION = re.compile(r"(\d+) J\. Berufserfahrung|BE: (\d+) Jahre|nach der Ausbildung (\d+) Jahre"
                        r"|Berufserfahrung nach Ausbildung: (\d+) Jahre", re.IGNORECASE)
-_CAREER_YEAR = re.compile(r"Abschluss Sommer (\d{4})|ausgelernt \((\d{4})\)|seit (\d{4}) im Beruf"
+_CAREER_YEAR = re.compile(r"Sommer (\d{4})"
                           r"|Abschluss (?:IHK|HWK) (\d{4})|Gesellenprüfung (\d{4})"
                           r"|\((\d{4})-(\d{4})\)", re.IGNORECASE)
 
@@ -205,7 +206,6 @@ def test_notes_never_predate_the_career_and_agree_with_the_truth(seed):
                     else [training_end(f)])
             assert got == want, (p.id, m.group(0))
             assert max(got) <= f.last_contact.year, (p.id, m.group(0))
-        assert "Abschluss Sommer" not in p.notes or years_at(f, f.last_contact) == 0, p.id
     assert durations > 50  # the rule is exercised, not vacuous
 
 

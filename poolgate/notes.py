@@ -80,21 +80,26 @@ def _trade(f: Facts, pr: Presentation, ident: Identity, rng: random.Random) -> s
     ))
 
 
-def _years(f: Facts, rng: random.Random) -> str:
-    """Experience as of the note's date: a duration counts from the training's end
-    to the day of the call, and a year ("seit 2019") holds at any date."""
+def _years(f: Facts, rng: random.Random, anchored: bool) -> str:
+    """Experience as of the note's date. A duration counts from the training's end
+    to the day of the call; "Sommer 2019" holds at any date. Where the field is
+    empty (`anchored`), the note names the season and year the training ended:
+    a duration from an old note ("BE: 1 Jahr" in April 2025) cannot tell 1 year
+    today from 2, so it alone would leave the truth unrecoverable."""
     n = years_at(f, f.last_contact)
     since = training_end(f)
-    if n == 0:
-        return rng.choice((f"Berufseinsteiger, Abschluss Sommer {since}",
-                           f"gerade ausgelernt ({since}), noch keine BE"))
-    return rng.choice((
+    dated = ((f"Berufseinsteiger, Abschluss Sommer {since}",
+              f"ausgelernt Sommer {since}, noch keine BE") if n == 0 else
+             (f"seit Sommer {since} im Beruf (nach Ausbildung)",
+              f"Abschluss Sommer {since}, seitdem im Beruf"))
+    if anchored:
+        return rng.choice(dated)
+    return rng.choice(dated + ((
         f"{n} J. Berufserfahrung",
         f"BE: {n} Jahre",
-        f"seit {since} im Beruf (nach Ausbildung)",
         f"nach der Ausbildung {n} Jahre bei {rng.choice(FIRMS)}",
         f"Berufserfahrung nach Ausbildung: {n} Jahre",
-    ))
+    ) if n else ()))
 
 
 def _cert(c: str, rng: random.Random) -> str:
@@ -182,7 +187,7 @@ def render_notes(f: Facts, pr: Presentation, ident: Identity, rng: random.Random
     if "trade" in h or rng.random() < 0.7:
         facts.append(_trade(f, pr, ident, rng))
     if "years" in h or rng.random() < 0.4:
-        facts.append(_years(f, rng))
+        facts.append(_years(f, rng, anchored="years" in h))
     if "certs" in h or rng.random() < 0.4:
         c = _certs(f, rng, explicit_none="certs" in h)
         if c:
