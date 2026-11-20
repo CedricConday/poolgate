@@ -27,11 +27,10 @@ is the harness one would use to.
    contact. Per vacancy, 12 true fits are planted:
    - 4 **plain**: official trade name in the Beruf field, every fact in its field;
    - 4 **synonym**: the Beruf field shows another name for the same
-     qualification: an official predecessor name with its year ("Betriebsschlosser
-     (bis 1987)", "Elektroinstallateur (bis 2003)"), the official long form, or a
-     common abbreviation of the official name ("Elektroniker BT"). A dated name
-     is used only when the candidate's training ended while the name was in use
-     (careers run up to 41 years). Job titles and unofficial names are not used;
+     qualification: an official predecessor name ("Energieelektroniker
+     Fachrichtung Betriebstechnik", "Elektroinstallateur", "Betriebsschlosser"),
+     the official long form, or a common abbreviation of the official name
+     ("Elektroniker BT"). Job titles and unofficial names are not used;
    - 4 **buried**: one must-have fact is "k. A." in its field and stated only in
      the notes, one fit for each must-have other than distance (trade, years,
      and per vacancy certificate, shift, licence or on-call);
@@ -40,6 +39,13 @@ is the harness one would use to.
    one (no licence, 80 km away, a Kfz-Mechatroniker for a Mechatroniker job,
    S7 never used, nights refused), with the failing fact usually in the notes.
    Background profiles that would fit are redrawn, so every true fit is known.
+   Every trade name, in the field and in the notes, was in use when the
+   candidate's training started: today's name from its reform year on (2003 for
+   the Elektroniker trades, 1998 for Mechatroniker, 1987 for the metal trades
+   ...), the predecessor before. Reform years are checked against BIBB's
+   yearly lists of new and modernised occupations; the sources are cited in
+   `poolgate/pool.py`. Careers run up to 41 years, and are capped where a trade
+   has no sourced predecessor, so no training predates its name.
    Certificate lists, in the field and in the notes, are declared complete: a
    certificate not named is absent, not unknown.
 2. **Present.** Each profile is rendered as an ATS record: structured fields,
@@ -112,18 +118,18 @@ through the claude CLI; keyword top 50 per vacancy, 10 candidates per call.
 
 | Measure | `keyword` | `field-filter` | `claude` |
 |---|---|---|---|
-| Recall@10 (ceiling 77%) | 38% [25–54] | 38% [25–54] | 77% [62–87] |
-| Recall@20 | 74% [59–85] | 54% [39–68] | 100% [91–100] |
-| Precision@10 | 50% [33–67] | 50% [33–67] | 100% [89–100] |
-| Shortlist precision | 50% (15/30, top 10) | 100% (14/14) | 100% (39/39) [91–100] |
-| Shortlist recall | 38% (15/39) | 36% (14/39) | 100% (39/39) [91–100] |
-| Near-misses in top 10 | 15 of 148 | 12 of 148 | 0 of 148 (59 reached the model, all rejected) |
-| Shortlist recall, synonym fits | 23% (3/13) | 0% (0/13) | 100% (13/13) |
+| Recall@10 (ceiling 77%) | 41% [27–57] | 38% [25–54] | 77% [62–87] |
+| Recall@20 | 77% [62–87] | 49% [34–64] | 97% [87–100] |
+| Precision@10 | 53% [36–70] | 50% [33–67] | 100% [89–100] |
+| Shortlist precision | 53% (16/30, top 10) | 100% (14/14) | 100% (38/38) [91–100] |
+| Shortlist recall | 41% (16/39) | 36% (14/39) | 97% (38/39) [87–100] |
+| Near-misses in top 10 | 12 of 148 | 13 of 148 | 0 of 148 (51 reached the model, all rejected) |
+| Shortlist recall, synonym fits | 15% (2/13) | 0% (0/13) | 92% (12/13) |
 | Shortlist recall, buried fits | 42% (5/12) | 0% (0/12) | 100% (12/12) |
-| Top-10 flips on name swap / on repeat | 0% / 0% (by construction) | 0% / 0% (by construction) | 2% (6/300) [1–4] / 0% (0/150) [0–2] |
-| Own-list flips on name swap / on repeat | – | 0% / 0% | 0% (0/300) / 0% (0/150) |
+| Top-10 flips on name swap / on repeat | 0% / 0% (by construction) | 0% / 0% (by construction) | 3% (10/300) [2–6] / 3% (4/150) [1–7] |
+| Own-list flips on name swap / on repeat | – | 0% / 0% | 0.3% (1/300) / 0.7% (1/150) |
 
-Pure BM25 without the field filter: recall@20 38%, shortlist recall 21%. Of
+Pure BM25 without the field filter: recall@20 33%, shortlist recall 23%. Of
 the 148 near-misses, 30 were planted look-alikes; 118 are background profiles
 that happen to fail exactly one must-have.
 
@@ -133,39 +139,39 @@ What the numbers say, within their intervals:
   fit and no synonym or buried fit. Keyword search finds some of them, but
   ranks near-misses next to fits, because "kein Führerschein" contains
   "Führerschein".
-- The Claude reranker shortlisted all 39 fits and no non-fit. Every fit passed
-  the keyword prefilter this time. Of the 59 near-misses that reached the model,
-  it let none in. Of its 750 must-have judgements none was wrong and 1 was
-  "unklar" (years). The 150 distance judgements are not a reading test, because
-  the distance is computed and shown on each record.
-- 100% here is on 39 fits in a synthetic pool built to be readable: the lower
-  bound of the interval is 91%. The prefilter remains the weak point of this
-  design. In the two earlier runs it kept 2 fits from the model each time.
-- Name swap: the yes-list did not move at all (0 of 300). Top-10 membership
-  flipped 6 times in 300 swap tests against 0 in 150 repeats. The intervals
-  overlap ([1–4]% and [0–2]%), and the 6 losses fall on de 3, ua 2 and ar 1,
-  not on one origin. With every fit on the yes-list, these flips are
-  reordering among fits around place 10, not anyone gaining or losing the
-  shortlist. This is no evidence of a name effect, and too small a sample to
-  exclude one of a few percent.
+- The Claude reranker shortlisted 38 of 39 fits and no non-fit. Of the 51
+  near-misses that reached the model, it let none in. Of its 750 must-have
+  judgements none was wrong and 1 was "unklar" (years). The 150 distance
+  judgements are not a reading test, because the distance is computed and
+  shown on each record.
+- Its one miss never reached it: a Mechatroniker whose Beruf field reads
+  "Mechatr.", at keyword rank 62 for the Bielefeld vacancy, which accepts four
+  trades, so the keyword ranking spreads thin there. Every fit the prefilter
+  passed was shortlisted (38 of 38). The prefilter, not the model, is the weak
+  point of this design; it kept fits from the model in three of the four runs.
+- Name swap: top-10 flips on swap (3%) equal the repeat rate (3%), and the
+  yes-list moved once in 300 swaps and once in 150 repeats. The losses spread
+  over all five origins, at most 4 for any one. This is no evidence of a name
+  effect, and too small a sample to exclude one of a few percent.
 
-How the three live runs differ: each used a different pool, because each
-round of fixes changes the generator, and each is a fresh model sample at
-the same settings. So the gains between runs come from the fixes, the
-redrawn pool and sampling together, not from the fixes alone.
+How the four live runs differ: each used a different pool, because each round
+of fixes changes the generator, and each is a fresh model sample at the same
+settings. So the gains between runs come from the fixes, the redrawn pool and
+sampling together, not from the fixes alone.
 
 | Run | Pool | Shortlist recall | "unklar" | Misses |
 |---|---|---|---|---|
-| [run 1](results/claude-opus-5-5-run1/report.md) | job titles among trade synonyms, certificate lists not declared complete, no buried shift/on-call | 85% (34/40) | 13 | 4 on job titles, 2 not past the prefilter (p0034, p0104) |
-| [run 2](results/claude-opus-5-5-run2/report.md) | official names only, but dated names regardless of training year | 95% (38/40) | 0 | 2 not past the prefilter (p0370, p0104) |
-| run 3 (this) | dated names only where the training year allows them | 100% (39/39) | 1 | none |
+| [run 1](results/claude-opus-5-5-run1/report.md) | job titles among trade synonyms, certificate lists not declared complete, no buried shift/on-call | 85% (34/40) | 13 | 4 on job titles, 2 not past the prefilter |
+| [run 2](results/claude-opus-5-5-run2/report.md) | official names only, but predecessor names regardless of training year | 95% (38/40) | 0 | 2 not past the prefilter |
+| [run 3](results/claude-opus-5-5-run3/report.md) | predecessor names checked, current names not: 81 profiles carry a name newer than their training | 100% (39/39) | 1 | none |
+| run 4 (this) | every shown name valid for the training-start year, reform years sourced | 97% (38/39) | 1 | 1 not past the prefilter |
 
 In run 2, 8 true fits carried a predecessor name retired before their training
 ended. Claude noted the contradiction on two of them but still accepted them.
 
 Cost: 60 calls (15 for the ranking, 45 for the repeat and the two swap runs),
-397k input and 162k output tokens, $5.24 at list price as reported by the CLI
-(run 1: $5.34, run 2: $5.28). No call needed a retry.
+390k input and 158k output tokens, $5.15 at list price as reported by the CLI
+(runs 1 to 3: $5.34, $5.28, $5.24). No call needed a retry.
 
 ## Use
 
