@@ -214,11 +214,16 @@ so a matcher that caches by id must not reuse results across calls.
   ways not modelled here: contradictions between field and note, stale facts,
   facts that are simply missing. Here every fact is stated somewhere and never
   contradicted, so the truth is recoverable by construction.
-- Synonyms are official names only: long forms, predecessor names with the
-  year, and abbreviations of the official name. A real pool is full of job
+- Synonyms are official names only: long forms, predecessor names (shown
+  only where valid for the training years, without a date label), and
+  abbreviations of the official name. A real pool is full of job
   titles and ambiguous words ("Elektriker", "CNC-Fräser", "Servicetechniker")
   that leave the trade genuinely unknown. A matcher should flag those for a
   recruiter, and grading that needs a third outcome. It is not modelled here.
+- Notes say "Abschluss IHK" for every trade. For the Handwerk trades
+  (Elektroniker für Energie- und Gebäudetechnik, Anlagenmechaniker SHK) the
+  exam is the Gesellenprüfung at the Handwerkskammer. This touches five
+  background profiles and no fit, and is fixed in the generator's next pool.
 - Certificate lists are declared complete, so a certificate not named is
   absent. Real records rarely say "sonst keine". There, an unstated certificate
   is unknown, and "unklar" would be the right answer.
