@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from .pool import MUST_LABEL, VACANCY_BY_KEY
 
+SYNONYM_LABEL = {"variant": "spelling variant", "abbrev": "abbreviation",
+                 "predecessor": "predecessor name"}
 CASE_LABEL = {
     "plain": "plain (official title, facts in fields)",
-    "synonym": "synonym (title is an old name, abbreviation or synonym)",
+    "synonym": "synonym (Beruf field: another spelling, an abbreviation or a predecessor name)",
     "buried": "buried (a must-have fact only in the notes)",
 }
 
@@ -85,9 +87,12 @@ def render(result: dict, config: dict) -> str:
             (pct(m["by_case"][c]["recall@20"], False) + " / "
              + pct(m["by_case"][c]["in_shortlist"]))
             if c in m.get("by_case", {}) else "–" for m in ms]))
-    details = sorted({c for m in ms for c in m.get("by_case_detail", {}) if ":" in c})
+    details = sorted({c for m in ms for c in m.get("by_case_detail", {}) if ":" in c},
+                     key=lambda c: (list(CASE_LABEL).index(c.split(":")[0]), c))
     for c in details:
-        out.append(_row(f"· buried: {MUST_LABEL[c.split(':')[1]]}", [
+        fam, sub = c.split(":")
+        label = SYNONYM_LABEL[sub] if fam == "synonym" else MUST_LABEL[sub]
+        out.append(_row(f"· {fam}: {label}", [
             (pct(m["by_case_detail"][c]["recall@20"], False) + " / "
              + pct(m["by_case_detail"][c]["in_shortlist"]))
             if c in m.get("by_case_detail", {}) else "–" for m in ms]))

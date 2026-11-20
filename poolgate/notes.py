@@ -15,6 +15,7 @@ import re
 from .pool import (
     CERTS,
     DURATION,
+    HANDWERK,
     SHIFT_LABEL,
     TODAY,
     Facts,
@@ -67,10 +68,13 @@ FILLER = (
 def _trade(f: Facts, pr: Presentation, ident: Identity, rng: random.Random) -> str:
     term = feminine(pr.term) if ident.gender == "f" else pr.term
     end = training_end(f)
+    # Handwerk trades end in the Gesellenprüfung at the Handwerkskammer, the rest at the IHK.
+    exam = (f"Gesellenprüfung {end} (HWK)" if rng.random() < HANDWERK.get(f.trade, 0.0)
+            else f"Abschluss IHK {end}")
     return rng.choice((
         f"Ausbildung als {term} ({end - DURATION.get(f.trade, 3)}-{end})",
         f"gelernt: {term}",
-        f"{term}, Abschluss IHK {end}",
+        f"{term}, {exam}",
         f"lt. CV Ausb. {term} bei {rng.choice(FIRMS)}",
         f"hat {term} gelernt",
     ))

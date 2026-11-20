@@ -11,7 +11,7 @@ from pathlib import Path
 
 from . import __version__
 from .gate import run_matcher, truth_for
-from .pool import case_family, make_pool
+from .pool import case_family, make_pool, name_kind
 from .report import render
 
 
@@ -42,7 +42,10 @@ def pool_dump(pool) -> dict:
                 "certs": sorted(p.facts.certs), "licence": p.facts.licence,
                 "town": p.facts.town, "shift": p.facts.shift, "on_call": p.facts.on_call,
                 "origin": p.identity.origin, "gender": p.identity.gender,
-                "title_shown_as": p.pres.title, "only_in_notes": sorted(p.pres.hidden),
+                "title_shown_as": p.pres.title,
+                "title_kind": (name_kind(p.facts.trade, p.pres.title_text)
+                               if p.pres.title_text else None),
+                "only_in_notes": sorted(p.pres.hidden),
                 "planted": p.planted}} for p in pool.profiles]}
 
 

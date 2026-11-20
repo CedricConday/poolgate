@@ -220,3 +220,40 @@ def test_years_are_counted_from_the_summer_the_training_ended():
     assert years_at(f, date(TODAY.year - 2, 6, 30)) == 0
     assert years_at(f, date(TODAY.year - 2, 7, 1)) == 1
     assert years_at(f, TODAY) == 3
+
+
+@pytest.mark.parametrize("seed", [7, 8])
+def test_plain_fits_show_the_official_title_and_synonyms_are_classified(seed):
+    from poolgate.pool import NAMES, case_type, name_kind, official
+
+    pool = make_pool(400, seed)
+    kinds = set()
+    for p in pool.profiles:
+        if p.pres.title == "canonical":
+            assert p.pres.title_text == official(p.facts.trade), p.id
+        elif p.pres.title_text:
+            assert name_kind(p.facts.trade, p.pres.title_text) != "official", p.id
+    for v in VACANCIES:
+        for p in pool.profiles:
+            if is_fit(v, p.facts) and case_type(v, p).startswith("synonym:"):
+                kinds.add(case_type(v, p).split(":")[1])
+    assert kinds == {"variant", "abbrev", "predecessor"}
+    assert official("Elektroniker für Energie- und Gebäudetechnik") == \
+        "Elektroniker, Fachrichtung Energie- und Gebäudetechnik"
+    assert name_kind("Mechatroniker", "Mechatroniker (IHK)") == "variant"
+    for trade, names in NAMES.items():
+        assert names[0][3] == "official" and sum(n[3] == "official" for n in names) == 1, trade
+
+
+def test_handwerk_trades_say_gesellenpruefung_and_industry_trades_ihk(pool):
+    from poolgate.pool import HANDWERK
+
+    gesellen = 0
+    for p in pool.profiles:
+        share = HANDWERK.get(p.facts.trade, 0.0)
+        if share == 1.0:
+            assert "IHK" not in p.notes, (p.id, p.facts.trade)
+        if share == 0.0:
+            assert "Gesellenprüfung" not in p.notes and "HWK" not in p.notes, p.id
+        gesellen += "Gesellenprüfung" in p.notes
+    assert gesellen > 0
