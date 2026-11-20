@@ -134,7 +134,9 @@ Same pool, seed 7 ([report](results/offline-proof/report.md)):
 | downgrades Turkish and Arabic names | 95% | 77% | 83% | 0% | 12% | 0% | tr 25/100, ar 9/71, de 2/207 |
 | random score noise (±25) | 97% | 92% | 100% | 0% | 10% | 11% | spread over all origins |
 
-Each fault lands in its own column. Noise raises swap and repeat flips alike and
+Each fault shows most in its own column, though not only there: the name bias
+also lowers synonym and buried recall (77%, 83%), because the downgraded
+profiles include fits of every kind. Noise raises swap and repeat flips alike and
 spreads the losses over every origin; a name bias raises only the swap flips
 and puts the losses on the penalised origins. These are numbers about the gate,
 not about any real matcher.
@@ -164,7 +166,11 @@ every matcher gets a list exactly as long as the answer and the ceiling is
 | `field-filter` | 54% (21/39) [39–68] | 53% (19/36) [37–68] | 53% [42–64] |
 | `field-filter+syn` | 72% (28/39) [56–83] | 72% (26/36) [56–84] | 72% [61–81] |
 | `claude` | 92% (36/39) [80–97] | 92% (33/36) [78–97] | 92% [84–96] |
-| `claude@keyword+syn` | 100% (39/39) [91–100] | 100% (36/36) [90–100] | 100% [95–100] |
+| `claude@keyword+syn`¹ | 100% (39/39) [91–100] | 100% (36/36) [90–100] | 100% [95–100] |
+
+¹ Its prefilter expands the query with the generator's own synonym table, so its
+top 50 holds every fit by construction on these pools. This row measures the
+reader given a complete candidate list, not a deployable pipeline.
 
 The "both" column pools the two seeds; fits within a seed are not fully
 independent, so read its interval as slightly too narrow.
@@ -202,8 +208,9 @@ What the numbers say, within their intervals:
   112. Every fit the prefilter passed was shortlisted (36 of 36, 33 of 33).
 - With the synonym-aware prefilter (run 6) every fit reached the model on both
   pools, and the model shortlisted all of them: 39 of 39 and 36 of 36, 100%
-  [95–100] pooled, with 100% shortlist precision. More near-misses reached it
-  (53 and 50, against 54 and 45 before); it admitted none. Its top 10 held no
+  [95–100] pooled, with 100% shortlist precision. Slightly more near-misses
+  reached it (53 and 50 per seed, 103 in total, against 54 and 45, 99 in
+  total, before); it admitted none. Its top 10 held no
   near-miss on either seed.
 - That 100% has a ceiling built in: `keyword+syn` expands the query with the
   generator's own table, so on these pools its top 50 holds every fit (39 of
@@ -217,15 +224,19 @@ What the numbers say, within their intervals:
   25/25. Keyword search finds some buried fits but ranks near-misses next to
   fits, because "kein Führerschein" contains "Führerschein".
 - Reading errors were rare and all on non-fits. Of 750 must-have judgements per
-  seed and run: run 5 seed 7 none wrong; run 5 seed 8 one wrong (Beruf
-  "erfüllt" for a Maschinen- und Anlagenführer whose reason says the opposite)
-  and one "unklar" (experience, where the note says "Ausgelernt Sommer 2024");
-  run 6 two and one wrong, all experience: the model counted from a dated
-  note's "noch keine BE" and concluded under two years where the truth is two
-  (twice it overrode an experience field that showed 2). Date arithmetic at the
-  boundary is its one recurring slip. The 150 distance judgements per seed are
-  not a reading test, because the distance is computed and shown on each
-  record.
+  seed and run: run 5 seed 7 none wrong; run 5 seed 8 one wrong and one
+  "unklar"; run 6 two wrong on seed 7 and one on seed 8. Three of these are
+  model errors: Beruf "erfüllt" for a Maschinen- und Anlagenführer whose own
+  reason says the opposite (run 5), and twice "under two years" for a record
+  whose experience field shows 2 (run 6, p0245 seed 7 and p0363 seed 8: the
+  model let an old note override the current field). The other two come from
+  the generator's wording: where a note is dated less than a year after the
+  training, it says "ausgelernt Sommer 2024, noch keine BE", and "noch keine
+  BE" ten months after the exam can fairly be read as not having worked since.
+  That gave run 5's "unklar" (p0086, seed 8, field empty) and one run-6 error
+  (p0314, seed 7, field empty). The fix, "BE: unter 1 Jahr", changes the pool
+  and so waits for the next run. The 150 distance judgements per seed are not
+  a reading test, because the distance is computed and shown on each record.
 - Name swap: top-10 flips on swap (3%, 2%) are at the repeat rate (3%, 3%) in
   both runs, and the yes-list did not move in 1,200 swaps or 600 repeats. This
   is no evidence of a name effect, and too small a sample to exclude one of a
@@ -259,8 +270,8 @@ together, not from the fixes alone.
 | [run 2](results/claude-opus-5-5-run2/report.md) | official names only, but predecessor names regardless of training year | 95% (38/40) | 0 | 2 not past the prefilter |
 | [run 3](results/claude-opus-5-5-run3/report.md) | predecessor names checked, current names not: 81 profiles carry a name newer than their training | 100% (39/39) | 1 | none |
 | [run 4](results/claude-opus-5-5-run4/report.md) | every shown name valid for the training-start year, reform years sourced; notes could predate the training | 97% (38/39) | 1 | 1 not past the prefilter |
-| run 5, seed 7 | official titles for plain fits, synonym kinds planted in turn, notes dated after the training, Gesellenprüfung for Handwerk; prompt says notes are dated | 92% (36/39) | 0 | 3 not past the prefilter |
-| run 5, seed 8 | the same, second pool | 92% (33/36) | 1 | 3 not past the prefilter |
+| [run 5](results/claude-opus-5-5/report.md), seed 7 | official titles for plain fits, synonym kinds planted in turn, notes dated after the training, Gesellenprüfung for Handwerk; prompt says notes are dated | 92% (36/39) | 0 | 3 not past the prefilter |
+| [run 5](results/claude-opus-5-5-seed8/report.md), seed 8 | the same, second pool | 92% (33/36) | 1 | 3 not past the prefilter |
 | [run 6](results/claude-opus-5-5-presyn/report.md), seed 7 | run 5's pool; prefilter `keyword+syn` | 100% (39/39) | 0 | none |
 | [run 6](results/claude-opus-5-5-seed8-presyn/report.md), seed 8 | run 5's pool; prefilter `keyword+syn` | 100% (36/36) | 0 | none |
 
@@ -324,6 +335,19 @@ so a matcher that caches by id must not reuse results across calls.
 
 ## Limits
 
+- The case mix is a stress design, not a rate seen in real pools: per vacancy
+  4 plain, 4 synonym and 4 buried fits. About a third of the fits are buried,
+  so a filter on structured fields cannot pass much more than two thirds by
+  design. Absolute rates, and the gap between the reranker (92%) and the best
+  baseline (72%), depend on this mix; a pool with fewer buried facts would
+  narrow it.
+- Two known simplifications of the generator: the training firm in a note is
+  drawn at random for every trade, so an Industriemechaniker may have trained
+  at an Elektro-Handwerksbetrieb or a Kfz-Mechatroniker at a Möbelhersteller;
+  and every training except the two-year ones is shown as three years, also
+  for trades that take three and a half (the Elektroniker trades,
+  Industrie- and Zerspanungsmechaniker, Mechatroniker). Neither enters a
+  must-have.
 - The pool is synthetic, and so is its messiness. Real notes are messier in
   ways not modelled here: contradictions between field and note, stale facts,
   facts that are simply missing. Here every fact is stated somewhere, so the
