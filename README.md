@@ -109,13 +109,14 @@ recall@10 cannot exceed 77% on seed 7 (30 of 39) and 83% on seed 8 (30 of 36).
 | `field-filter` | the same, Beruf spelling normalised first (case, spacing, "/-in", "(IHK)", the "Fachrichtung" form) |
 | `field-filter+syn` | the same, accepting every name in the synonym table (variants, abbreviations, predecessor names) |
 | `claude` | the `keyword` top 50, read in full by Claude Opus 5.5 in batches of 10; Claude judges each must-have per candidate (structured output), the shortlist is the candidates it judges as meeting all of them |
+| `claude@keyword+syn` | the same reader behind the `keyword+syn` top 50 (`--prefilter keyword+syn`) |
 | HTTP | any matcher behind one endpoint, see below |
 
 The `+syn` baselines get the generator's own table, which is more than a real
 search has: they are an upper bound for synonym handling by lookup, not a
 typical system. The Claude reranker is a reference built the way such a
 preselection is commonly built (cheap search, then a model reads the top N).
-Its prefilter is the literal `keyword`, not `keyword+syn`. It is not a claim
+It runs behind either prefilter; the two are reported as separate columns. It is not a claim
 about any vendor's pipeline or prompt.
 
 ## Proof the gate sees each failure
@@ -140,12 +141,16 @@ not about any real matcher.
 
 ## Results
 
-Run 5: Claude Opus 5.5, effort medium, through the claude CLI; keyword top 50
-per vacancy, 10 candidates per call; every baseline on the same pool. Two pools:
-seed 7 ([report](results/claude-opus-5-5/report.md),
+Claude Opus 5.5, effort medium, through the claude CLI; top 50 per vacancy,
+10 candidates per call; every baseline on the same pool. Two pools: seed 7
+([report](results/claude-opus-5-5/report.md),
 [pool with hidden truth](results/claude-opus-5-5/pool.json)) and seed 8
 ([report](results/claude-opus-5-5-seed8/report.md),
-[pool](results/claude-opus-5-5-seed8/pool.json)).
+[pool](results/claude-opus-5-5-seed8/pool.json)). Run 5 is the reranker behind
+the literal keyword prefilter; run 6 is the same reader behind the
+synonym-aware prefilter, on the same two pools
+([seed 7](results/claude-opus-5-5-presyn/report.md),
+[seed 8](results/claude-opus-5-5-seed8-presyn/report.md)).
 
 Equal footing first: recall at k = the number of true fits per vacancy, so
 every matcher gets a list exactly as long as the answer and the ceiling is
@@ -159,23 +164,24 @@ every matcher gets a list exactly as long as the answer and the ceiling is
 | `field-filter` | 54% (21/39) [39–68] | 53% (19/36) [37–68] | 53% [42–64] |
 | `field-filter+syn` | 72% (28/39) [56–83] | 72% (26/36) [56–84] | 72% [61–81] |
 | `claude` | 92% (36/39) [80–97] | 92% (33/36) [78–97] | 92% [84–96] |
+| `claude@keyword+syn` | 100% (39/39) [91–100] | 100% (36/36) [90–100] | 100% [95–100] |
 
 The "both" column pools the two seeds; fits within a seed are not fully
 independent, so read its interval as slightly too narrow.
 
-| Measure, seed 7 / seed 8 | `keyword` | `keyword+syn` | `field-filter` | `field-filter+syn` | `claude` |
-|---|---|---|---|---|---|
-| Recall@20 (ceiling 100%) | 74% / 78% | 77% / 83% | 62% / 64% | 74% / 75% | 92% / 92% |
-| Shortlist precision | 57% / 57% (top 10) | 57% / 67% (top 10) | 100% / 100% | 100% / 100% | 100% / 100% (36/36, 33/33) |
-| Shortlist recall | 44% / 47% (top 10; ceiling 77% / 83%) | 44% / 56% (top 10) | 49% / 44% | 69% / 67% | 92% / 92% |
-| Near-misses in top 10 | 13 of 145 / 10 of 143 | 13 / 8 | 8 / 9 | 1 / 2 | 0 / 1 |
-| Synonym fits shortlisted | 5/13 / 3/12 | 6/13 / 8/12 | 5/13 / 4/12 | 13/13 / 12/12 | 11/13 / 10/12 |
-| · spelling variant | 3/5 / 1/4 | 2/5 / 0/4 | 5/5 / 4/4 | 5/5 / 4/4 | 5/5 / 4/4 |
-| · abbreviation | 1/3 / 0/1 | 1/3 / 1/1 | 0/3 / 0/1 | 3/3 / 1/1 | 3/3 / 1/1 |
-| · predecessor name | 1/5 / 2/7 | 3/5 / 7/7 | 0/5 / 0/7 | 5/5 / 7/7 | 3/5 / 5/7 |
-| Buried fits shortlisted | 3/12 / 7/12 | 4/12 / 6/12 | 0/12 / 0/12 | 0/12 / 0/12 | 11/12 / 11/12 |
-| Top-10 flips on name swap / on repeat | 0 (by construction) | 0 | 0 | 0 | 3% (8/300) / 3% (4/150); 2% (6/300) / 3% (4/150) |
-| Own-list flips on name swap / on repeat | – | – | 0 | 0 | 0/300 / 0/150 on both seeds |
+| Measure, seed 7 / seed 8 | `keyword` | `keyword+syn` | `field-filter` | `field-filter+syn` | `claude` | `claude@keyword+syn` |
+|---|---|---|---|---|---|---|
+| Recall@20 (ceiling 100%) | 74% / 78% | 77% / 83% | 62% / 64% | 74% / 75% | 92% / 92% | 100% / 100% |
+| Shortlist precision | 57% / 57% (top 10) | 57% / 67% (top 10) | 100% / 100% | 100% / 100% | 100% / 100% (36/36, 33/33) | 100% / 100% (39/39, 36/36) |
+| Shortlist recall | 44% / 47% (top 10; ceiling 77% / 83%) | 44% / 56% (top 10) | 49% / 44% | 69% / 67% | 92% / 92% | 100% / 100% |
+| Near-misses in top 10 | 13 of 145 / 10 of 143 | 13 / 8 | 8 / 9 | 1 / 2 | 0 / 1 | 0 / 0 |
+| Synonym fits shortlisted | 5/13 / 3/12 | 6/13 / 8/12 | 5/13 / 4/12 | 13/13 / 12/12 | 11/13 / 10/12 | 13/13 / 12/12 |
+| · spelling variant | 3/5 / 1/4 | 2/5 / 0/4 | 5/5 / 4/4 | 5/5 / 4/4 | 5/5 / 4/4 | 5/5 / 4/4 |
+| · abbreviation | 1/3 / 0/1 | 1/3 / 1/1 | 0/3 / 0/1 | 3/3 / 1/1 | 3/3 / 1/1 | 3/3 / 1/1 |
+| · predecessor name | 1/5 / 2/7 | 3/5 / 7/7 | 0/5 / 0/7 | 5/5 / 7/7 | 3/5 / 5/7 | 5/5 / 7/7 |
+| Buried fits shortlisted | 3/12 / 7/12 | 4/12 / 6/12 | 0/12 / 0/12 | 0/12 / 0/12 | 11/12 / 11/12 | 12/12 / 12/12 |
+| Top-10 flips on name swap / on repeat | 0 (by construction) | 0 | 0 | 0 | 3% (8/300) / 3% (4/150); 2% (6/300) / 3% (4/150) | 3% (8/300) / 3% (4/150); 2% (6/300) / 3% (4/150) |
+| Own-list flips on name swap / on repeat | – | – | 0 | 0 | 0/300 / 0/150 on both seeds | 0/300 / 0/150 on both seeds |
 
 `bm25` alone: 26% / 22% at k = fits. `field-filter-exact` shortlists no
 synonym fit on either seed, and misses the plain Elektroniker E+G fit on seed 7
@@ -185,33 +191,45 @@ synonym table another 8 and 8.
 
 What the numbers say, within their intervals:
 
-- On equal footing the reranker found 92% of the fits on both pools, against
-  72% for the best baseline, a field filter that knows every name in the
-  generator's table. The intervals of the two do not overlap on the pooled
-  seeds (84–96 against 61–81); on each seed alone they overlap slightly
-  (80–97 against 56–83, 78–97 against 56–84).
+- Behind the literal keyword prefilter (run 5) the reranker found 92% of the
+  fits on both pools, against 72% for the best baseline, a field filter that
+  knows every name in the generator's table. The intervals do not overlap on
+  the pooled seeds (84–96 against 61–81); on each seed alone they overlap
+  slightly (80–97 against 56–83, 78–97 against 56–84).
+- Its weak point was the prefilter. All six of its misses never reached the
+  model: Bielefeld fits whose Beruf field shows a predecessor name
+  (Elektroinstallateur, Radio- und Fernsehtechniker), at keyword ranks 69 to
+  112. Every fit the prefilter passed was shortlisted (36 of 36, 33 of 33).
+- With the synonym-aware prefilter (run 6) every fit reached the model on both
+  pools, and the model shortlisted all of them: 39 of 39 and 36 of 36, 100%
+  [95–100] pooled, with 100% shortlist precision. More near-misses reached it
+  (53 and 50, against 54 and 45 before); it admitted none. Its top 10 held no
+  near-miss on either seed.
+- That 100% has a ceiling built in: `keyword+syn` expands the query with the
+  generator's own table, so on these pools its top 50 holds every fit (39 of
+  39, 36 of 36, against 36 and 33 for the literal prefilter). A real prefilter's
+  table is incomplete, and the reader can only be as good as what it is given.
+  On its own, `keyword+syn` is a mediocre ranker (56% and 67% at k = fits); as
+  a wide net for a model it was enough here.
 - The field filters are exact and blind to the notes: 100% precision, no buried
-  fit. Given the synonym table, the filter shortlists every synonym fit, more
-  than the reranker (25/25 against 21/25). Keyword search finds some buried
-  fits but ranks near-misses next to fits, because "kein Führerschein" contains
-  "Führerschein"; query expansion helps it on seed 8 and not on seed 7.
-- The reranker put no non-fit on its shortlist (0 of 54 and 45 near-misses
-  that reached it). Of its 750 must-have judgements per seed, seed 7 had none
-  wrong and none "unklar"; seed 8 had one wrong (Beruf "erfüllt" for a
-  Maschinen- und Anlagenführer whose reason says the opposite) and one
-  "unklar" (experience, where the note says "Ausgelernt Sommer 2024"), both on
-  non-fits. The 150 distance judgements per seed are not a reading test,
-  because the distance is computed and shown on each record.
-- All six of its misses never reached it. They are Bielefeld fits whose Beruf
-  field shows a predecessor name (Elektroinstallateur, Radio- und
-  Fernsehtechniker), at keyword ranks 69 to 112: four synonym fits and two
-  buried-experience fits with an old title. Every fit the prefilter passed was
-  shortlisted (36 of 36, 33 of 33). The literal keyword prefilter, not the
-  model, is the weak point of this design; a prefilter with the synonym table
-  might close the gap, which is not measured here.
-- Name swap: top-10 flips on swap (3%, 2%) are at the repeat rate (3%, 3%), and
-  the yes-list did not move in 600 swaps or 300 repeats. This is no evidence of
-  a name effect, and too small a sample to exclude one of a few percent.
+  fit. Given the synonym table, the filter shortlists every synonym fit (25/25);
+  the reranker behind the literal prefilter got 21/25, behind the expanded one
+  25/25. Keyword search finds some buried fits but ranks near-misses next to
+  fits, because "kein Führerschein" contains "Führerschein".
+- Reading errors were rare and all on non-fits. Of 750 must-have judgements per
+  seed and run: run 5 seed 7 none wrong; run 5 seed 8 one wrong (Beruf
+  "erfüllt" for a Maschinen- und Anlagenführer whose reason says the opposite)
+  and one "unklar" (experience, where the note says "Ausgelernt Sommer 2024");
+  run 6 two and one wrong, all experience: the model counted from a dated
+  note's "noch keine BE" and concluded under two years where the truth is two
+  (twice it overrode an experience field that showed 2). Date arithmetic at the
+  boundary is its one recurring slip. The 150 distance judgements per seed are
+  not a reading test, because the distance is computed and shown on each
+  record.
+- Name swap: top-10 flips on swap (3%, 2%) are at the repeat rate (3%, 3%) in
+  both runs, and the yes-list did not move in 1,200 swaps or 600 repeats. This
+  is no evidence of a name effect, and too small a sample to exclude one of a
+  few percent.
 
 **Pool to pool.** The baselines cost nothing, so they were run on five pools
 (seeds 7 to 11, [report](results/offline-seeds/report.md)): rate pooled over
@@ -243,6 +261,8 @@ together, not from the fixes alone.
 | [run 4](results/claude-opus-5-5-run4/report.md) | every shown name valid for the training-start year, reform years sourced; notes could predate the training | 97% (38/39) | 1 | 1 not past the prefilter |
 | run 5, seed 7 | official titles for plain fits, synonym kinds planted in turn, notes dated after the training, Gesellenprüfung for Handwerk; prompt says notes are dated | 92% (36/39) | 0 | 3 not past the prefilter |
 | run 5, seed 8 | the same, second pool | 92% (33/36) | 1 | 3 not past the prefilter |
+| [run 6](results/claude-opus-5-5-presyn/report.md), seed 7 | run 5's pool; prefilter `keyword+syn` | 100% (39/39) | 0 | none |
+| [run 6](results/claude-opus-5-5-seed8-presyn/report.md), seed 8 | run 5's pool; prefilter `keyword+syn` | 100% (36/36) | 0 | none |
 
 Run 5 is lower than run 4 (92% against 97% on seed 7). The model did not get
 worse at reading: every fit that reached it was shortlisted, as in run 4. The
@@ -251,7 +271,9 @@ purpose (5 and 7 synonym fits with a predecessor name, against 3 in run 4), and
 the literal keyword prefilter ranks those low for the Bielefeld vacancy, which
 accepts four trades. In run 2, 7 true fits carried a predecessor name retired
 before their training ended; Claude noted the contradiction on two of them but
-still accepted them.
+still accepted them. Run 6 changes only the prefilter, on run 5's pools and
+with run 5's prompt, so the step from 92% to 100% is the prefilter plus a fresh
+model sample.
 
 Cost of run 5: 120 calls (per seed 15 for the ranking, 45 for the repeat and the
 two swap runs), 785k input and 334k output tokens, $10.34 at list price as
@@ -259,7 +281,8 @@ reported by the CLI ($5.12 and $5.22; runs 1 to 4: $5.34, $5.28, $5.24, $5.15).
 No call needed a retry. A first run on both seeds, on the pool before notes
 named the season wherever experience was only in the notes, cost another $10.50;
 it exposed that gap (the model rightly answered "unklar" on "seit 2024 im
-Beruf") and was discarded once the generator was fixed.
+Beruf") and was discarded once the generator was fixed. Run 6: 120 calls, 777k
+input and 330k output tokens, $10.19 ($5.06 and $5.13), no retries.
 
 ## Use
 
@@ -273,6 +296,8 @@ poolgate seeds --seeds 7,8,9,10,11
 
 # the Claude reranker, through the claude CLI on a Claude subscription (no API key)
 poolgate run --seed 7 --matchers keyword,claude --top-n 50 --batch 10 --workers 3
+# the same reader behind the synonym-aware prefilter
+poolgate run --seed 7 --matchers keyword+syn,claude --prefilter keyword+syn --top-n 50
 
 # your own matcher, behind HTTP, next to the keyword baseline
 poolgate run --matchers keyword --matcher-url http://localhost:8080
@@ -318,9 +343,9 @@ so a matcher that caches by id must not reuse results across calls.
   lookup table is never
   complete. Read their columns as the best a lookup can do, not as a typical
   ATS. The reranker gets no table; it names the trade from its own knowledge.
-- The Claude reranker was run with the literal keyword prefilter. All of its
-  misses on both pools are prefilter misses; a prefilter with query expansion
-  was not tried with the model.
+- Run 6's prefilter uses the generator's synonym table, so on these pools it
+  passes every fit by construction. Its 100% measures the reader given a
+  complete candidate list, not a deployable prefilter.
 - Certificate lists are declared complete, so a certificate not named is
   absent. Real records rarely say "sonst keine". There, an unstated certificate
   is unknown, and "unklar" would be the right answer.
