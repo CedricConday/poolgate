@@ -35,7 +35,9 @@ Angabe kann trotzdem in den Notizen stehen.
 - Berufe stehen oft unter Synonymen, Abkürzungen oder Vorgängernamen. Ordne sie dem \
 anerkannten Ausbildungsberuf zu. Ein ähnlich klingender, aber anderer Beruf erfüllt das \
 Kriterium nicht.
-- Berufserfahrung zählt ab Ende der Ausbildung. Stand aller Profile: November 2026.
+- Berufserfahrung zählt ab Ende der Ausbildung. Stand der Strukturfelder: November 2026.
+- Notizen sind datiert und beschreiben den Stand am Tag der Notiz: eine Dauer in einer \
+Notiz ist heute um die Zeit seit diesem Tag länger.
 - Bewerte jedes Muss-Kriterium mit "erfüllt", "nicht erfüllt" oder "unklar" (nur wenn weder \
 Feld noch Notizen etwas dazu sagen).
 - passt ist true nur dann, wenn alle Muss-Kriterien erfüllt sind.

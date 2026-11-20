@@ -18,11 +18,15 @@ from __future__ import annotations
 import random
 import re
 from dataclasses import dataclass, field, replace
-from datetime import date
+from datetime import date, timedelta
 
 from . import geo
 
-TODAY = date(2026, 11, 15)  # the pool's "Stand"; years in the notes count from here
+TODAY = date(2026, 11, 15)  # the pool's "Stand": structured fields and the truth hold here
+# Trainings end in summer. Experience is counted in whole years from 1 July of the
+# final year, so `Facts.years` is the experience at TODAY and `years_at` gives it
+# at any other date, such as the date a note was written.
+GRADUATION = (7, 1)
 
 # Every name a qualification has carried, with the training-start years it
 # was in use for: (name, first start year, start year from which it was
@@ -288,7 +292,9 @@ class Facts:
     on_call: bool
     salary_eur: int
     available: str
-    last_contact: date
+    # The date of the last call, and so of the notes. Set once the career is final
+    # (`dated`), never before the training ended.
+    last_contact: date | None = None
 
 
 @dataclass(frozen=True)
@@ -479,12 +485,10 @@ def random_facts(rng: random.Random, trade: str | None = None) -> Facts:
     certs = frozenset(rng.sample(pool, k=rng.choice((0, 1, 1, 2, 2, 3))))
     town = rng.choice(list(geo.OWL)) if rng.random() < 0.85 else rng.choice(list(geo.FAR))
     salary = 36_000 + 1_000 * min(years, 20) + rng.randrange(0, 9_000, 500)
-    contact = date.fromordinal(TODAY.toordinal() - rng.randint(5, 1400))
     return cap_years(Facts(
         trade=trade, years=years, certs=certs, licence=rng.random() < 0.85,
         town=town, shift=rng.choices(SHIFTS, (0.4, 0.35, 0.25))[0],
-        on_call=rng.random() < 0.5, salary_eur=salary, available=rng.choice(_AVAIL),
-        last_contact=contact))
+        on_call=rng.random() < 0.5, salary_eur=salary, available=rng.choice(_AVAIL)))
 
 
 def fitting_facts(v: Vacancy, rng: random.Random) -> Facts:
@@ -533,6 +537,25 @@ def training_end(f: Facts) -> int:
 
 def training_start(f: Facts) -> int:
     return training_end(f) - DURATION.get(f.trade, 3)
+
+
+def graduation(f: Facts) -> date:
+    return date(training_end(f), *GRADUATION)
+
+
+def years_at(f: Facts, d: date) -> int:
+    """Whole years of experience after the training, as of date d."""
+    return d.year - training_end(f) - ((d.month, d.day) < GRADUATION)
+
+
+CONTACT_MAX_DAYS = 1400  # the oldest last contact, about four years back
+
+
+def dated(f: Facts, rng: random.Random) -> Facts:
+    """Date the last contact: within four years, and at least two weeks after the
+    training ended, so a note never predates the career it describes."""
+    span = min(CONTACT_MAX_DAYS, (TODAY - graduation(f)).days - 14)
+    return replace(f, last_contact=TODAY - timedelta(days=rng.randint(min(5, span), span)))
 
 
 def name_period(trade: str, name: str) -> tuple[int | None, int | None]:
@@ -622,6 +645,7 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
     id_rng = random.Random(f"identity-{seed}")
     note_rng = random.Random(f"notes-{seed}")
     order_rng = random.Random(f"order-{seed}")
+    contact_rng = random.Random(f"contact-{seed}")
 
     drafts: list[tuple[Facts, Presentation, str | None]] = []
     for v in vacancies:
@@ -661,6 +685,7 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
             continue
         drafts.append((f, random_presentation(f, pres_rng), None))
 
+    drafts = [(dated(f, contact_rng), pr, planted) for f, pr, planted in drafts]
     order_rng.shuffle(drafts)
     profiles = []
     for i, (f, pr, planted) in enumerate(drafts):

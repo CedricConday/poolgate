@@ -14,6 +14,8 @@ from poolgate.pool import (
     make_pool,
     near_miss,
     swap_names,
+    training_end,
+    years_at,
 )
 
 
@@ -65,7 +67,8 @@ def test_every_hidden_fact_is_stated_in_the_notes(pool):
                 term = feminine(p.pres.term) if p.identity.gender == "f" else p.pres.term
                 assert term.lower() in notes, (p.id, term)
             elif h == "years":
-                assert re.search(rf"\b({f.years}|{TODAY.year - f.years})\b", notes), p.id
+                n = years_at(f, f.last_contact)
+                assert re.search(rf"\b({n}|{training_end(f)})\b", notes), p.id
             elif h == "licence":
                 assert "fs" in tokens(notes) or "führerschein" in notes, p.id
             elif h == "shift":
@@ -167,3 +170,53 @@ def test_name_validity_rule():
     assert name_valid(t, old, 2002) and not name_valid(t, old, 2003)
     assert not name_valid(t, old, 1986)
     assert not name_valid("Mechatroniker", "Mechatroniker", 1997)
+
+
+# Every way the notes state experience as a duration, and as a year.
+_DURATION = re.compile(r"(\d+) J\. Berufserfahrung|BE: (\d+) Jahre|nach der Ausbildung (\d+) Jahre"
+                       r"|Berufserfahrung nach Ausbildung: (\d+) Jahre", re.IGNORECASE)
+_CAREER_YEAR = re.compile(r"Abschluss Sommer (\d{4})|ausgelernt \((\d{4})\)|seit (\d{4}) im Beruf"
+                          r"|Abschluss (?:IHK|HWK) (\d{4})|Gesellenprüfung (\d{4})"
+                          r"|\((\d{4})-(\d{4})\)", re.IGNORECASE)
+
+
+@pytest.mark.parametrize("seed", [7, 8, 9, 10, 11])
+def test_notes_never_predate_the_career_and_agree_with_the_truth(seed):
+    """One rule: a note states the career as of its own date, and the truth is the
+    career at the Stand. So no note is dated before the training ended, every
+    duration equals the experience on the note's date, and every year named in
+    the career is the true one."""
+    from poolgate.pool import graduation, training_start
+
+    pool = make_pool(400, seed)
+    durations = 0
+    for p in pool.profiles:
+        f = p.facts
+        assert f.last_contact is not None and f.last_contact >= graduation(f), p.id
+        assert f.last_contact <= TODAY, p.id
+        assert years_at(f, TODAY) == f.years, p.id
+        for m in _DURATION.finditer(p.notes):
+            n = int(next(g for g in m.groups() if g))
+            assert n == years_at(f, f.last_contact), (p.id, m.group(0), f.last_contact)
+            durations += 1
+        for m in _CAREER_YEAR.finditer(p.notes):
+            got = [int(g) for g in m.groups() if g]
+            want = ([training_start(f), training_end(f)] if len(got) == 2
+                    else [training_end(f)])
+            assert got == want, (p.id, m.group(0))
+            assert max(got) <= f.last_contact.year, (p.id, m.group(0))
+        assert "Abschluss Sommer" not in p.notes or years_at(f, f.last_contact) == 0, p.id
+    assert durations > 50  # the rule is exercised, not vacuous
+
+
+def test_years_are_counted_from_the_summer_the_training_ended():
+    from datetime import date
+
+    from poolgate.pool import Facts
+
+    f = Facts("Mechatroniker", 3, frozenset(), True, "Paderborn", "2", True, 40_000, "ab sofort")
+    assert training_end(f) == TODAY.year - 3
+    assert years_at(f, date(TODAY.year - 3, 7, 1)) == 0
+    assert years_at(f, date(TODAY.year - 2, 6, 30)) == 0
+    assert years_at(f, date(TODAY.year - 2, 7, 1)) == 1
+    assert years_at(f, TODAY) == 3

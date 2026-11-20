@@ -12,7 +12,17 @@ from __future__ import annotations
 import random
 import re
 
-from .pool import CERTS, DURATION, SHIFT_LABEL, TODAY, Facts, Identity, Presentation
+from .pool import (
+    CERTS,
+    DURATION,
+    SHIFT_LABEL,
+    TODAY,
+    Facts,
+    Identity,
+    Presentation,
+    training_end,
+    years_at,
+)
 
 _HEADS = ("niker", "chaniker", "techniker", "fräser", "zerspaner", "elektriker", "schlosser",
           "installateur", "dreher", "bediener", "führer", "lagerist", "macher", "bauer",
@@ -56,7 +66,7 @@ FILLER = (
 
 def _trade(f: Facts, pr: Presentation, ident: Identity, rng: random.Random) -> str:
     term = feminine(pr.term) if ident.gender == "f" else pr.term
-    end = TODAY.year - f.years
+    end = training_end(f)
     return rng.choice((
         f"Ausbildung als {term} ({end - DURATION.get(f.trade, 3)}-{end})",
         f"gelernt: {term}",
@@ -67,11 +77,13 @@ def _trade(f: Facts, pr: Presentation, ident: Identity, rng: random.Random) -> s
 
 
 def _years(f: Facts, rng: random.Random) -> str:
-    n = f.years
-    since = TODAY.year - n
+    """Experience as of the note's date: a duration counts from the training's end
+    to the day of the call, and a year ("seit 2019") holds at any date."""
+    n = years_at(f, f.last_contact)
+    since = training_end(f)
     if n == 0:
-        return rng.choice((f"Berufseinsteiger, Abschluss Sommer {TODAY.year}",
-                           f"gerade ausgelernt ({TODAY.year}), noch keine BE"))
+        return rng.choice((f"Berufseinsteiger, Abschluss Sommer {since}",
+                           f"gerade ausgelernt ({since}), noch keine BE"))
     return rng.choice((
         f"{n} J. Berufserfahrung",
         f"BE: {n} Jahre",
@@ -179,7 +191,8 @@ def render_notes(f: Facts, pr: Presentation, ident: Identity, rng: random.Random
         facts.append(_on_call(f, rng))
     if rng.random() < 0.5:
         facts.append(_salary(f, rng))
-    if rng.random() < 0.4:
+    # Availability is a current fact; an old note does not repeat it.
+    if (TODAY - f.last_contact).days <= 180 and rng.random() < 0.4:
         facts.append("verfügbar " + f.available)
     fillers = rng.sample(FILLER, k=rng.choice((1, 2, 2, 3)))
     if missing_cert:
