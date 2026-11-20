@@ -223,7 +223,7 @@ so a matcher that caches by id must not reuse results across calls.
 - Notes say "Abschluss IHK" for every trade. For the Handwerk trades
   (Elektroniker für Energie- und Gebäudetechnik, Anlagenmechaniker SHK) the
   exam is the Gesellenprüfung at the Handwerkskammer. This touches five
-  background profiles and no fit, and is fixed in the generator's next pool.
+  background profiles and no fit; the generator does not distinguish them yet.
 - Certificate lists are declared complete, so a certificate not named is
   absent. Real records rarely say "sonst keine". There, an unstated certificate
   is unknown, and "unklar" would be the right answer.
