@@ -133,21 +133,37 @@ def test_certificate_lists_in_notes_are_declared_complete(pool):
             assert "keine" in p.notes.lower(), p.id
 
 
-def test_no_profile_carries_a_name_retired_before_its_training_ended(pool):
-    from poolgate.pool import name_valid, training_end
+def test_every_shown_trade_name_was_in_use_when_the_training_started(pool):
+    """Beruf field and notes alike: no name before it existed or after it was replaced."""
+    from poolgate.pool import name_valid, training_start
 
-    dated = 0
+    old = 0
     for p in pool.profiles:
-        end = training_end(p.facts)
-        for name in (p.pres.title_text, p.pres.term):
-            assert name_valid(name, end), (p.id, name, end)
-            dated += "(bis " in name or "-19" in name or "-20" in name
-    assert dated > 0  # dated names still occur, on careers long enough for them
+        start = training_start(p.facts)
+        for name in {p.pres.title_text, p.pres.term} - {""}:
+            assert name_valid(p.facts.trade, name, start), (p.id, name, start)
+        m = re.search(r"Ausbildung als .+? \((\d{4})-(\d{4})\)", p.notes)
+        if m:
+            assert int(m.group(1)) == start, (p.id, m.group(0))
+        old += p.pres.title_text in ("Elektroinstallateur", "Betriebsschlosser", "Dreher",
+                                     "Energieelektroniker Fachrichtung Betriebstechnik")
+    assert old > 0  # predecessor names still occur, on careers long enough for them
+
+
+def test_no_training_predates_every_name_of_its_trade(pool):
+    from poolgate.pool import earliest_start, training_start
+
+    for p in pool.profiles:
+        lo = earliest_start(p.facts.trade)
+        assert lo is None or training_start(p.facts) >= lo, p.id
 
 
 def test_name_validity_rule():
     from poolgate.pool import name_valid
 
-    assert name_valid("Dreher (bis 1987)", 1985) and not name_valid("Dreher (bis 1987)", 1999)
-    assert name_valid("Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", 1990)
-    assert not name_valid("Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", 2010)
+    t = "Elektroniker für Betriebstechnik"
+    assert name_valid(t, t, 2003) and not name_valid(t, t, 2002)
+    old = "Energieelektroniker Fachrichtung Betriebstechnik"
+    assert name_valid(t, old, 2002) and not name_valid(t, old, 2003)
+    assert not name_valid(t, old, 1986)
+    assert not name_valid("Mechatroniker", "Mechatroniker", 1997)

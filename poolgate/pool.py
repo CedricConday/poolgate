@@ -24,48 +24,102 @@ from . import geo
 
 TODAY = date(2026, 11, 15)  # the pool's "Stand"; years in the notes count from here
 
-# Canonical trade -> other names for the same qualification: official long
-# forms, official predecessor names (with the year they were replaced), and
-# common abbreviations of the official name. Job titles ("CNC-Fräser",
-# "Servicetechniker"), unofficial names and ambiguous words ("Elektriker",
-# "Zerspaner") are not used: they would make the truth unknowable, not the case
-# hard.
-TRADES: dict[str, tuple[str, ...]] = {
+# Every name a qualification has carried, with the training-start years it
+# was in use for: (name, first start year, start year from which it was
+# replaced). None = open. The first entry is today's official name. A name is
+# shown only when the candidate's training started inside its period: a
+# training begun before a reform runs to its end under the old name.
+#
+# Reform years, checked against these sources (2026-11-20):
+# - BIBB, new and modernised occupations by year,
+#   https://www.bibb.de/dienst/berufesuche/de/index_berufesuche.php/new_modernised_occupations_by_year/<year>
+#   1997: Verfahrensmechaniker für Kunststoff- und Kautschuktechnik (modernised);
+#   1998: Mechatroniker (new); 1999: Informationselektroniker (new);
+#   2003: Elektroniker für Betriebstechnik, ... für Automatisierungstechnik,
+#         Elektroniker (Handwerk), Kraftfahrzeugmechatroniker, Anlagenmechaniker
+#         für Sanitär-, Heizungs- und Klimatechnik (modernised);
+#   2004: Maschinen- und Anlagenführer (new); Industriemechaniker,
+#         Zerspanungsmechaniker, Konstruktionsmechaniker, Werkzeugmechaniker,
+#         Fachkraft für Lagerlogistik (modernised); 2009: Industrieelektriker (new).
+# - IG Metall on the 2003 electrical reform (in force 1 Aug 2003): replaced the
+#   1987 Energieelektroniker and Prozessleitelektroniker (industry) and
+#   Elektroinstallateur (Handwerk).
+# - Bundestag Drs. 11/566 and Eurofound (2004, "metalworking training regulations
+#   updated"): industrial metal and electrical occupations reorganised in force
+#   1 Aug 1987, revised in 2004 (Fachrichtungen dropped).
+# - BIBB: Informationselektroniker replaced Radio- und Fernsehtechniker.
+# The mapping of pre-1987 metal names (Betriebs-/Maschinenschlosser ->
+# Industriemechaniker, Dreher/Fräser -> Zerspanungsmechaniker, Werkzeugmacher ->
+# Werkzeugmechaniker) is the standard one but is not stated in these sources.
+# Where a predecessor is not sourced, the trade's years are capped instead, so
+# no training predates its name (Mechatroniker 1998, Industrieelektriker 2009,
+# Maschinen- und Anlagenführer 2004, Konstruktionsmechaniker 1987,
+# Verfahrensmechaniker Kunststoff 1997).
+NAMES: dict[str, tuple[tuple[str, int | None, int | None], ...]] = {
     "Elektroniker für Betriebstechnik": (
-        "Elektroniker/-in für Betriebstechnik", "Elektroniker BT",
-        "Energieelektroniker Fachrichtung Betriebstechnik (bis 2003)"),
+        ("Elektroniker für Betriebstechnik", 2003, None),
+        ("Elektroniker/-in für Betriebstechnik", 2003, None),
+        ("Elektroniker BT", 2003, None),
+        ("Energieelektroniker Fachrichtung Betriebstechnik", 1987, 2003)),
     "Elektroniker für Automatisierungstechnik": (
-        "Elektroniker/-in für Automatisierungstechnik", "Elektroniker AT",
-        "Prozessleitelektroniker (bis 2003)"),
+        ("Elektroniker für Automatisierungstechnik", 2003, None),
+        ("Elektroniker/-in für Automatisierungstechnik", 2003, None),
+        ("Elektroniker AT", 2003, None),
+        ("Prozessleitelektroniker", 1987, 2003)),
     "Elektroniker für Energie- und Gebäudetechnik": (
-        "Elektroniker/-in Fachrichtung Energie- und Gebäudetechnik", "Elektroniker EGT",
-        "Elektroinstallateur (bis 2003)"),
+        ("Elektroniker für Energie- und Gebäudetechnik", 2003, None),
+        ("Elektroniker/-in Fachrichtung Energie- und Gebäudetechnik", 2003, None),
+        ("Elektroniker EGT", 2003, None),
+        ("Elektroinstallateur", None, 2003)),
     "Informationselektroniker": (
-        "Informationselektroniker/-in", "Radio- und Fernsehtechniker (bis 1999)",
-        "Informationselektroniker Schwerpunkt Geräte- und Systemtechnik"),
-    "Mechatroniker": ("Mechatroniker/-in", "Mechatr.", "Mechatroniker (IHK)"),
+        ("Informationselektroniker", 1999, None),
+        ("Informationselektroniker/-in", 1999, None),
+        ("Radio- und Fernsehtechniker", None, 1999)),
+    "Mechatroniker": (
+        ("Mechatroniker", 1998, None), ("Mechatroniker/-in", 1998, None),
+        ("Mechatr.", 1998, None), ("Mechatroniker (IHK)", 1998, None)),
     "Industriemechaniker": (
-        "Industriemechaniker/-in", "Industriemech.", "Betriebsschlosser (bis 1987)",
-        "Maschinenschlosser (bis 1987)"),
+        ("Industriemechaniker", 1987, None), ("Industriemechaniker/-in", 1987, None),
+        ("Industriemech.", 1987, None),
+        ("Industriemechaniker Fachrichtung Betriebstechnik", 1987, 2004),
+        ("Betriebsschlosser", None, 1987), ("Maschinenschlosser", None, 1987)),
     "Zerspanungsmechaniker": (
-        "Zerspanungsmechaniker/-in", "Zerspanungsmech.",
-        "Zerspanungsmechaniker Fachrichtung Frästechnik (1987-2004)", "Dreher (bis 1987)",
-        "Fräser (bis 1987)"),
+        ("Zerspanungsmechaniker", 1987, None), ("Zerspanungsmechaniker/-in", 1987, None),
+        ("Zerspanungsmech.", 1987, None),
+        ("Zerspanungsmechaniker Fachrichtung Frästechnik", 1987, 2004),
+        ("Dreher", None, 1987), ("Fräser", None, 1987)),
     # Lookalikes: they read like the right trade and are not.
-    "Industrieelektriker": ("Industrieelektriker/-in",
-                            "Industrieelektriker Fachrichtung Betriebstechnik"),
-    "Maschinen- und Anlagenführer": ("Maschinen- und Anlagenführer/-in", "MAF"),
-    "Kfz-Mechatroniker": ("Kraftfahrzeugmechatroniker", "Kfz-Mechaniker (bis 2003)"),
+    "Industrieelektriker": (
+        ("Industrieelektriker", 2009, None), ("Industrieelektriker/-in", 2009, None),
+        ("Industrieelektriker Fachrichtung Betriebstechnik", 2009, None)),
+    "Maschinen- und Anlagenführer": (
+        ("Maschinen- und Anlagenführer", 2004, None),
+        ("Maschinen- und Anlagenführer/-in", 2004, None), ("MAF", 2004, None)),
+    "Kfz-Mechatroniker": (
+        ("Kfz-Mechatroniker", 2003, None), ("Kraftfahrzeugmechatroniker", 2003, None),
+        ("Kfz-Mechaniker", None, 2003)),
     # Background trades.
-    "Konstruktionsmechaniker": ("Konstruktionsmechaniker/-in", "Konstruktionsmech."),
-    "Fachkraft für Lagerlogistik": ("Fachkraft Lagerlogistik",
-                                    "Fachkraft für Lagerwirtschaft (bis 2004)"),
-    "Anlagenmechaniker SHK": ("Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik",
-                              "Gas- und Wasserinstallateur (bis 2003)"),
-    "Werkzeugmechaniker": ("Werkzeugmechaniker/-in", "Werkzeugmacher (bis 1987)"),
+    "Konstruktionsmechaniker": (
+        ("Konstruktionsmechaniker", 1987, None), ("Konstruktionsmechaniker/-in", 1987, None),
+        ("Konstruktionsmech.", 1987, None)),
+    "Fachkraft für Lagerlogistik": (
+        ("Fachkraft für Lagerlogistik", 2004, None), ("Fachkraft Lagerlogistik", 2004, None),
+        ("Fachkraft für Lagerwirtschaft", None, 2004)),
+    "Anlagenmechaniker SHK": (
+        ("Anlagenmechaniker SHK", 2003, None),
+        ("Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik", 2003, None),
+        ("Gas- und Wasserinstallateur", None, 2003)),
+    "Werkzeugmechaniker": (
+        ("Werkzeugmechaniker", 1987, None), ("Werkzeugmechaniker/-in", 1987, None),
+        ("Werkzeugmacher", None, 1987)),
     "Verfahrensmechaniker Kunststoff": (
-        "Verfahrensmechaniker für Kunststoff- und Kautschuktechnik",),
+        ("Verfahrensmechaniker Kunststoff", 1997, None),
+        ("Verfahrensmechaniker für Kunststoff- und Kautschuktechnik", 1997, None)),
 }
+# Two-year trainings; every other trade here is 3 to 3.5 years, counted as 3.
+DURATION = {"Industrieelektriker": 2, "Maschinen- und Anlagenführer": 2}
+# Other names than the canonical one, per trade.
+TRADES: dict[str, tuple[str, ...]] = {t: tuple(n for n, _, _ in ns[1:]) for t, ns in NAMES.items()}
 
 # Certificates and skills, with the ways notes and CVs spell them.
 CERTS: dict[str, tuple[str, ...]] = {
@@ -426,10 +480,11 @@ def random_facts(rng: random.Random, trade: str | None = None) -> Facts:
     town = rng.choice(list(geo.OWL)) if rng.random() < 0.85 else rng.choice(list(geo.FAR))
     salary = 36_000 + 1_000 * min(years, 20) + rng.randrange(0, 9_000, 500)
     contact = date.fromordinal(TODAY.toordinal() - rng.randint(5, 1400))
-    return Facts(trade=trade, years=years, certs=certs, licence=rng.random() < 0.85,
-                 town=town, shift=rng.choices(SHIFTS, (0.4, 0.35, 0.25))[0],
-                 on_call=rng.random() < 0.5, salary_eur=salary, available=rng.choice(_AVAIL),
-                 last_contact=contact)
+    return cap_years(Facts(
+        trade=trade, years=years, certs=certs, licence=rng.random() < 0.85,
+        town=town, shift=rng.choices(SHIFTS, (0.4, 0.35, 0.25))[0],
+        on_call=rng.random() < 0.5, salary_eur=salary, available=rng.choice(_AVAIL),
+        last_contact=contact))
 
 
 def fitting_facts(v: Vacancy, rng: random.Random) -> Facts:
@@ -441,19 +496,19 @@ def fitting_facts(v: Vacancy, rng: random.Random) -> Facts:
     shift = f.shift
     if v.shift and SHIFTS.index(shift) > SHIFTS.index(v.shift):
         shift = rng.choice(SHIFTS[: SHIFTS.index(v.shift) + 1])
-    return replace(
+    return cap_years(replace(
         f, years=max(f.years, v.min_years + rng.choice((0, 1, 2, 4, 7, 11))),
         certs=frozenset(certs), shift=shift,
         licence=True if v.licence else f.licence,
         on_call=True if v.on_call else f.on_call,
-        town=rng.choice(_towns_within(v.site, 0, v.radius_km - 5, geo.OWL)))
+        town=rng.choice(_towns_within(v.site, 0, v.radius_km - 5, geo.OWL))))
 
 
 def failing_facts(v: Vacancy, must: str, rng: random.Random) -> Facts:
     """Facts that meet every must-have of v except one."""
     f = fitting_facts(v, rng)
     if must == "beruf":
-        f = replace(f, trade=rng.choice(v.lookalikes))
+        f = cap_years(replace(f, trade=rng.choice(v.lookalikes)))
     elif must == "erfahrung":
         f = replace(f, years=rng.randint(0, v.min_years - 1))
     elif must == "zertifikate":
@@ -472,34 +527,57 @@ def failing_facts(v: Vacancy, must: str, rng: random.Random) -> Facts:
 
 # ---------------------------------------------------------------- presentation
 
-_UNTIL = re.compile(r"\(bis (\d{4})\)")
-_SPAN = re.compile(r"\((\d{4})-(\d{4})\)")
-
-
-def name_valid(name: str, training_end: int) -> bool:
-    """A dated name fits only a training that ended while the name was in use."""
-    if m := _UNTIL.search(name):
-        return training_end <= int(m.group(1))
-    if m := _SPAN.search(name):
-        return int(m.group(1)) <= training_end <= int(m.group(2))
-    return True
-
-
 def training_end(f: Facts) -> int:
     return TODAY.year - f.years
 
 
-def _synonym(trade: str, rng: random.Random, end: int) -> str:
-    # Every trade has at least one undated synonym, so the choice is never empty.
-    return rng.choice([n for n in TRADES[trade] if name_valid(n, end)])
+def training_start(f: Facts) -> int:
+    return training_end(f) - DURATION.get(f.trade, 3)
+
+
+def name_period(trade: str, name: str) -> tuple[int | None, int | None]:
+    for n, lo, hi in NAMES[trade]:
+        if n == name:
+            return lo, hi
+    raise KeyError(name)
+
+
+def name_valid(trade: str, name: str, start: int) -> bool:
+    """A name fits a training that started while the name was in use."""
+    lo, hi = name_period(trade, name)
+    return (lo is None or start >= lo) and (hi is None or start < hi)
+
+
+def earliest_start(trade: str) -> int | None:
+    los = [lo for _, lo, _ in NAMES[trade]]
+    return None if None in los else min(los)
+
+
+def cap_years(f: Facts, floor_start: int | None = None) -> Facts:
+    """Shorten a career whose training would predate every name of its trade."""
+    lo = floor_start if floor_start is not None else earliest_start(f.trade)
+    if lo is None:
+        return f
+    most = TODAY.year - DURATION.get(f.trade, 3) - lo
+    return f if f.years <= most else replace(f, years=most)
+
+
+def _valid_names(f: Facts) -> list[str]:
+    return [n for n, _, _ in NAMES[f.trade] if name_valid(f.trade, n, training_start(f))]
 
 
 def presentation(f: Facts, rng: random.Random, title: str, hidden=()) -> Presentation:
-    end = training_end(f)
-    text = {"canonical": f.trade, "synonym": _synonym(f.trade, rng, end), "none": ""}[title]
-    # The notes name the trade the way the title does, or by another synonym.
-    term = text if text and rng.random() < 0.6 else (
-        f.trade if title == "canonical" else _synonym(f.trade, rng, end))
+    valid = _valid_names(f)
+    canonical_ok = valid[0] == f.trade
+    others = [n for n in valid if n != f.trade]
+    if title == "canonical" and not canonical_ok:
+        title = "synonym"  # training predates today's name: shown under the old one
+    text = {"canonical": f.trade, "synonym": rng.choice(others) if others else "",
+            "none": ""}[title]
+    if title == "synonym" and not text:
+        title, text = "canonical", f.trade
+    # The notes name the trade the way the title does, or by another valid name.
+    term = text if text and rng.random() < 0.6 else rng.choice(valid)
     hidden = set(hidden) | ({"trade"} if title == "none" else set())
     return Presentation(title=title, title_text=text, term=term, hidden=frozenset(hidden),
                         style=rng.choice(("stichpunkte", "fliesstext", "cv", "chaos")))
@@ -552,6 +630,7 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
             for _ in range(count):
                 f = fitting_facts(v, fact_rng)
                 if case == "plain":
+                    f = cap_years(f, NAMES[f.trade][0][1])
                     pr = presentation(f, pres_rng, "canonical")
                 elif case == "synonym":
                     pr = presentation(f, pres_rng, "synonym")
@@ -567,7 +646,9 @@ def make_pool(n: int = 400, seed: int = 7, vacancies: tuple[Vacancy, ...] = VACA
                 drafts.append((f, pr, f"fit:{v.key}:{case}"))
         for must in v.musts():
             for _ in range(PLANT_NEAR):
-                f = failing_facts(v, must, fact_rng)
+                f = cap_years(failing_facts(v, must, fact_rng), None)
+                if must != "erfahrung":
+                    f = cap_years(f, NAMES[f.trade][0][1])
                 # Looks right: the title is the trade's own name, and the failing fact
                 # is more often than not left to the notes.
                 hidden = {MUST_FACT[must]} if (must not in ("beruf", "entfernung")

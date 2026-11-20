@@ -12,7 +12,7 @@ from __future__ import annotations
 import random
 import re
 
-from .pool import CERTS, SHIFT_LABEL, TODAY, Facts, Identity, Presentation
+from .pool import CERTS, DURATION, SHIFT_LABEL, TODAY, Facts, Identity, Presentation
 
 _HEADS = ("niker", "chaniker", "techniker", "fräser", "zerspaner", "elektriker", "schlosser",
           "installateur", "dreher", "bediener", "führer", "lagerist", "macher", "bauer",
@@ -58,7 +58,7 @@ def _trade(f: Facts, pr: Presentation, ident: Identity, rng: random.Random) -> s
     term = feminine(pr.term) if ident.gender == "f" else pr.term
     end = TODAY.year - f.years
     return rng.choice((
-        f"Ausbildung als {term} ({end - 3}-{end})",
+        f"Ausbildung als {term} ({end - DURATION.get(f.trade, 3)}-{end})",
         f"gelernt: {term}",
         f"{term}, Abschluss IHK {end}",
         f"lt. CV Ausb. {term} bei {rng.choice(FIRMS)}",
