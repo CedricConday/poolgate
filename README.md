@@ -29,8 +29,9 @@ is the harness one would use to.
    - 4 **synonym**: the Beruf field shows another name for the same
      qualification: an official predecessor name with its year ("Betriebsschlosser
      (bis 1987)", "Elektroinstallateur (bis 2003)"), the official long form, or a
-     common abbreviation of the official name ("Elektroniker BT"). Job titles
-     and unofficial names are not used;
+     common abbreviation of the official name ("Elektroniker BT"). A dated name
+     is used only when the candidate's training ended while the name was in use
+     (careers run up to 41 years). Job titles and unofficial names are not used;
    - 4 **buried**: one must-have fact is "k. A." in its field and stated only in
      the notes, one fit for each must-have other than distance (trade, years,
      and per vacancy certificate, shift, licence or on-call);
@@ -65,9 +66,9 @@ The three vacancies: Elektroniker für Betriebstechnik in Paderborn (3-Schicht,
 S7/TIA, 35 km), CNC-Fräser in Gütersloh (2-Schicht, Heidenhain, 30 km),
 Servicetechniker Sicherheitstechnik in Bielefeld (licence, on-call, 50 km).
 A profile planted for one vacancy, as a fit or as a near-miss, sometimes fits
-another and counts there too: 14, 12 and 14 true fits, 40 in all, on 37
+another and counts there too: 13, 12 and 14 true fits, 39 in all, on 37
 distinct profiles, so the fits are not fully independent. With more fits than
-places, recall@10 cannot exceed 75%.
+places, recall@10 cannot exceed 77% (30 of 39).
 
 ## Matchers
 
@@ -92,11 +93,11 @@ Same pool, seed 7 ([report](results/offline-proof/report.md)):
 | Planted fault | Recall@20 | Synonym fits shortlisted | Buried fits shortlisted | Near-misses in top 10 | Top-10 flips on swap | on repeat | Lost a top-10 place |
 |---|---|---|---|---|---|---|---|
 | none | 100% | 100% | 100% | 0% | 0% | 0% | nobody |
-| misses synonym fits (p=0.5) | 85% | 43% | 100% | 0% | 0% | 0% | nobody |
-| misses buried facts (p=0.5) | 88% | 100% | 58% | 0% | 0% | 0% | nobody |
-| takes near-misses for fits (p=0.5) | 48% | 100% | 100% | 15% | 0% | 0% | nobody |
-| downgrades Turkish and Arabic names | 95% | 79% | 83% | 0% | 13% | 0% | tr 27/101, ar 10/63, de 1/231 |
-| random score noise (±25) | 98% | 93% | 100% | 0% | 12% | 12% | spread over all origins |
+| misses synonym fits (p=0.5) | 85% | 46% | 100% | 0% | 0% | 0% | nobody |
+| misses buried facts (p=0.5) | 87% | 100% | 58% | 0% | 0% | 0% | nobody |
+| takes near-misses for fits (p=0.5) | 49% | 100% | 100% | 14% | 0% | 0% | nobody |
+| downgrades Turkish and Arabic names | 95% | 77% | 83% | 0% | 11% | 0% | tr 23/107, ar 10/76, de 1/212 |
+| random score noise (±25) | 97% | 92% | 100% | 0% | 11% | 11% | spread over all origins |
 
 Each fault lands in its own column. Noise raises swap and repeat flips alike and
 spreads the losses over every origin; a name bias raises only the swap flips
@@ -105,25 +106,25 @@ not about any real matcher.
 
 ## Results
 
-Same pool, seed 7, three vacancies, 40 true fits ([report](results/claude-opus-5-5/report.md),
+Same pool, seed 7, three vacancies, 39 true fits ([report](results/claude-opus-5-5/report.md),
 [pool with hidden truth](results/claude-opus-5-5/pool.json)). Claude Opus 5.5, effort medium,
 through the claude CLI; keyword top 50 per vacancy, 10 candidates per call.
 
 | Measure | `keyword` | `field-filter` | `claude` |
 |---|---|---|---|
-| Recall@10 (ceiling 75%) | 40% [26–55] | 35% [22–50] | 75% [60–86] |
-| Recall@20 | 68% [52–80] | 48% [33–63] | 95% [83–99] |
-| Precision@10 | 53% [36–70] | 47% [30–64] | 100% [89–100] |
-| Shortlist precision | 53% (16/30, top 10) | 100% (14/14) | 100% (38/38) [91–100] |
-| Shortlist recall | 40% (16/40) | 35% (14/40) | 95% (38/40) [83–99] |
-| Near-misses in top 10 | 9 of 143 | 7 of 143 | 0 of 143 (47 reached the model, all rejected) |
-| Shortlist recall, synonym fits | 29% (4/14) | 0% (0/14) | 93% (13/14) |
-| Shortlist recall, buried fits | 17% (2/12) | 0% (0/12) | 92% (11/12) |
-| Top-10 flips on name swap / on repeat | 0% / 0% (by construction) | 0% / 0% (by construction) | 3% (8/300) / 4% (6/150) |
+| Recall@10 (ceiling 77%) | 38% [25–54] | 38% [25–54] | 77% [62–87] |
+| Recall@20 | 74% [59–85] | 54% [39–68] | 100% [91–100] |
+| Precision@10 | 50% [33–67] | 50% [33–67] | 100% [89–100] |
+| Shortlist precision | 50% (15/30, top 10) | 100% (14/14) | 100% (39/39) [91–100] |
+| Shortlist recall | 38% (15/39) | 36% (14/39) | 100% (39/39) [91–100] |
+| Near-misses in top 10 | 15 of 148 | 12 of 148 | 0 of 148 (59 reached the model, all rejected) |
+| Shortlist recall, synonym fits | 23% (3/13) | 0% (0/13) | 100% (13/13) |
+| Shortlist recall, buried fits | 42% (5/12) | 0% (0/12) | 100% (12/12) |
+| Top-10 flips on name swap / on repeat | 0% / 0% (by construction) | 0% / 0% (by construction) | 2% (6/300) [1–4] / 0% (0/150) [0–2] |
 | Own-list flips on name swap / on repeat | – | 0% / 0% | 0% (0/300) / 0% (0/150) |
 
-Pure BM25 without the field filter: recall@20 32%, shortlist recall 15%. Of
-the 143 near-misses, 30 were planted look-alikes; 113 are background profiles
+Pure BM25 without the field filter: recall@20 38%, shortlist recall 21%. Of
+the 148 near-misses, 30 were planted look-alikes; 118 are background profiles
 that happen to fail exactly one must-have.
 
 What the numbers say, within their intervals:
@@ -132,31 +133,39 @@ What the numbers say, within their intervals:
   fit and no synonym or buried fit. Keyword search finds some of them, but
   ranks near-misses next to fits, because "kein Führerschein" contains
   "Führerschein".
-- The Claude reranker shortlisted 38 of 40 fits and no non-fit. Of the 47
-  near-misses that reached it, it let none in. All 750 of its must-have
-  judgements matched the rules, none "unklar". The 150 distance judgements are
-  not a reading test, because the distance is computed and shown on each record.
-- Both of its misses never reached it. They ranked 73 and 113 in the keyword
-  prefilter for the Bielefeld vacancy, which accepts four trades, so the keyword
-  ranking spreads thin there. Within what the prefilter passed, recall was 38
-  of 38. The weak point of this design is the prefilter, not the model.
-- No name effect is visible. Top-10 flips on swap (3%) are within the repeat
-  rate (4%), the yes-list did not move at all, and no origin lost more than 3
-  top-10 places in about 100 tests. An effect of a few percent would not show
-  at this sample size.
+- The Claude reranker shortlisted all 39 fits and no non-fit. Every fit passed
+  the keyword prefilter this time. Of the 59 near-misses that reached the model,
+  it let none in. Of its 750 must-have judgements none was wrong and 1 was
+  "unklar" (years). The 150 distance judgements are not a reading test, because
+  the distance is computed and shown on each record.
+- 100% here is on 39 fits in a synthetic pool built to be readable: the lower
+  bound of the interval is 91%. The prefilter remains the weak point of this
+  design. In the two earlier runs it kept 2 fits from the model each time.
+- Name swap: the yes-list did not move at all (0 of 300). Top-10 membership
+  flipped 6 times in 300 swap tests against 0 in 150 repeats. The intervals
+  overlap ([1–4]% and [0–2]%), and the 6 losses fall on de 3, ua 2 and ar 1,
+  not on one origin. With every fit on the yes-list, these flips are
+  reordering among fits around place 10, not anyone gaining or losing the
+  shortlist. This is no evidence of a name effect, and too small a sample to
+  exclude one of a few percent.
 
-Changes from the first live run ([run 1](results/claude-opus-5-5-run1/report.md)),
-which used an earlier pool. That pool listed job titles ("Servicetechniker
-Mechatronik", "CNC-Fräser") and unofficial names as trade synonyms. It also did
-not declare certificate lists complete, and it had no buried shift or on-call
-fit. Claude answered "unklar" on the job titles, and 4 of its 6 misses came
-from that: shortlist recall was 85% (34/40), with 13 "unklar" judgements. With
-the pool fixed, shortlist recall is 95% and nothing is "unklar". The prefilter
-misses (2) are the same in both runs.
+How the three live runs differ: each used a different pool, because each
+round of fixes changes the generator, and each is a fresh model sample at
+the same settings. So the gains between runs come from the fixes, the
+redrawn pool and sampling together, not from the fixes alone.
+
+| Run | Pool | Shortlist recall | "unklar" | Misses |
+|---|---|---|---|---|
+| [run 1](results/claude-opus-5-5-run1/report.md) | job titles among trade synonyms, certificate lists not declared complete, no buried shift/on-call | 85% (34/40) | 13 | 4 on job titles, 2 not past the prefilter (p0034, p0104) |
+| [run 2](results/claude-opus-5-5-run2/report.md) | official names only, but dated names regardless of training year | 95% (38/40) | 0 | 2 not past the prefilter (p0370, p0104) |
+| run 3 (this) | dated names only where the training year allows them | 100% (39/39) | 1 | none |
+
+In run 2, 8 true fits carried a predecessor name retired before their training
+ended. Claude noted the contradiction on two of them but still accepted them.
 
 Cost: 60 calls (15 for the ranking, 45 for the repeat and the two swap runs),
-388k input and 164k output tokens, $5.28 at list price as reported by the CLI
-(run 1: $5.34). No call needed a retry.
+397k input and 162k output tokens, $5.24 at list price as reported by the CLI
+(run 1: $5.34, run 2: $5.28). No call needed a retry.
 
 ## Use
 
@@ -210,7 +219,7 @@ so a matcher that caches by id must not reuse results across calls.
 - The reranker turns "unklar" into "not a fit". That is a choice of the
   reference matcher, not of the gate: a matcher that returns a third bucket
   can be graded on it through `shortlist` and `note`.
-- Three vacancies and 40 true fits on 37 distinct profiles (a profile can fit
+- Three vacancies and 39 true fits on 37 distinct profiles (a profile can fit
   two vacancies): per-case rows rest on 12 to 14 fits and the buried subtypes on
   1 to 3, so their intervals are wide. Read the brackets.
 - Distance is straight-line between town centres. The Claude reranker is given
